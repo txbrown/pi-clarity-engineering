@@ -1,0 +1,31 @@
+{
+  "name": "clarity-engineering-plugin",
+  "version": "0.1.0",
+  "description": "Clarity Engineering skills, prompts, and Pi extension commands for Claude Code, Codex, and Pi.",
+  "private": true,
+  "keywords": [
+    "pi-package",
+    "clarity-engineering",
+    "cl-shortcuts",
+    "agent-skills"
+  ],
+  "scripts": {
+    "validate": "./scripts/validate.sh",
+    "install:pi": "./scripts/install.sh --target pi",
+    "install:codex": "./scripts/install.sh --target codex"
+  },
+  "pi": {
+    "extensions": [
+      "./plugins/clarity-engineering/extensions/cl-engineering/index.ts"
+    ],
+    "skills": [
+      "./plugins/clarity-engineering/skills"
+    ],
+    "prompts": [
+      "./plugins/clarity-engineering/prompts"
+    ]
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-coding-agent": "*"
+  }
+}

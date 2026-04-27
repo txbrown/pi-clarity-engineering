@@ -1,0 +1,7 @@
+{
+  "name": "cl-engineering",
+  "version": "0.1.0",
+  "description": "Clarity Engineering skills and slash commands for Shape, Plan, Build, Review, and Compound.",
+  "commands": "./commands/",
+  "skills": "./skills/"
+}
