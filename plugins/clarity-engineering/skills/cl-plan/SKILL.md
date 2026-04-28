@@ -1,6 +1,6 @@
 ---
 name: cl-plan
-description: Plan shaped work using Plan = Slice + Specify: vertical slices plus acceptance details for the selected next slice.
+description: "Plan shaped work using Plan = Slice + Specify: vertical slices plus acceptance details for the selected next slice."
 ---
 
 # Clarity Plan
