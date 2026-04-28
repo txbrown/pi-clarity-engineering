@@ -31,6 +31,13 @@ Produce one or more shaped tickets. Minimum ticket shape:
 
 Add supporting artefacts only when useful: context summary, options, trade-offs, risks, assumptions, or glossary.
 
+Also include Shape progress status:
+
+- `Done` — shaped ticket fields completed and supporting artefacts produced.
+- `Left` — missing scope, outcome, acceptance, references, validation style, or stakeholder decisions.
+- `Blocked` — the single focused question needed to finish Shape, if any.
+- `Ready for Plan?` — yes/no, with the reason. Only say yes when the ticket is clear enough to slice.
+
 ## Human ownership
 
 The human owns scope and priority. If scope, priority, or desired outcome is materially ambiguous, ask one focused question before finalizing.

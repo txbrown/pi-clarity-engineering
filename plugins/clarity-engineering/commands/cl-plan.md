@@ -11,4 +11,6 @@ $ARGUMENTS
 
 Follow Clarity Engineering: `Shape → Plan → Build → Review → Compound`. Plan = Slice + Specify. Produce vertical slices and acceptance details for the selected next slice.
 
+Make operator progress explicit with `Done`, `Left`, `Blocked`, and readiness for the next stage.
+
 Ask one focused question when human judgement is needed.

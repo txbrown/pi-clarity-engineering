@@ -36,10 +36,30 @@ Route to the most useful mode:
 
 If routing is ambiguous and the choice materially changes the output, ask one focused routing question.
 
+## Operator guidance
+
+For any multi-step lifecycle work, guide the operator to completion instead of only producing the final artefact.
+
+At the start, show:
+
+- current stage and why it was selected;
+- stage checklist, including substeps such as `Plan = Slice + Specify`;
+- what evidence or decisions are needed to leave the stage.
+
+During or at the end, keep status visible:
+
+- `Done` — completed outputs or decisions;
+- `Left` — remaining work, checks, or open decisions;
+- `Blocked` — the single focused question or missing input, if any;
+- `Ready for next stage?` — yes/no, next stage name, and why.
+
+Do not create a heavy process gate for trivial work, but always make stage completion state explicit when using Clarity Engineering.
+
 ## Output
 
 - Chosen mode and why.
 - The mode-specific output, using the matching `cl-*` skill behavior.
+- Operator progress status: `Done`, `Left`, `Blocked`, and `Ready for next stage?`.
 - Any single next action or single focused question when human judgement is required.
 
 ## Rules

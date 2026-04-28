@@ -32,6 +32,13 @@ If codifying, include:
 - concrete update or draft text;
 - owner / next action when relevant.
 
+Also include Compound progress status:
+
+- `Done` — learning reviewed, decision made, and codification target or no-op rationale captured.
+- `Left` — missing learning context, target location, owner, draft text, or follow-up action.
+- `Blocked` — the single focused question needed to finish Compound, if any.
+- `Lifecycle complete?` — yes/no, with the reason.
+
 ## Rules
 
 - Compound is decision-based, not automatic documentation churn.

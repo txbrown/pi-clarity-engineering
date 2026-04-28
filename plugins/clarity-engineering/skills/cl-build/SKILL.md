@@ -23,6 +23,17 @@ Red → Green → Refactor
 - Acceptance details from Plan.
 - Relevant code paths, constraints, and validation commands.
 
+## Operator guidance
+
+Guide the operator through Build as a visible `Red → Green → Refactor` loop.
+
+Keep completion state explicit:
+
+- `Done` — failing test written, implementation completed, checks run, refactor performed while green.
+- `Left` — remaining test coverage, implementation tasks, refactors, docs, or validation commands.
+- `Blocked` — the single focused question or missing input needed to continue, if any.
+- `Ready for Review?` — yes/no, with the reason. Only say yes when acceptance behavior is implemented and validation evidence is available or clearly explained.
+
 ## Output
 
 - First failing behavior test or explanation if a test-first path is technically impossible.
@@ -30,6 +41,7 @@ Red → Green → Refactor
 - Checks run and results.
 - Refactor notes while green.
 - Files changed and any follow-up needed.
+- Build progress status: `Done`, `Left`, `Blocked`, and `Ready for Review?`.
 
 ## Rules
 

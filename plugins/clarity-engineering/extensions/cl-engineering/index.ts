@@ -10,6 +10,8 @@ type Mode = {
 
 const LIFECYCLE = "Shape → Plan → Build → Review → Compound";
 const PLAN = "Plan = Slice + Specify";
+const OPERATOR_PROGRESS =
+  "Make operator progress explicit with `Done`, `Left`, `Blocked`, and readiness for the next stage.";
 
 const modes: Mode[] = [
   {
@@ -87,6 +89,7 @@ function buildPrompt(mode: Mode, input: string): string {
     `Use the \`${mode.skill}\` skill to process this request.`,
     `Follow Clarity Engineering: ${LIFECYCLE}. ${PLAN}.`,
     mode.instruction,
+    OPERATOR_PROGRESS,
     "Ask one focused question when human judgement is needed.",
     "",
     "<input>",

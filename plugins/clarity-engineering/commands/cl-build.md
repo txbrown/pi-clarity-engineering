@@ -11,4 +11,6 @@ $ARGUMENTS
 
 Follow Clarity Engineering: `Shape → Plan → Build → Review → Compound`. Build TDD-first from acceptance details.
 
+Make operator progress explicit with `Done`, `Left`, `Blocked`, and readiness for the next stage.
+
 Ask one focused question when human judgement is needed.

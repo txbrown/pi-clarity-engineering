@@ -26,6 +26,17 @@ Review correctness against shaped intent first.
 5. Experience quality / delight.
 6. Docs, references, rollout, and risk.
 
+## Operator guidance
+
+Guide the operator through the review order visibly so they can see which checks are complete.
+
+Keep completion state explicit:
+
+- `Done` — review dimensions checked and evidence considered.
+- `Left` — unchecked dimensions, missing test results, unresolved risks, or follow-up fixes.
+- `Blocked` — the single focused question or missing evidence needed to finish Review, if any.
+- `Ready for Compound?` — yes/no, with the reason. Say yes when the review decision is clear and any required changes are either resolved or explicitly assigned.
+
 ## Output
 
 Decision: `approve`, `request-changes`, `blocked`, or `rescope`.
@@ -36,6 +47,7 @@ Then include, as needed:
 - evidence or file references;
 - suggested fixes;
 - risks and follow-up;
+- Review progress status: `Done`, `Left`, `Blocked`, and `Ready for Compound?`;
 - one focused question if human judgement blocks the decision.
 
 ## Rules
