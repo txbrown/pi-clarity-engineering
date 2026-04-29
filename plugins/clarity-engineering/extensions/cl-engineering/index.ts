@@ -69,7 +69,7 @@ const modes: Mode[] = [
     label: "Setup",
     description: "Configure the Clarity Engineering framework for this codebase",
     argumentHint: "[repo context, ticket system, tools, MCPs, validation, or review workflow]",
-    instruction: "Apply Clarity Engineering framework setup. Discover or draft the local Clarity Engineering setup/configuration for this codebase: where tickets live, where domain language and ADRs live, which validation/e2e tools and MCPs are available, how Review publishes work, and which decisions require human approval. Setup is framework configuration, not a delivery lifecycle stage or lifecycle mode. Keep it lightweight, adaptable, and grounded in existing repo conventions.",
+    instruction: "Apply Clarity Engineering framework setup. Discover or draft the local Clarity Engineering setup/configuration for this codebase: where tickets live, where domain language and ADRs live, which validation/e2e tools and MCPs are available, how Review publishes work, where local/global memory lives, what context budget policy applies, and which decisions require human approval. Setup is framework configuration, not a delivery lifecycle stage or lifecycle mode. Keep it lightweight, adaptable, and grounded in existing repo conventions.",
   },
   {
     command: "cl-shape",

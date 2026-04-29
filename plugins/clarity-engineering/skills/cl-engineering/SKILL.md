@@ -81,7 +81,9 @@ Most stages may loop internally when refinement is needed: do the stage work, ch
 
 When Review begins, the default posture is to make completed work reviewable: inspect git status, commit intended changes, push the branch, and raise or update a PR when the repository workflow supports PRs. When preparing a PR, discover and follow the repository-local PR template if one exists (for example conventional `.github` template locations). Do not use or mention machine-specific absolute template paths in portable framework output.
 
-When local workflow assumptions are unclear, prefer framework setup before pretending Clarity Engineering knows the codebase. Setup should discover or draft the smallest useful repo-local configuration for work tracking, domain/decision docs, validation/e2e tools, MCP/tool safety, review/publishing workflow, and human decision rights.
+When local workflow assumptions are unclear, prefer framework setup before pretending Clarity Engineering knows the codebase. Setup should discover or draft the smallest useful repo-local configuration for work tracking, domain/decision docs, validation/e2e tools, MCP/tool safety, review/publishing workflow, local/global memory, context budget policy, and human decision rights.
+
+Memory should be treated as indexed retrieval, not a context dump. Load current ticket/slice and relevant repo memory before global memory. Do not bulk-load ADRs, solution archives, or global memory unless explicitly justified by the stage.
 
 ## Output
 
@@ -98,5 +100,6 @@ When local workflow assumptions are unclear, prefer framework setup before prete
 - Treat stage-transition approval as human judgement; ask it explicitly before continuing.
 - Keep implementation freedom while clarifying expected behavior.
 - Use `skills/cl-engineering/references/framework-summary.md` as the portable framework reference when needed.
-- Use Setup to configure the Clarity Engineering framework for the current codebase; do not hardcode one issue tracker, MCP set, e2e tool, or PR workflow as universal.
+- Use Setup to configure the Clarity Engineering framework for the current codebase; do not hardcode one issue tracker, MCP set, e2e tool, PR workflow, or memory location as universal.
+- Respect context budgets: prefer narrow retrieval and summaries over dumping memory into the stage context.
 

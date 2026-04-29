@@ -20,6 +20,9 @@ The setup should answer:
 - which validation, build, e2e, manual QA, and app-running paths prove behavior;
 - which tools or MCPs are available, what they are for, and which operations require approval;
 - how Review publishes work through commits, branches, PRs, CI, release checks, and evidence;
+- where local repo memory and global memory live;
+- what memory should not be bulk-loaded;
+- what context budget expectations apply by stage;
 - which decisions require human judgement.
 
 ## Inputs
@@ -40,7 +43,8 @@ Look for:
 - decisions: `docs/adr/`, RFCs, decision logs;
 - validation: package scripts, Makefiles, CI workflows, test/e2e config, app launch scripts;
 - review/publish flow: git remotes, default branch, PR templates, branch/commit conventions;
-- tools/MCPs: available MCP names, CLI tools, browser/e2e tooling, observability or design integrations.
+- tools/MCPs: available MCP names, CLI tools, browser/e2e tooling, observability or design integrations;
+- memory: `CONTEXT.md`, `docs/agents/`, `docs/adr/`, `docs/solutions/`, `docs/clarity/learnings/`, global memory pointers.
 
 ## Setup sections
 
@@ -119,7 +123,21 @@ Review remains:
 Review = Publish + Validation + Understanding + Decision
 ```
 
-### 6. Human decision rights
+### 6. Memory and context policy
+
+Document local/global memory and retrieval discipline:
+
+- local repo memory locations;
+- global memory location, if available;
+- load order for ticket, repo memory, global memory, and framework memory;
+- files/directories that should not be bulk-loaded;
+- default stage context budget, usually under ~100k tokens where possible;
+- Build context budget, preferably under ~50k tokens;
+- stale/conflicting memory policy.
+
+Rule of thumb: local repo memory is authoritative for codebase-specific facts. Global memory is supplementary for cross-repo preferences, reusable patterns, and framework learning. Current ticket/slice intent overrides both.
+
+### 7. Human decision rights
 
 Document what cannot be assumed by the agent:
 
@@ -137,7 +155,7 @@ When setup is incomplete, ask one focused question at a time. Do not ask questio
 Keep setup progress explicit:
 
 - `Done` — discovered context and written/updated setup sections.
-- `Left` — missing work tracking, domain docs, validation, MCP/tool, review, or decision-rights context.
+- `Left` — missing work tracking, domain docs, validation, MCP/tool, review, memory/context policy, or decision-rights context.
 - `Blocked` — the single focused question needed to finish setup.
 - `Ready for use?` — yes/no, with what parts of Clarity Engineering are now better supported.
 
@@ -148,6 +166,7 @@ Keep setup progress explicit:
 - Missing context or recommended follow-up.
 - Tool/MCP safety notes.
 - Validation commands and review evidence expectations.
+- Memory locations, load order, and context budget expectations.
 - Whether the setup is ready for Shape/Plan/Build/Review/Compound usage.
 
 ## Rules

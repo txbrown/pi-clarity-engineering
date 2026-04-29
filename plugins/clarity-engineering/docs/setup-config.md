@@ -8,7 +8,7 @@ Setup is not a new lifecycle stage or lifecycle mode. It is **Clarity Engineerin
 Shape → Plan → Build → Review → Compound
 ```
 
-and the codebase's real ticket system, domain language, validation tools, MCPs, e2e flows, review process, and human decision rights.
+and the codebase's real ticket system, domain language, validation tools, MCPs, e2e flows, review process, memory locations, context budgets, and human decision rights.
 
 ## Recommended artifact
 
@@ -79,6 +79,16 @@ Use whatever names match the repo. Findability matters more than exact paths.
 - Manual QA:
 - Release/rollout:
 
+## Memory and context policy
+
+- Local repo memory:
+- Global memory:
+- Load order:
+- Do not bulk-load:
+- Default context budget:
+- Build context budget:
+- Stale/conflicting memory policy:
+
 ## Human decision rights
 
 - Lifecycle approvals:
@@ -96,7 +106,8 @@ Use whatever names match the repo. Findability matters more than exact paths.
 - Keep setup lightweight; do not create configuration theatre.
 - Treat write-capable MCPs/tools carefully.
 - Update setup during Compound when repeated friction appears.
+- Treat memory as indexed retrieval, not a context dump.
 
 ## Command
 
-Use `/cl-setup` to discover or draft the Clarity Engineering framework setup for a repo.
+Use `/cl-setup` to discover or draft the Clarity Engineering framework setup for a repo. See `docs/memory-model.md` for the local/global memory and context budget policy.

@@ -28,9 +28,20 @@ Always include a compounding decision:
 If codifying, include:
 
 - learning summary;
-- where it should live: note, checklist, prompt, skill, doc, ADR, test helper, or follow-up ticket;
+- where it should live: repo memory, global memory, framework memory, note, checklist, prompt, skill, doc, ADR, test helper, setup/config update, or follow-up ticket;
 - concrete update or draft text;
 - owner / next action when relevant.
+
+Use the memory destination rule:
+
+- codebase-specific facts/fixes → repo memory, such as `docs/solutions/` or `docs/clarity/learnings/`;
+- domain terms → repo `CONTEXT.md` or glossary;
+- architecture decisions → repo `docs/adr/`;
+- agent/tool/review workflow → repo `docs/agents/clarity-engineering.md` or split setup docs;
+- cross-repo preferences/patterns → global memory;
+- framework principles/workflows → framework vault and, when useful, plugin update.
+
+Search before writing. Do not bulk-load or duplicate local/global memory; retrieve related entries narrowly and update/consolidate when appropriate.
 
 Also include Compound progress status:
 
@@ -44,5 +55,6 @@ Also include Compound progress status:
 - Compound is decision-based, not automatic documentation churn.
 - Prefer small reusable updates over large process documents.
 - Do not codify private or one-off context unless it changes future behavior.
+- Treat memory as indexed retrieval, not a context dump; preserve context budget by reading only relevant memory entries.
 - Ask one focused question if the reuse value or target location is unclear.
 

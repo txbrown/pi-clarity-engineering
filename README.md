@@ -41,6 +41,7 @@ In Pi, the preferred approval mechanism is the TUI `ask_user` tool when availabl
 - `plugins/clarity-engineering/prompts/` — Codex/Pi-compatible prompt templates.
 - `plugins/clarity-engineering/examples/` — generic ticket examples for all five ticket types.
 - `plugins/clarity-engineering/docs/setup-config.md` — portable guidance for per-codebase Clarity Engineering setup/configuration.
+- `plugins/clarity-engineering/docs/memory-model.md` — local/global memory hierarchy, retrieval policy, context budgets, and learning destinations.
 - `scripts/install.sh` — local install helper.
 - `scripts/validate.sh` — manifest/frontmatter/lifecycle/Pi-extension validation.
 
@@ -49,7 +50,7 @@ In Pi, the preferred approval mechanism is the TUI `ask_user` tool when availabl
 | Mode | Purpose |
 | --- | --- |
 | `cl-engineering` | Route delivery work to Shape, Plan, Build, Review, or Compound; route framework-setup requests to `cl-setup`. |
-| `cl-setup` | Configure the Clarity Engineering framework for a codebase: tickets, domain docs, ADRs, validation/e2e tools, MCPs, review workflow, and human decision rights. |
+| `cl-setup` | Configure the Clarity Engineering framework for a codebase: tickets, domain docs, ADRs, validation/e2e tools, MCPs, review workflow, local/global memory, context budgets, and human decision rights. |
 | `cl-shape` | Shape fuzzy ideas into tickets and supporting artefacts. |
 | `cl-plan` | Plan shaped work. Plan = Slice + Specify. |
 | `cl-build` | Build already-shaped work TDD-first from a selected slice, complete small ticket, bug, technical improvement, prior plan, draft PR, or existing branch. |
@@ -189,7 +190,8 @@ Validation checks JSON manifests, package Pi manifest, Pi extension command regi
 - Treat Review as a flexible validation stage: Review = Publish + Validation + Understanding + Decision. On Review entry, normally make completed work reviewable by committing intended changes, pushing the branch, and raising/updating a PR when the repository workflow supports PRs. Then check shaped intent and choose proportional AI/human review, tests, builds, PR/code-diff review, manual QA, release checks, and evidence gathering. Review may reveal refinement loops back to Build, Plan, or Shape.
 - When preparing PR text during Review, discover and follow the repository-local PR template if one exists; never hardcode machine-specific template paths in framework instructions.
 - Keep skills portable and short enough for use by multiple tools.
-- Setup may document available MCPs/tools but should not require one universal toolchain.
+- Setup may document available MCPs/tools and memory locations but should not require one universal toolchain or memory backend.
+- Treat memory as indexed retrieval, not a context dump; preserve stage context budget.
 - Ask one focused question when human judgement is needed.
 - Require explicit operator approval before crossing lifecycle boundaries; use Pi's TUI `ask_user` tool when available.
 - Run `./scripts/validate.sh` after edits.

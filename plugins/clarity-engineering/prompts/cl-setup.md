@@ -10,6 +10,9 @@ Apply Clarity Engineering framework setup to this codebase. Discover or draft th
 - which validation, build, e2e, manual QA, and app-running paths prove behavior;
 - which MCPs/tools are available, what they are for, and what requires approval;
 - how Review publishes work through commits, branches, PRs, CI, release checks, and evidence;
+- where local repo memory and global memory live;
+- what memory should not be bulk-loaded;
+- what context budget expectations apply by stage;
 - which decisions require human judgement.
 
 Keep the setup lightweight. Prefer existing repo conventions. Ask one focused question only when the answer cannot be discovered from the repo or supplied context.

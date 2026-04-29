@@ -14,7 +14,7 @@ Plan contains two substeps:
 Plan = Slice + Specify
 ```
 
-Setup is available as **Clarity Engineering framework setup/configuration for a codebase**, not as a delivery lifecycle stage or lifecycle mode. It records where tickets live, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how Review publishes work, and which decisions require human approval.
+Setup is available as **Clarity Engineering framework setup/configuration for a codebase**, not as a delivery lifecycle stage or lifecycle mode. It records where tickets live, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how Review publishes work, where local/global memory lives, what context budget policy applies, and which decisions require human approval.
 
 ## Operator approval gates
 
@@ -67,7 +67,7 @@ Then run `/reload` in Pi or restart Pi. When installing everything with `./scrip
 ## Skills
 
 - `cl-engineering` — route delivery work to the right lifecycle mode, or route framework-setup requests to `cl-setup`.
-- `cl-setup` — configure the Clarity Engineering framework for a codebase: tickets, domain docs, ADRs, validation/e2e tools, MCPs, review workflow, and human decision rights.
+- `cl-setup` — configure the Clarity Engineering framework for a codebase: tickets, domain docs, ADRs, validation/e2e tools, MCPs, review workflow, local/global memory, context budgets, and human decision rights.
 - `cl-shape` — shape ideas into tickets and supporting artefacts.
 - `cl-plan` — create vertical slices and specify the next selected slice.
 - `cl-build` — build already-shaped work TDD-first from a selected slice, complete small ticket, bug, technical improvement, prior plan, draft PR, or existing branch.
