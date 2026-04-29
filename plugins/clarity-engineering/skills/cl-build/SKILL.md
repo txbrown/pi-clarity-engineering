@@ -1,15 +1,17 @@
 ---
 name: cl-build
-description: Build a selected Clarity Engineering slice TDD-first from acceptance details.
+description: Build already-shaped work TDD-first from a selected slice, clear ticket, bug, technical improvement, or draft PR refinement target.
 ---
 
 # Clarity Build
 
-Use this skill when a slice is ready to implement.
+Use this skill when work is clear enough to implement.
+
+Build is not limited to one slice from a larger story. Build means **execute already-shaped work with the Clarity Engineering ethos**: preserve intent, keep scope tight, prove behavior, and maintain fast feedback.
 
 ## Goal
 
-Implement behavior, prove it with tests, improve design safely, and keep feedback tight.
+Implement the next clearly scoped unit of work, prove it with tests or appropriate validation, improve design safely, and keep feedback tight.
 
 Default discipline:
 
@@ -19,24 +21,42 @@ Red → Green → Refactor
 
 ## Inputs
 
-- Selected slice.
-- Acceptance details from Plan.
-- Relevant code paths, constraints, and validation commands.
+Build can start from any well-known position with enough clarity to act:
+
+- A selected slice from Plan.
+- A complete small ticket that is already scoped enough to finish safely.
+- A shaped Product Feature, Technical Improvement, Bug, Spike follow-up, or Chore/Maintenance ticket.
+- A prior Shape/Plan artefact from another session.
+- A draft PR or partially implemented branch that needs continued implementation or review-feedback fixes.
+- Acceptance details, expected/actual behavior, target state, relevant code paths, constraints, and validation commands.
+
+## Entry triage
+
+At Build entry, decide the smallest useful work unit:
+
+- If the input is clear and small enough, build the whole ticket.
+- If the input contains multiple independent units, select the next smallest coherent unit and build that first.
+- If the input is a draft PR or existing branch, inspect current state, identify what is already done, then choose the next missing/failing/refinement unit.
+- If acceptance behavior or target state is unclear enough that implementation would drift, ask one focused question or route back to Shape/Plan with the reason.
+
+Do not force an artificial slice when the ticket is already small and well-defined. Do not skip slicing when the ticket is too broad to build safely in one pass.
 
 ## Operator guidance
 
-Guide the operator through Build as a visible `Red → Green → Refactor` loop.
+Guide the operator through Build as a visible `Red → Green → Refactor` loop, adapted to the work type.
 
 Keep completion state explicit:
 
-- `Done` — failing test written, implementation completed, checks run, refactor performed while green.
-- `Left` — remaining test coverage, implementation tasks, refactors, docs, or validation commands.
+- `Done` — scoped work unit selected, failing test or validation target established, implementation completed, checks run, refactor performed while green where applicable.
+- `Left` — remaining units in the ticket/PR, test coverage, implementation tasks, refactors, docs, validation commands, or review-feedback items.
 - `Blocked` — the single focused question or missing input needed to continue, if any.
-- `Ready for Review?` — yes/no, with the reason. Only say yes when acceptance behavior is implemented and validation evidence is available or clearly explained. If yes, ask the operator for explicit approval before moving to Review; in Pi use the TUI `ask_user` tool when available.
+- `Ready for Review?` — yes/no, with the reason. Only say yes when the selected work unit or whole ticket is implemented and validation evidence is available or clearly explained. If yes, ask the operator for explicit approval before moving to Review; in Pi use the TUI `ask_user` tool when available.
 
 ## Output
 
-- First failing behavior test or explanation if a test-first path is technically impossible.
+- Build entry classification: selected slice, whole small ticket, bug fix, technical improvement, draft PR continuation, or other clear work unit.
+- Current work unit and why it is the right scope.
+- First failing behavior test, characterization test, validation target, or explanation if a test-first path is technically impossible.
 - Smallest useful implementation.
 - Checks run and results.
 - Refactor notes while green.
@@ -46,12 +66,11 @@ Keep completion state explicit:
 ## Rules
 
 - Do not advance to the next lifecycle stage without explicit operator approval.
-
-- Translate acceptance details into the first failing behavior test.
+- Build from known context when it is sufficient; do not require re-running Shape or Plan just because they happened elsewhere.
+- Translate acceptance details, expected behavior, bug reproduction, target state, or review feedback into the first failing behavior test or validation target.
 - Test public behavior, not private implementation.
-- Implement the smallest useful behavior.
+- Implement the smallest useful behavior for the selected work unit.
 - Run checks continuously.
-- Preserve feature boundaries.
+- Preserve feature boundaries and shaped intent.
 - Update docs/references where needed.
 - If acceptance behavior is ambiguous, ask one focused question before coding.
-

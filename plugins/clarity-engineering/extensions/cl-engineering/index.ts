@@ -83,9 +83,9 @@ const modes: Mode[] = [
     skill: "cl-build",
     stage: "build",
     label: "Build",
-    description: "Build a slice TDD-first",
-    argumentHint: "[slice, acceptance details, or task]",
-    instruction: "Apply Build mode. Translate acceptance details into the first failing behavior test, implement the smallest useful behavior, run checks, and refactor while green.",
+    description: "Build already-shaped work TDD-first",
+    argumentHint: "[slice, ticket, bug, draft PR, acceptance details, or task]",
+    instruction: "Apply Build mode. Build already-shaped work TDD-first from any well-known position with enough clarity: selected slice, complete small ticket, bug, technical improvement, prior Shape/Plan artefact, draft PR, or existing branch. First classify the Build entry and choose the smallest useful work unit. Translate acceptance details, expected behavior, target state, or review feedback into the first failing behavior test or validation target, implement the smallest useful behavior, run checks, and refactor while green.",
   },
   {
     command: "cl-review",

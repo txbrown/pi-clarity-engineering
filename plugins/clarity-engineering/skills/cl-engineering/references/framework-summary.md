@@ -48,7 +48,7 @@ Important semantics:
 
 - Stage transitions require explicit operator approval before advancing: Shape → Plan, Plan Slice → Plan Specify, Plan → Build, Build → Review, and Review → Compound.
 - In Pi, request transition approval through the TUI `ask_user` tool when available; otherwise ask an explicit yes/no question and stop.
-- Build is TDD-first.
+- Build is TDD-first and can start from any well-known position with enough clarity: a selected slice, a complete small ticket, a shaped bug/technical-improvement/chore, a prior Shape/Plan artefact from another session, or a draft PR/branch needing continued implementation or review-feedback fixes. Build selects the smallest useful work unit; it does not force artificial slicing for small clear tickets, and it does not skip slicing when work is too broad.
 - Review is a flexible validation stage: Review = Publish + Validation + Understanding + Decision. On Review entry, normally commit completed work, push the branch, and raise or update a PR so the work is reviewable. Then check built work against shaped intent first and choose the smallest useful mix of AI review, human review, automated/manual testing, builds, PR/code-diff review, release checks, and evidence gathering. If preparing PR text, discover and follow the repository-local PR template when one exists; never hardcode machine-specific template paths. Review may trigger refinement loops back to Build, Plan, or Shape when issues are found.
 - Compound is decision-based: codify useful learning, or record that there is no reusable learning.
 - Clarity Checks are lightweight lifecycle questions; transition approval is the one mandatory gate because it protects human intent from silent drift.

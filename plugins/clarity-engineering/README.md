@@ -66,7 +66,7 @@ Then run `/reload` in Pi or restart Pi. When installing everything with `./scrip
 - `cl-engineering` — route a request to the right lifecycle mode.
 - `cl-shape` — shape ideas into tickets and supporting artefacts.
 - `cl-plan` — create vertical slices and specify the next selected slice.
-- `cl-build` — translate acceptance details into tests and build TDD-first.
+- `cl-build` — build already-shaped work TDD-first from a selected slice, complete small ticket, bug, technical improvement, prior plan, draft PR, or existing branch.
 - `cl-review` — publish completed work for review, then validate it against shaped intent with the right mix of AI/human review, tests, builds, PR/code-diff review, manual QA, risk checks, and repository PR-template-aware review notes.
 - `cl-compound` — decide whether reusable learning should be codified.
 

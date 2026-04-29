@@ -48,7 +48,7 @@ In Pi, the preferred approval mechanism is the TUI `ask_user` tool when availabl
 | `cl-engineering` | Route work to Shape, Plan, Build, Review, or Compound. |
 | `cl-shape` | Shape fuzzy ideas into tickets and supporting artefacts. |
 | `cl-plan` | Plan shaped work. Plan = Slice + Specify. |
-| `cl-build` | Build TDD-first from acceptance details. |
+| `cl-build` | Build already-shaped work TDD-first from a selected slice, complete small ticket, bug, technical improvement, prior plan, draft PR, or existing branch. |
 | `cl-review` | Publish completed work for review, then validate it against shaped intent with the right mix of AI/human review, tests, builds, PR/code-diff review, manual QA, and risk checks. |
 | `cl-compound` | Decide whether learning should be codified. |
 
