@@ -44,10 +44,12 @@ Ticket types:
 
 Important semantics:
 
+- Stage transitions require explicit operator approval before advancing: Shape → Plan, Plan Slice → Plan Specify, Plan → Build, Build → Review, and Review → Compound.
+- In Pi, request transition approval through the TUI `ask_user` tool when available; otherwise ask an explicit yes/no question and stop.
 - Build is TDD-first.
 - Review checks correctness against shaped intent first.
 - Compound is decision-based: codify useful learning, or record that there is no reusable learning.
-- Clarity Checks are lightweight lifecycle questions, not mandatory gates.
+- Clarity Checks are lightweight lifecycle questions; transition approval is the one mandatory gate because it protects human intent from silent drift.
 
 Optional local source of truth on Ricardo's machine:
 

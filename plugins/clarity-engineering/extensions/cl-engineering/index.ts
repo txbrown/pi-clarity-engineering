@@ -11,7 +11,9 @@ type Mode = {
 const LIFECYCLE = "Shape → Plan → Build → Review → Compound";
 const PLAN = "Plan = Slice + Specify";
 const OPERATOR_PROGRESS =
-  "Make operator progress explicit with `Done`, `Left`, `Blocked`, and readiness for the next stage.";
+  "Make operator progress explicit with `Done`, `Left`, `Blocked`, readiness for the next stage, and approval state.";
+const APPROVAL_GATE =
+  "Do not advance to another lifecycle stage without explicit operator approval. In Pi, use the TUI `ask_user` tool when available; otherwise ask an explicit yes/no question and stop.";
 
 const modes: Mode[] = [
   {
@@ -90,6 +92,7 @@ function buildPrompt(mode: Mode, input: string): string {
     `Follow Clarity Engineering: ${LIFECYCLE}. ${PLAN}.`,
     mode.instruction,
     OPERATOR_PROGRESS,
+    APPROVAL_GATE,
     "Ask one focused question when human judgement is needed.",
     "",
     "<input>",

@@ -56,13 +56,14 @@ Keep completion state explicit:
 - `Done` — slices created, recommended slice selected, acceptance details captured.
 - `Left` — missing acceptance examples, edge cases, outcomes, non-goals, dependencies, or validation notes.
 - `Blocked` — the single focused question needed to finish Plan, if any.
-- `Ready for Build?` — yes/no, with the reason. Only say yes when the next slice has enough acceptance detail for Build to write the first failing behavior test.
+- `Ready for Specify?` after Slice — yes/no, with the reason. Ask the operator to approve the ordered slice breakdown and selected next slice before writing Specify details; in Pi use the TUI `ask_user` tool when available.
+- `Ready for Build?` — yes/no, with the reason. Only say yes when the next slice has enough acceptance detail for Build to write the first failing behavior test. If yes, ask the operator for explicit approval before moving to Build.
 
 ## Output
 
 - Ordered vertical ticket breakdown.
 - Recommended next slice.
 - Acceptance details for the recommended or user-selected next slice.
-- Plan progress status: `Done`, `Left`, `Blocked`, and `Ready for Build?`.
+- Plan progress status: `Done`, `Left`, `Blocked`, `Ready for Specify?`, `Ready for Build?`, and approval state.
 - One focused question if the selected next slice or acceptance behavior is materially ambiguous.
 

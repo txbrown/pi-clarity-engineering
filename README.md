@@ -16,6 +16,20 @@ Plan = Slice + Specify
 
 This first pass is intentionally minimal but now includes a **real Pi agent package/extension**: skills, Claude Code command wrappers, Codex/Pi prompt files, Pi extension slash commands, install scripts, validation, docs, and examples. It does not include subagents, MCP servers, hooks, Jira/Linear automation, or full converter infrastructure.
 
+## Operator approval gates
+
+Clarity Engineering protects human intent by requiring explicit operator approval before crossing lifecycle boundaries. Agents should summarize the completed stage, highlight important changed wording/assumptions/scope/title/intent, and ask whether the operator is ready for the next named stage.
+
+Required approval points:
+
+- Shape → Plan
+- Plan `Slice` → Plan `Specify`
+- Plan → Build
+- Build → Review
+- Review → Compound
+
+In Pi, the preferred approval mechanism is the TUI `ask_user` tool when available. In Claude/Codex or other portable contexts, the agent must ask an explicit yes/no question and stop until the operator answers. Compound completes the lifecycle and should not silently start a new follow-up lifecycle.
+
 ## Contents
 
 - `package.json` — Pi package manifest with `pi.extensions`, `pi.skills`, and `pi.prompts` entries.
@@ -166,4 +180,5 @@ Validation checks JSON manifests, package Pi manifest, Pi extension command regi
 - Keep Pi extension commands thin wrappers that send skill-oriented prompts.
 - Keep skills portable and short enough for use by multiple tools.
 - Ask one focused question when human judgement is needed.
+- Require explicit operator approval before crossing lifecycle boundaries; use Pi's TUI `ask_user` tool when available.
 - Run `./scripts/validate.sh` after edits.

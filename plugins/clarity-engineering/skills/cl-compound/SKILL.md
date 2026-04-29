@@ -37,7 +37,7 @@ Also include Compound progress status:
 - `Done` — learning reviewed, decision made, and codification target or no-op rationale captured.
 - `Left` — missing learning context, target location, owner, draft text, or follow-up action.
 - `Blocked` — the single focused question needed to finish Compound, if any.
-- `Lifecycle complete?` — yes/no, with the reason.
+- `Lifecycle complete?` — yes/no, with the reason. Compound does not advance to another lifecycle stage, but call out any optional follow-up rather than silently starting new work.
 
 ## Rules
 

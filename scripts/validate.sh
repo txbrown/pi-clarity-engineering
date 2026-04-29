@@ -25,6 +25,8 @@ old_patterns = [
 ]
 new = 'Shape → Plan → Build → Review → Compound'
 plan = 'Plan = Slice + Specify'
+approval = 'explicit operator approval'
+ask_user = 'ask_user'
 all_text = ''
 
 for p in root.rglob('*'):
@@ -42,6 +44,10 @@ if new not in all_text:
     raise SystemExit('new lifecycle wording missing')
 if plan not in all_text:
     raise SystemExit('Plan = Slice + Specify missing')
+if approval not in all_text:
+    raise SystemExit('operator approval gate wording missing')
+if ask_user not in all_text:
+    raise SystemExit('Pi TUI ask_user approval wording missing')
 
 def frontmatter(path):
     text = path.read_text()

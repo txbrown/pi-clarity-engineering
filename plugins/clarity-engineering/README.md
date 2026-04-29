@@ -14,6 +14,18 @@ Plan contains two substeps:
 Plan = Slice + Specify
 ```
 
+## Operator approval gates
+
+Agents must not silently advance to the next lifecycle stage. At each transition, summarize what changed and ask for explicit operator approval before continuing:
+
+- Shape → Plan
+- Plan `Slice` → Plan `Specify`
+- Plan → Build
+- Build → Review
+- Review → Compound
+
+In Pi, use the TUI `ask_user` tool when available. In other agents, ask an explicit yes/no question and stop until the operator approves or redirects.
+
 ## Pi agent extension
 
 Pi support is a first-class extension/package, not just copied skills.
@@ -58,7 +70,7 @@ Then run `/reload` in Pi or restart Pi.
 - `cl-review` — review correctness against shaped intent first.
 - `cl-compound` — decide whether reusable learning should be codified.
 
-Pi also exposes skills as `/skill:name` commands when Pi skill commands are enabled.
+Pi also exposes skills as `/skill:name` commands when Pi skill commands are enabled. Regardless of entrypoint, stage transitions require operator approval before the agent continues.
 
 ## Claude Code slash commands
 

@@ -31,18 +31,20 @@ Produce one or more shaped tickets. Minimum ticket shape:
 
 Add supporting artefacts only when useful: context summary, options, trade-offs, risks, assumptions, or glossary.
 
-Also include Shape progress status:
+Also include Shape progress status and approval state:
 
 - `Done` — shaped ticket fields completed and supporting artefacts produced.
 - `Left` — missing scope, outcome, acceptance, references, validation style, or stakeholder decisions.
 - `Blocked` — the single focused question needed to finish Shape, if any.
-- `Ready for Plan?` — yes/no, with the reason. Only say yes when the ticket is clear enough to slice.
+- `Ready for Plan?` — yes/no, with the reason. Only say yes when the ticket is clear enough to slice. If yes, ask the operator for explicit approval before moving to Plan; in Pi use the TUI `ask_user` tool when available.
 
 ## Human ownership
 
 The human owns scope and priority. If scope, priority, or desired outcome is materially ambiguous, ask one focused question before finalizing.
 
 ## Rules
+
+- Do not advance to the next lifecycle stage without explicit operator approval.
 
 - Ticket is mandatory for deliverable work.
 - Quality comes from unambiguous shaped features, captured as executable agreements.

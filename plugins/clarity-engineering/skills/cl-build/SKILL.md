@@ -32,7 +32,7 @@ Keep completion state explicit:
 - `Done` — failing test written, implementation completed, checks run, refactor performed while green.
 - `Left` — remaining test coverage, implementation tasks, refactors, docs, or validation commands.
 - `Blocked` — the single focused question or missing input needed to continue, if any.
-- `Ready for Review?` — yes/no, with the reason. Only say yes when acceptance behavior is implemented and validation evidence is available or clearly explained.
+- `Ready for Review?` — yes/no, with the reason. Only say yes when acceptance behavior is implemented and validation evidence is available or clearly explained. If yes, ask the operator for explicit approval before moving to Review; in Pi use the TUI `ask_user` tool when available.
 
 ## Output
 
@@ -41,9 +41,11 @@ Keep completion state explicit:
 - Checks run and results.
 - Refactor notes while green.
 - Files changed and any follow-up needed.
-- Build progress status: `Done`, `Left`, `Blocked`, and `Ready for Review?`.
+- Build progress status: `Done`, `Left`, `Blocked`, `Ready for Review?`, and approval state.
 
 ## Rules
+
+- Do not advance to the next lifecycle stage without explicit operator approval.
 
 - Translate acceptance details into the first failing behavior test.
 - Test public behavior, not private implementation.

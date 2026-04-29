@@ -11,6 +11,8 @@ First create an ordered vertical ticket breakdown. Then clarify acceptance detai
 
 Include Plan progress status with `Done`, `Left`, `Blocked`, and `Ready for Build?` so the operator knows whether Plan is complete.
 
+Ask for explicit operator approval before moving from Slice to Specify, and again before moving from Plan to Build; in Pi use the TUI `ask_user` tool when available.
+
 Input:
 
 $ARGUMENTS

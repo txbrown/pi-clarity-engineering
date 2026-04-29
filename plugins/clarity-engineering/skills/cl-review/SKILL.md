@@ -35,7 +35,7 @@ Keep completion state explicit:
 - `Done` — review dimensions checked and evidence considered.
 - `Left` — unchecked dimensions, missing test results, unresolved risks, or follow-up fixes.
 - `Blocked` — the single focused question or missing evidence needed to finish Review, if any.
-- `Ready for Compound?` — yes/no, with the reason. Say yes when the review decision is clear and any required changes are either resolved or explicitly assigned.
+- `Ready for Compound?` — yes/no, with the reason. Say yes when the review decision is clear and any required changes are either resolved or explicitly assigned. If yes, ask the operator for explicit approval before moving to Compound; in Pi use the TUI `ask_user` tool when available.
 
 ## Output
 
@@ -47,10 +47,12 @@ Then include, as needed:
 - evidence or file references;
 - suggested fixes;
 - risks and follow-up;
-- Review progress status: `Done`, `Left`, `Blocked`, and `Ready for Compound?`;
+- Review progress status: `Done`, `Left`, `Blocked`, `Ready for Compound?`, and approval state;
 - one focused question if human judgement blocks the decision.
 
 ## Rules
+
+- Do not advance to the next lifecycle stage without explicit operator approval.
 
 - Do not start with style nits when intent correctness is unresolved.
 - Prefer actionable findings tied to acceptance details.

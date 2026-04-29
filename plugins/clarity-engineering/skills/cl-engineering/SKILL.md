@@ -36,6 +36,27 @@ Route to the most useful mode:
 
 If routing is ambiguous and the choice materially changes the output, ask one focused routing question.
 
+## Operator approval gates
+
+For any multi-step lifecycle work, do not advance to the next stage without explicit operator approval. This is a mandatory human-in-the-loop clarity check, not a suggestion.
+
+At the moment a stage appears complete:
+
+1. Summarize the stage output and any important changed wording, assumptions, scope, title, or intent.
+2. Ask whether the operator is ready to move to the named next stage.
+3. In Pi, use the TUI `ask_user` tool when available. In other agents, ask an explicit yes/no question and stop.
+4. Continue only after an affirmative answer. If the answer is no, revise the current stage or stop as requested.
+
+Required approval transitions:
+
+- Shape → Plan
+- Plan `Slice` → Plan `Specify`
+- Plan → Build
+- Build → Review
+- Review → Compound
+
+Compound completes the lifecycle and does not advance further.
+
 ## Operator guidance
 
 For any multi-step lifecycle work, guide the operator to completion instead of only producing the final artefact.
@@ -51,15 +72,15 @@ During or at the end, keep status visible:
 - `Done` — completed outputs or decisions;
 - `Left` — remaining work, checks, or open decisions;
 - `Blocked` — the single focused question or missing input, if any;
-- `Ready for next stage?` — yes/no, next stage name, and why.
+- `Ready for next stage?` — yes/no, next stage name, why, and whether operator approval has been requested/received.
 
-Do not create a heavy process gate for trivial work, but always make stage completion state explicit when using Clarity Engineering.
+Do not create a heavy process gate for trivial single-stage work, but never silently cross a lifecycle boundary when using Clarity Engineering.
 
 ## Output
 
 - Chosen mode and why.
 - The mode-specific output, using the matching `cl-*` skill behavior.
-- Operator progress status: `Done`, `Left`, `Blocked`, and `Ready for next stage?`.
+- Operator progress status: `Done`, `Left`, `Blocked`, `Ready for next stage?`, and approval state.
 - Any single next action or single focused question when human judgement is required.
 
 ## Rules
@@ -67,6 +88,7 @@ Do not create a heavy process gate for trivial work, but always make stage compl
 - Ticket is mandatory for deliverable work.
 - Do not add ceremony for trivial work.
 - Ask one focused question at a time.
+- Treat stage-transition approval as human judgement; ask it explicitly before continuing.
 - Keep implementation freedom while clarifying expected behavior.
 - Use `skills/cl-engineering/references/framework-summary.md` as the portable framework reference when needed.
 

@@ -10,6 +10,8 @@ When editing this plugin:
 - Keep root `package.json` Pi manifest entries (`pi.extensions`, `pi.skills`, `pi.prompts`) in sync with package files.
 - Do not add subagents, MCP servers, hooks, converter infrastructure, or ticketing automation in v0.1.
 - Ask one focused question when human judgement is needed.
+- Do not let skills/prompts advance from Shape → Plan → Build → Review → Compound without explicit operator approval at the transition moment.
+- For Pi-specific behavior, prefer the TUI `ask_user` tool for transition approval when available; for portable prompts, require an explicit yes/no question and stop.
 - Run `./scripts/validate.sh` after edits.
 - Do not introduce company-private examples or absolute runtime dependencies.
 
