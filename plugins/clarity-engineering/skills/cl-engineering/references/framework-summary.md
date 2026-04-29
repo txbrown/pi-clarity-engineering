@@ -27,6 +27,8 @@ Principles:
 7. Humans and AI share the same context.
 8. Compound the learning.
 
+Most stages can contain a lightweight refinement loop: do the stage work, check it against intent, refine if needed, and repeat until there is enough confidence to ask for the next lifecycle transition. Refinement inside a stage is normal and should stay proportional; crossing to a different lifecycle stage still requires explicit operator approval.
+
 Feature means both:
 
 - application/business capability;
@@ -47,7 +49,7 @@ Important semantics:
 - Stage transitions require explicit operator approval before advancing: Shape → Plan, Plan Slice → Plan Specify, Plan → Build, Build → Review, and Review → Compound.
 - In Pi, request transition approval through the TUI `ask_user` tool when available; otherwise ask an explicit yes/no question and stop.
 - Build is TDD-first.
-- Review checks correctness against shaped intent first.
+- Review is a flexible validation stage: Review = Publish + Validation + Understanding + Decision. On Review entry, normally commit completed work, push the branch, and raise or update a PR so the work is reviewable. Then check built work against shaped intent first and choose the smallest useful mix of AI review, human review, automated/manual testing, builds, PR/code-diff review, release checks, and evidence gathering. If preparing PR text, discover and follow the repository-local PR template when one exists; never hardcode machine-specific template paths. Review may trigger refinement loops back to Build, Plan, or Shape when issues are found.
 - Compound is decision-based: codify useful learning, or record that there is no reusable learning.
 - Clarity Checks are lightweight lifecycle questions; transition approval is the one mandatory gate because it protects human intent from silent drift.
 

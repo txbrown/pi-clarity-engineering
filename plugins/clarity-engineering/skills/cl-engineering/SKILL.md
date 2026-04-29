@@ -31,7 +31,7 @@ Route to the most useful mode:
 - Shape: fuzzy idea, unclear problem, or deliverable work without a ticket.
 - Plan: shaped work that needs vertical slicing or acceptance details for the next slice.
 - Build: a selected slice with enough acceptance detail to implement TDD-first.
-- Review: a diff, PR, design, or implementation that must be checked against intent.
+- Review: built work that should be made reviewable (commit, push, raise/update PR when appropriate), then validated against shaped intent through AI review, human review, tests, builds, PR/code-diff review, manual QA, or release-risk checks.
 - Compound: completed work or learning that may be worth codifying.
 
 If routing is ambiguous and the choice materially changes the output, ask one focused routing question.
@@ -75,6 +75,10 @@ During or at the end, keep status visible:
 - `Ready for next stage?` — yes/no, next stage name, why, and whether operator approval has been requested/received.
 
 Do not create a heavy process gate for trivial single-stage work, but never silently cross a lifecycle boundary when using Clarity Engineering.
+
+Most stages may loop internally when refinement is needed: do the stage work, check it, refine, and repeat. Review makes this loop most visible because it can discover issues through AI review, human review, testing, builds, PR review, or manual app validation. Treat refinement loops as normal quality work, not as automatic lifecycle advancement.
+
+When Review begins, the default posture is to make completed work reviewable: inspect git status, commit intended changes, push the branch, and raise or update a PR when the repository workflow supports PRs. When preparing a PR, discover and follow the repository-local PR template if one exists (for example conventional `.github` template locations). Do not use or mention machine-specific absolute template paths in portable framework output.
 
 ## Output
 

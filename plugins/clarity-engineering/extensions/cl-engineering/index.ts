@@ -1,8 +1,28 @@
-import type { ExtensionAPI, ExtensionCommandContext } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI, ExtensionCommandContext, ExtensionContext } from "@mariozechner/pi-coding-agent";
+import { Type, type Static } from "typebox";
+
+type ClarityStage =
+  | "route"
+  | "shape"
+  | "plan-slice"
+  | "plan-specify"
+  | "build"
+  | "review"
+  | "compound"
+  | "approval"
+  | "blocked"
+  | "idle";
+
+type ClarityState = {
+  stage: ClarityStage;
+  detail?: string;
+};
 
 type Mode = {
   command: string;
   skill: string;
+  stage: ClarityStage;
+  label: string;
   description: string;
   argumentHint: string;
   instruction: string;
@@ -15,10 +35,27 @@ const OPERATOR_PROGRESS =
 const APPROVAL_GATE =
   "Do not advance to another lifecycle stage without explicit operator approval. In Pi, use the TUI `ask_user` tool when available; otherwise ask an explicit yes/no question and stop.";
 
+const STAGE_LABELS: Record<ClarityStage, string> = {
+  route: "Routing",
+  shape: "Shape",
+  "plan-slice": "Plan: Slice",
+  "plan-specify": "Plan: Specify",
+  build: "Build",
+  review: "Review",
+  compound: "Compound",
+  approval: "Awaiting approval",
+  blocked: "Blocked",
+  idle: "Idle",
+};
+
+const POWERBAR_SEGMENT_ID = "cl-engineering";
+
 const modes: Mode[] = [
   {
     command: "cl-engineering",
     skill: "cl-engineering",
+    stage: "route",
+    label: "Routing",
     description: "Route work through Clarity Engineering",
     argumentHint: "[request, ticket, plan, diff, or context]",
     instruction: "Route this request to Shape, Plan, Build, Review, or Compound, then apply the selected mode.",
@@ -26,6 +63,8 @@ const modes: Mode[] = [
   {
     command: "cl-shape",
     skill: "cl-shape",
+    stage: "shape",
+    label: "Shape",
     description: "Shape an idea into Clarity Engineering tickets",
     argumentHint: "[idea, problem, or request]",
     instruction: "Apply Shape mode. Create clarity before delivery with shaped tickets and useful supporting artefacts.",
@@ -33,13 +72,17 @@ const modes: Mode[] = [
   {
     command: "cl-plan",
     skill: "cl-plan",
+    stage: "plan-slice",
+    label: "Plan",
     description: "Plan shaped work with Slice + Specify",
     argumentHint: "[ticket, request, or shaped context]",
-    instruction: `Apply Plan mode. ${PLAN}. Produce ordered vertical slices, then acceptance details for the selected next slice. Do not define the first failing test.`,
+    instruction: `Apply Plan mode. ${PLAN}. Start in Slice unless a slice is already selected; when moving from Slice to Specify, update the Clarity status to \`plan-specify\`. Produce ordered vertical slices, then acceptance details for the selected next slice. Do not define the first failing test.`,
   },
   {
     command: "cl-build",
     skill: "cl-build",
+    stage: "build",
+    label: "Build",
     description: "Build a slice TDD-first",
     argumentHint: "[slice, acceptance details, or task]",
     instruction: "Apply Build mode. Translate acceptance details into the first failing behavior test, implement the smallest useful behavior, run checks, and refactor while green.",
@@ -47,33 +90,188 @@ const modes: Mode[] = [
   {
     command: "cl-review",
     skill: "cl-review",
-    description: "Review against shaped intent first",
-    argumentHint: "[diff, PR, design, or implementation context]",
-    instruction: "Apply Review mode. Check correctness against shaped intent first, then tests, types/states, boundaries, experience, docs, and risk. Output approve/request-changes/blocked/rescope.",
+    stage: "review",
+    label: "Review",
+    description: "Validate built work with the right review mix",
+    argumentHint: "[diff, PR, build, app behavior, test evidence, or implementation context]",
+    instruction: "Apply Review mode. Review = Publish + Validation + Understanding + Decision. On Review entry, normally make completed work reviewable: inspect git status, commit intended changes, push the branch, and raise or update a PR when the repository workflow supports PRs. Then check shaped intent first and choose the smallest useful mix of AI review, human review, automated/manual testing, builds, PR/code-diff review, release checks, and evidence gathering. If preparing PR text, discover and follow the repository-local PR template when one exists; do not hardcode absolute template paths. Output approve/request-changes/blocked/rescope, and identify the smallest refinement loop target when issues are found.",
   },
   {
     command: "cl-compound",
     skill: "cl-compound",
+    stage: "compound",
+    label: "Compound",
     description: "Decide whether learning should be codified",
     argumentHint: "[completed work, decision, or learning]",
     instruction: "Apply Compound mode. Always output a compounding decision: codify learning or no reusable learning.",
   },
 ];
 
+const stateSchema = Type.Object({
+  stage: Type.Union([
+    Type.Literal("route"),
+    Type.Literal("shape"),
+    Type.Literal("plan-slice"),
+    Type.Literal("plan-specify"),
+    Type.Literal("build"),
+    Type.Literal("review"),
+    Type.Literal("compound"),
+    Type.Literal("approval"),
+    Type.Literal("blocked"),
+    Type.Literal("idle"),
+  ]),
+  detail: Type.Optional(Type.String({ description: "Short optional status detail, for example the gate or blocker." })),
+});
+
+type StateToolInput = Static<typeof stateSchema>;
+
 export default function clarityEngineeringExtension(pi: ExtensionAPI) {
+  let state: ClarityState | undefined;
+  let lastCtx: ExtensionContext | undefined;
+
+  registerPowerbarSegment(pi);
+
+  const persistState = () => {
+    pi.appendEntry("cl-engineering-state", state ?? { stage: "idle" });
+  };
+
+  const updateStatus = (ctx: ExtensionContext) => {
+    lastCtx = ctx;
+
+    if (!state || state.stage === "idle") {
+      ctx.ui.setStatus("cl-engineering", undefined);
+      ctx.ui.setWorkingMessage();
+      updatePowerbarSegment(pi, undefined);
+      return;
+    }
+
+    const label = STAGE_LABELS[state.stage];
+    const detail = state.detail?.trim();
+    const status = detail ? `🧭 CL: ${label} · ${detail}` : `🧭 CL: ${label}`;
+    const color = state.stage === "blocked" ? "error" : state.stage === "approval" ? "warning" : "accent";
+
+    ctx.ui.setStatus("cl-engineering", ctx.ui.theme.fg(color, status));
+    updatePowerbarSegment(pi, state);
+    ctx.ui.setWorkingMessage(`Clarity Engineering: ${label}${detail ? ` · ${detail}` : ""}`);
+  };
+
+  const setState = (ctx: ExtensionContext, next: ClarityState, persist = true) => {
+    state = next;
+    updateStatus(ctx);
+    if (persist) persistState();
+  };
+
   for (const mode of modes) {
     pi.registerCommand(mode.command, {
       description: `${mode.argumentHint} — ${mode.description}`,
-      handler: async (args, ctx) => runMode(pi, ctx, mode, args),
+      handler: async (args, ctx) => runMode(pi, ctx, mode, args, setState),
     });
   }
 
+  pi.registerCommand("cl-state", {
+    description: "Show or set Clarity Engineering status: route|shape|plan-slice|plan-specify|build|review|compound|approval|blocked|idle [detail]",
+    handler: async (args, ctx) => {
+      const [rawStage, ...detailParts] = args.trim().split(/\s+/).filter(Boolean);
+      if (!rawStage) {
+        const current = state ? `${STAGE_LABELS[state.stage]}${state.detail ? ` · ${state.detail}` : ""}` : "Idle";
+        ctx.ui.notify(`Clarity Engineering status: ${current}`, "info");
+        updateStatus(ctx);
+        return;
+      }
+
+      if (!isClarityStage(rawStage)) {
+        ctx.ui.notify("Usage: /cl-state route|shape|plan-slice|plan-specify|build|review|compound|approval|blocked|idle [detail]", "error");
+        return;
+      }
+
+      setState(ctx, { stage: rawStage, detail: detailParts.join(" ") || undefined });
+    },
+  });
+
+  pi.registerTool({
+    name: "cl_engineering_state",
+    label: "Clarity State",
+    description: "Update the Clarity Engineering lifecycle status shown in Pi's footer/status bar.",
+    promptSnippet: "Update the visible Clarity Engineering status bar stage.",
+    promptGuidelines: [
+      "Use cl_engineering_state when a Clarity Engineering command routes to a specific lifecycle stage, moves from Plan Slice to Plan Specify, reaches an approval gate, or becomes blocked.",
+      "Keep cl_engineering_state.detail short; it is displayed in the status bar.",
+    ],
+    parameters: stateSchema,
+    async execute(_toolCallId, params: StateToolInput, _signal, _onUpdate, ctx) {
+      setState(ctx, { stage: params.stage, detail: params.detail });
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Clarity Engineering status set to ${STAGE_LABELS[params.stage]}${params.detail ? ` · ${params.detail}` : ""}.`,
+          },
+        ],
+        details: { state },
+      };
+    },
+  });
+
   pi.on("session_start", async (_event, ctx) => {
-    ctx.ui.setStatus("clarity", "Clarity Engineering /cl-* commands loaded");
+    lastCtx = ctx;
+    registerPowerbarSegment(pi);
+    state = restoreState(ctx) ?? state;
+    updateStatus(ctx);
+  });
+
+  pi.on("agent_start", async (_event, ctx) => {
+    if (state && state.stage !== "idle") updateStatus(ctx);
+  });
+
+  pi.on("agent_end", async (_event, ctx) => {
+    if (state && state.stage !== "idle") updateStatus(ctx);
+  });
+
+  pi.on("session_shutdown", async () => {
+    updatePowerbarSegment(pi, undefined);
+    if (lastCtx) {
+      lastCtx.ui.setWorkingMessage();
+    }
   });
 }
 
-function runMode(pi: ExtensionAPI, ctx: ExtensionCommandContext, mode: Mode, args: string) {
+function registerPowerbarSegment(pi: ExtensionAPI) {
+  pi.events?.emit?.("powerbar:register-segment", {
+    id: POWERBAR_SEGMENT_ID,
+    label: "Clarity Engineering",
+  });
+}
+
+function updatePowerbarSegment(pi: ExtensionAPI, state: ClarityState | undefined) {
+  if (!state || state.stage === "idle") {
+    pi.events?.emit?.("powerbar:update", {
+      id: POWERBAR_SEGMENT_ID,
+      text: undefined,
+    });
+    return;
+  }
+
+  const label = STAGE_LABELS[state.stage];
+  const detail = state.detail?.trim();
+  const color = state.stage === "blocked" ? "error" : state.stage === "approval" ? "warning" : "accent";
+
+  pi.events?.emit?.("powerbar:update", {
+    id: POWERBAR_SEGMENT_ID,
+    text: detail ? `${label} · ${detail}` : label,
+    icon: "🧭 CL",
+    color,
+  });
+}
+
+function runMode(
+  pi: ExtensionAPI,
+  ctx: ExtensionCommandContext,
+  mode: Mode,
+  args: string,
+  setState: (ctx: ExtensionContext, next: ClarityState, persist?: boolean) => void,
+) {
+  setState(ctx, { stage: mode.stage });
+
   const input = args.trim();
   const prompt = buildPrompt(mode, input);
 
@@ -93,10 +291,31 @@ function buildPrompt(mode: Mode, input: string): string {
     mode.instruction,
     OPERATOR_PROGRESS,
     APPROVAL_GATE,
+    "Keep the Pi status bar accurate by using the `cl_engineering_state` tool when you route/select a lifecycle stage, move from Plan Slice to Plan Specify, reach an approval gate, become blocked, or complete/clear Clarity mode.",
     "Ask one focused question when human judgement is needed.",
     "",
     "<input>",
     input || "No explicit input was provided. Ask one focused question to gather the missing context.",
     "</input>",
   ].join("\n");
+}
+
+function restoreState(ctx: ExtensionContext): ClarityState | undefined {
+  const entry = ctx.sessionManager
+    .getEntries()
+    .filter((e: { type: string; customType?: string }) => e.type === "custom" && e.customType === "cl-engineering-state")
+    .pop() as { data?: ClarityState } | undefined;
+
+  if (entry?.data && isClarityStage(entry.data.stage)) {
+    return {
+      stage: entry.data.stage,
+      detail: typeof entry.data.detail === "string" ? entry.data.detail : undefined,
+    };
+  }
+
+  return undefined;
+}
+
+function isClarityStage(value: string): value is ClarityStage {
+  return Object.prototype.hasOwnProperty.call(STAGE_LABELS, value);
 }

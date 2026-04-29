@@ -45,7 +45,7 @@ The extension registers slash commands using `pi.registerCommand()`:
 /cl-compound compound the learning from this work: ...
 ```
 
-Each command sends a user message that asks the agent to use the matching skill. If the agent is busy, the command queues as a follow-up.
+Each command sends a user message that asks the agent to use the matching skill. If the agent is busy, the command queues as a follow-up. The extension shows the active Clarity Engineering state in Pi's footer/status bar, and `/cl-state` can show or manually set that state. If `@juanibiapina/pi-powerbar` is installed, Clarity Engineering is emitted as a `cl-engineering` powerbar segment so the state remains visible even though powerbar hides Pi's built-in footer.
 
 Preferred local Pi package install:
 
@@ -59,7 +59,7 @@ Manual global install:
 ./scripts/install.sh --target pi
 ```
 
-Then run `/reload` in Pi or restart Pi.
+Then run `/reload` in Pi or restart Pi. When installing everything with `./scripts/install.sh --target all`, the installer keeps Clarity Engineering skills only in Pi's `~/.pi/agent/skills` location and removes duplicate `cl-*` copies from `~/.agents/skills`, because Pi scans both directories and reports skill-name collisions if both contain the same skills.
 
 ## Skills
 
@@ -67,7 +67,7 @@ Then run `/reload` in Pi or restart Pi.
 - `cl-shape` — shape ideas into tickets and supporting artefacts.
 - `cl-plan` — create vertical slices and specify the next selected slice.
 - `cl-build` — translate acceptance details into tests and build TDD-first.
-- `cl-review` — review correctness against shaped intent first.
+- `cl-review` — publish completed work for review, then validate it against shaped intent with the right mix of AI/human review, tests, builds, PR/code-diff review, manual QA, risk checks, and repository PR-template-aware review notes.
 - `cl-compound` — decide whether reusable learning should be codified.
 
 Pi also exposes skills as `/skill:name` commands when Pi skill commands are enabled. Regardless of entrypoint, stage transitions require operator approval before the agent continues.

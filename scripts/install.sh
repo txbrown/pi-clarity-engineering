@@ -14,7 +14,8 @@ Targets:
   pi      Install Pi agent package assets under ~/.pi/agent (skills, prompts, extension, manifest)
   agents  Copy skills to ~/.agents/skills
   claude  Print Claude Code local plugin command
-  all     Install codex, pi, and agents assets, then print Claude instructions
+  all     Install codex and pi assets, remove duplicate shared-agent Clarity skills,
+          then print Claude instructions
 
 Pi also supports local package install directly:
   pi install /absolute/path/to/clarity-engineering-plugin
@@ -69,6 +70,25 @@ cleanup_legacy_clarity_names() {
       rm -f "$prompts_dest/$name.md"
     fi
   done
+}
+
+cleanup_current_clarity_names() {
+  local skills_dest="$1"
+  local prompts_dest="${2:-}"
+  local current_names=(cl-engineering cl-shape cl-plan cl-build cl-review cl-compound)
+  for name in "${current_names[@]}"; do
+    rm -rf "$skills_dest/$name"
+    if [[ -n "$prompts_dest" ]]; then
+      rm -f "$prompts_dest/$name.md"
+    fi
+  done
+}
+
+cleanup_agents_conflicts_for_pi() {
+  local agents_skills="$HOME/.agents/skills"
+  cleanup_current_clarity_names "$agents_skills"
+  cleanup_legacy_clarity_names "$agents_skills"
+  echo "Removed Clarity Engineering skills from $agents_skills to avoid Pi skill-name collisions."
 }
 
 install_codex() {
@@ -146,7 +166,9 @@ case "$TARGET" in
   all)
     install_codex
     install_pi
-    install_agents
+    cleanup_agents_conflicts_for_pi
+    echo "Skipped shared ~/.agents install because Pi also scans that directory and would report duplicate cl-* skills."
+    echo "Run './scripts/install.sh --target agents' separately only when you need shared-agent skills without Pi."
     print_claude
     ;;
   *)

@@ -49,7 +49,7 @@ In Pi, the preferred approval mechanism is the TUI `ask_user` tool when availabl
 | `cl-shape` | Shape fuzzy ideas into tickets and supporting artefacts. |
 | `cl-plan` | Plan shaped work. Plan = Slice + Specify. |
 | `cl-build` | Build TDD-first from acceptance details. |
-| `cl-review` | Review changes against shaped intent first. |
+| `cl-review` | Publish completed work for review, then validate it against shaped intent with the right mix of AI/human review, tests, builds, PR/code-diff review, manual QA, and risk checks. |
 | `cl-compound` | Decide whether learning should be codified. |
 
 In Pi these are registered as extension commands, so they are slash commands like:
@@ -59,6 +59,8 @@ In Pi these are registered as extension commands, so they are slash commands lik
 /cl-plan plan this ticket: ...
 /cl-review review this diff against the ticket: ...
 ```
+
+The Pi extension also shows the current Clarity Engineering state in the footer/status bar, for example `🧭 CL: Shape` or `🧭 CL: Plan: Specify`. The status is set automatically by `/cl-*` commands, can be updated by the agent through the `cl_engineering_state` tool when it routes work or reaches an approval gate, and can be inspected or adjusted manually with `/cl-state`. When `@juanibiapina/pi-powerbar` is installed, the extension also emits a `cl-engineering` powerbar segment because powerbar hides Pi's built-in footer where `ctx.ui.setStatus()` normally appears.
 
 ## Install
 
@@ -163,7 +165,7 @@ Prompt invocation style:
 ./scripts/install.sh --target all
 ```
 
-`all` installs Codex, Pi agent, and shared agent assets, then prints Claude Code usage instructions. The script copies only Clarity Engineering files and does not delete unrelated user files.
+`all` installs Codex and Pi agent assets, removes Clarity Engineering duplicates from `~/.agents/skills`, then prints Claude Code usage instructions. Pi scans both `~/.pi/agent/skills` and `~/.agents/skills`; keeping the same `cl-*` skill names in both locations causes Pi skill collision warnings. If you need the shared-agent fallback without Pi, run `./scripts/install.sh --target agents` separately.
 
 ## Validate
 
@@ -178,6 +180,8 @@ Validation checks JSON manifests, package Pi manifest, Pi extension command regi
 - Keep lifecycle wording as `Shape → Plan → Build → Review → Compound`.
 - Keep `Plan = Slice + Specify`; do not make Slice and Specify top-level lifecycle stages.
 - Keep Pi extension commands thin wrappers that send skill-oriented prompts.
+- Treat Review as a flexible validation stage: Review = Publish + Validation + Understanding + Decision. On Review entry, normally make completed work reviewable by committing intended changes, pushing the branch, and raising/updating a PR when the repository workflow supports PRs. Then check shaped intent and choose proportional AI/human review, tests, builds, PR/code-diff review, manual QA, release checks, and evidence gathering. Review may reveal refinement loops back to Build, Plan, or Shape.
+- When preparing PR text during Review, discover and follow the repository-local PR template if one exists; never hardcode machine-specific template paths in framework instructions.
 - Keep skills portable and short enough for use by multiple tools.
 - Ask one focused question when human judgement is needed.
 - Require explicit operator approval before crossing lifecycle boundaries; use Pi's TUI `ask_user` tool when available.
