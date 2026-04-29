@@ -23,9 +23,12 @@ Create an ordered ticket breakdown around meaningful vertical capability. Prefer
 Include:
 
 - ordered slices;
+- outcome-oriented title per slice;
 - purpose/outcome per slice;
-- dependencies and sequencing notes;
+- dependencies, `Blocked by`, and sequencing notes;
 - AFK/HITL hints where useful;
+- validation strategy and evidence expected per slice;
+- risk or learning reduced per slice;
 - risks and assumptions.
 
 Avoid horizontal slices that only move technical layers without meaningful capability unless the ticket type is explicitly Technical Improvement or Chore / Maintenance.
@@ -61,7 +64,7 @@ Keep completion state explicit:
 
 ## Output
 
-- Ordered vertical ticket breakdown.
+- Ordered vertical ticket breakdown with title, AFK/HITL type, blockers, purpose, validation, and risk/learning reduced.
 - Recommended next slice.
 - Acceptance details for the recommended or user-selected next slice.
 - Plan progress status: `Done`, `Left`, `Blocked`, `Ready for Specify?`, `Ready for Build?`, and approval state.

@@ -39,6 +39,8 @@ When moving from Build to Review, the default Review entry workflow is:
 
 Do not commit unrelated user changes. Do not push directly to a protected/default branch unless the operator explicitly confirms that workflow. If the working tree contains ambiguous changes, ask one focused question before committing.
 
+If the repo's publish/review workflow, PR template, CI requirements, e2e/manual QA path, or tool/MCP expectations are unknown and materially affect Review, use or request Clarity Setup before guessing.
+
 ## Review modes
 
 After or alongside publishing, choose the smallest useful mix for the risk and context. Review can include:
@@ -101,6 +103,7 @@ Then include, as needed:
 - evidence or file/PR/build/test/manual-QA references;
 - suggested fixes or refinement loop target;
 - risks and follow-up;
+- setup/config gaps discovered, if future Review would be clearer with local workflow documentation;
 - Review progress status: `Done`, `Left`, `Blocked`, `Ready for Compound?`, and approval state;
 - one focused question if human judgement blocks the decision.
 

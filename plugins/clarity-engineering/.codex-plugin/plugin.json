@@ -1,7 +1,7 @@
 {
   "name": "cl-engineering",
   "version": "0.1.0",
-  "description": "Clarity Engineering skills and portable prompts for Codex.",
+  "description": "Clarity Engineering setup, skills, and portable prompts for Codex.",
   "skills": "./skills/",
   "prompts": "./prompts/"
 }

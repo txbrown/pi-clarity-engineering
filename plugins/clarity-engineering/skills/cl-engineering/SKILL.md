@@ -5,7 +5,7 @@ description: Apply Ricardo's Clarity Engineering framework consistently with AI.
 
 # Clarity Engineering Router
 
-Use this skill when a request should be handled through Clarity Engineering or when the user asks for Clarity Engineering generally.
+Use this skill when a request should be handled through Clarity Engineering or when the user asks for Clarity Engineering generally. Also use it to route framework setup/configuration requests that make Clarity Engineering adaptable to a specific codebase.
 
 Lifecycle:
 
@@ -21,13 +21,14 @@ Plan = Slice + Specify
 
 ## Inputs
 
-- A raw idea, request, ticket, plan, diff, implementation task, or completed-work recap.
+- A raw idea, request, ticket, plan, diff, implementation task, completed-work recap, or Clarity Engineering framework setup/configuration request.
 - Optional context such as constraints, references, code paths, or acceptance criteria.
 
 ## Routing
 
 Route to the most useful mode:
 
+- Setup: Clarity Engineering framework setup/configuration for the codebase is missing or requested, such as where tickets live, which MCPs/tools to use, validation/e2e commands, domain docs, ADRs, review workflow, or human decision rights. Setup is not a delivery lifecycle stage or lifecycle mode.
 - Shape: fuzzy idea, unclear problem, or deliverable work without a ticket.
 - Plan: shaped work that needs vertical slicing or acceptance details for the next slice.
 - Build: already-shaped work with enough clarity to implement TDD-first. This can be a selected slice, a complete small ticket, a bug with expected/actual behavior, a technical improvement with target state, a prior Shape/Plan artefact from another session, or a draft PR/branch that needs continued implementation or review-feedback fixes.
@@ -80,6 +81,8 @@ Most stages may loop internally when refinement is needed: do the stage work, ch
 
 When Review begins, the default posture is to make completed work reviewable: inspect git status, commit intended changes, push the branch, and raise or update a PR when the repository workflow supports PRs. When preparing a PR, discover and follow the repository-local PR template if one exists (for example conventional `.github` template locations). Do not use or mention machine-specific absolute template paths in portable framework output.
 
+When local workflow assumptions are unclear, prefer framework setup before pretending Clarity Engineering knows the codebase. Setup should discover or draft the smallest useful repo-local configuration for work tracking, domain/decision docs, validation/e2e tools, MCP/tool safety, review/publishing workflow, and human decision rights.
+
 ## Output
 
 - Chosen mode and why.
@@ -95,4 +98,5 @@ When Review begins, the default posture is to make completed work reviewable: in
 - Treat stage-transition approval as human judgement; ask it explicitly before continuing.
 - Keep implementation freedom while clarifying expected behavior.
 - Use `skills/cl-engineering/references/framework-summary.md` as the portable framework reference when needed.
+- Use Setup to configure the Clarity Engineering framework for the current codebase; do not hardcode one issue tracker, MCP set, e2e tool, or PR workflow as universal.
 

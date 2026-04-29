@@ -14,6 +14,8 @@ Plan contains two substeps:
 Plan = Slice + Specify
 ```
 
+Setup is available as **Clarity Engineering framework setup/configuration for a codebase**, not as a delivery lifecycle stage or lifecycle mode. It records where tickets live, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how Review publishes work, and which decisions require human approval.
+
 ## Operator approval gates
 
 Agents must not silently advance to the next lifecycle stage. At each transition, summarize what changed and ask for explicit operator approval before continuing:
@@ -38,6 +40,7 @@ The extension registers slash commands using `pi.registerCommand()`:
 
 ```text
 /cl-engineering help me route this request
+/cl-setup configure this repo for Clarity Engineering
 /cl-shape shape this idea: ...
 /cl-plan plan this ticket: ...
 /cl-build build this slice TDD-first: ...
@@ -63,7 +66,8 @@ Then run `/reload` in Pi or restart Pi. When installing everything with `./scrip
 
 ## Skills
 
-- `cl-engineering` — route a request to the right lifecycle mode.
+- `cl-engineering` — route delivery work to the right lifecycle mode, or route framework-setup requests to `cl-setup`.
+- `cl-setup` — configure the Clarity Engineering framework for a codebase: tickets, domain docs, ADRs, validation/e2e tools, MCPs, review workflow, and human decision rights.
 - `cl-shape` — shape ideas into tickets and supporting artefacts.
 - `cl-plan` — create vertical slices and specify the next selected slice.
 - `cl-build` — build already-shaped work TDD-first from a selected slice, complete small ticket, bug, technical improvement, prior plan, draft PR, or existing branch.
@@ -78,6 +82,7 @@ Command files live in `commands/` and wrap the matching skill:
 
 ```text
 /cl-engineering help me route this request
+/cl-setup configure this repo for Clarity Engineering
 /cl-shape shape this idea: ...
 /cl-plan plan this ticket: ...
 /cl-build build this slice TDD-first: ...
@@ -115,4 +120,4 @@ See `examples/` for generic ticket examples.
 
 ## Limitations
 
-This v0.1 package intentionally does not include subagents, converter infrastructure, MCP servers, hooks, or ticketing automation. Skills remain the portable behavior layer; the Pi extension provides native slash-command entrypoints.
+This v0.1 package intentionally does not include subagents, converter infrastructure, MCP servers, hooks, or ticketing automation. Setup may document MCPs/tools that a codebase already uses, but the plugin does not require or provide them. Skills remain the portable behavior layer; the Pi extension provides native slash-command entrypoints.

@@ -3,6 +3,7 @@ import { Type, type Static } from "typebox";
 
 type ClarityStage =
   | "route"
+  | "setup"
   | "shape"
   | "plan-slice"
   | "plan-specify"
@@ -37,6 +38,7 @@ const APPROVAL_GATE =
 
 const STAGE_LABELS: Record<ClarityStage, string> = {
   route: "Routing",
+  setup: "Setup",
   shape: "Shape",
   "plan-slice": "Plan: Slice",
   "plan-specify": "Plan: Specify",
@@ -59,6 +61,15 @@ const modes: Mode[] = [
     description: "Route work through Clarity Engineering",
     argumentHint: "[request, ticket, plan, diff, or context]",
     instruction: "Route this request to Shape, Plan, Build, Review, or Compound, then apply the selected mode.",
+  },
+  {
+    command: "cl-setup",
+    skill: "cl-setup",
+    stage: "setup",
+    label: "Setup",
+    description: "Configure the Clarity Engineering framework for this codebase",
+    argumentHint: "[repo context, ticket system, tools, MCPs, validation, or review workflow]",
+    instruction: "Apply Clarity Engineering framework setup. Discover or draft the local Clarity Engineering setup/configuration for this codebase: where tickets live, where domain language and ADRs live, which validation/e2e tools and MCPs are available, how Review publishes work, and which decisions require human approval. Setup is framework configuration, not a delivery lifecycle stage or lifecycle mode. Keep it lightweight, adaptable, and grounded in existing repo conventions.",
   },
   {
     command: "cl-shape",
@@ -110,6 +121,7 @@ const modes: Mode[] = [
 const stateSchema = Type.Object({
   stage: Type.Union([
     Type.Literal("route"),
+    Type.Literal("setup"),
     Type.Literal("shape"),
     Type.Literal("plan-slice"),
     Type.Literal("plan-specify"),
@@ -169,7 +181,7 @@ export default function clarityEngineeringExtension(pi: ExtensionAPI) {
   }
 
   pi.registerCommand("cl-state", {
-    description: "Show or set Clarity Engineering status: route|shape|plan-slice|plan-specify|build|review|compound|approval|blocked|idle [detail]",
+    description: "Show or set Clarity Engineering status: route|setup|shape|plan-slice|plan-specify|build|review|compound|approval|blocked|idle [detail]",
     handler: async (args, ctx) => {
       const [rawStage, ...detailParts] = args.trim().split(/\s+/).filter(Boolean);
       if (!rawStage) {
@@ -180,7 +192,7 @@ export default function clarityEngineeringExtension(pi: ExtensionAPI) {
       }
 
       if (!isClarityStage(rawStage)) {
-        ctx.ui.notify("Usage: /cl-state route|shape|plan-slice|plan-specify|build|review|compound|approval|blocked|idle [detail]", "error");
+        ctx.ui.notify("Usage: /cl-state route|setup|shape|plan-slice|plan-specify|build|review|compound|approval|blocked|idle [detail]", "error");
         return;
       }
 

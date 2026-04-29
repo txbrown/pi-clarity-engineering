@@ -16,6 +16,8 @@ Plan = Slice + Specify
 
 This first pass is intentionally minimal but now includes a **real Pi agent package/extension**: skills, Claude Code command wrappers, Codex/Pi prompt files, Pi extension slash commands, install scripts, validation, docs, and examples. It does not include subagents, MCP servers, hooks, Jira/Linear automation, or full converter infrastructure.
 
+It also includes a lightweight **Setup** mode for adapting Clarity Engineering to any codebase without hardcoding one workflow: where tickets live, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how review/publishing works, and which decisions require human approval.
+
 ## Operator approval gates
 
 Clarity Engineering protects human intent by requiring explicit operator approval before crossing lifecycle boundaries. Agents should summarize the completed stage, highlight important changed wording/assumptions/scope/title/intent, and ask whether the operator is ready for the next named stage.
@@ -38,6 +40,7 @@ In Pi, the preferred approval mechanism is the TUI `ask_user` tool when availabl
 - `plugins/clarity-engineering/commands/` — Claude Code slash command wrappers.
 - `plugins/clarity-engineering/prompts/` — Codex/Pi-compatible prompt templates.
 - `plugins/clarity-engineering/examples/` — generic ticket examples for all five ticket types.
+- `plugins/clarity-engineering/docs/setup-config.md` — portable guidance for per-codebase Clarity Engineering setup/configuration.
 - `scripts/install.sh` — local install helper.
 - `scripts/validate.sh` — manifest/frontmatter/lifecycle/Pi-extension validation.
 
@@ -45,7 +48,8 @@ In Pi, the preferred approval mechanism is the TUI `ask_user` tool when availabl
 
 | Mode | Purpose |
 | --- | --- |
-| `cl-engineering` | Route work to Shape, Plan, Build, Review, or Compound. |
+| `cl-engineering` | Route delivery work to Shape, Plan, Build, Review, or Compound; route framework-setup requests to `cl-setup`. |
+| `cl-setup` | Configure the Clarity Engineering framework for a codebase: tickets, domain docs, ADRs, validation/e2e tools, MCPs, review workflow, and human decision rights. |
 | `cl-shape` | Shape fuzzy ideas into tickets and supporting artefacts. |
 | `cl-plan` | Plan shaped work. Plan = Slice + Specify. |
 | `cl-build` | Build already-shaped work TDD-first from a selected slice, complete small ticket, bug, technical improvement, prior plan, draft PR, or existing branch. |
@@ -103,6 +107,7 @@ After installing manually, run `/reload` in Pi or restart Pi. The extension regi
 
 ```text
 /cl-engineering
+/cl-setup
 /cl-shape
 /cl-plan
 /cl-build
@@ -178,11 +183,13 @@ Validation checks JSON manifests, package Pi manifest, Pi extension command regi
 ## Development notes
 
 - Keep lifecycle wording as `Shape → Plan → Build → Review → Compound`.
+- Treat Setup as Clarity Engineering framework setup/configuration for a codebase, not a delivery lifecycle stage or lifecycle mode.
 - Keep `Plan = Slice + Specify`; do not make Slice and Specify top-level lifecycle stages.
 - Keep Pi extension commands thin wrappers that send skill-oriented prompts.
 - Treat Review as a flexible validation stage: Review = Publish + Validation + Understanding + Decision. On Review entry, normally make completed work reviewable by committing intended changes, pushing the branch, and raising/updating a PR when the repository workflow supports PRs. Then check shaped intent and choose proportional AI/human review, tests, builds, PR/code-diff review, manual QA, release checks, and evidence gathering. Review may reveal refinement loops back to Build, Plan, or Shape.
 - When preparing PR text during Review, discover and follow the repository-local PR template if one exists; never hardcode machine-specific template paths in framework instructions.
 - Keep skills portable and short enough for use by multiple tools.
+- Setup may document available MCPs/tools but should not require one universal toolchain.
 - Ask one focused question when human judgement is needed.
 - Require explicit operator approval before crossing lifecycle boundaries; use Pi's TUI `ask_user` tool when available.
 - Run `./scripts/validate.sh` after edits.

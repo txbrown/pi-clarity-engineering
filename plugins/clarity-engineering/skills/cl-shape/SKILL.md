@@ -29,7 +29,7 @@ Produce one or more shaped tickets. Minimum ticket shape:
 - Open questions.
 - Suggested validation style.
 
-Add supporting artefacts only when useful: context summary, options, trade-offs, risks, assumptions, or glossary.
+Add supporting artefacts only when useful: context summary, options, trade-offs, risks, assumptions, glossary, or setup/config gaps that affect where tickets live, which validation path applies, or which tools/MCPs are safe to use.
 
 Also include Shape progress status and approval state:
 
@@ -40,7 +40,7 @@ Also include Shape progress status and approval state:
 
 ## Human ownership
 
-The human owns scope and priority. If scope, priority, or desired outcome is materially ambiguous, ask one focused question before finalizing.
+The human owns scope and priority. If scope, priority, or desired outcome is materially ambiguous, ask one focused question before finalizing. If the answer can be discovered from existing tickets, docs, code, or setup/config, discover it before asking.
 
 ## Rules
 
