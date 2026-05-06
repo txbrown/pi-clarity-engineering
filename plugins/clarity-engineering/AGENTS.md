@@ -15,7 +15,3 @@ When editing this plugin:
 - For Pi-specific behavior, prefer the TUI `ask_user` tool for transition approval when available; for portable prompts, require an explicit yes/no question and stop.
 - Run `./scripts/validate.sh` after edits.
 - Do not introduce company-private examples or absolute runtime dependencies.
-
-Optional local source of truth on Ricardo's machine:
-
-`/Users/ricardo.abreu/Library/Mobile Documents/iCloud~md~obsidian/Documents/ai/Frameworks/Clarity Engineering.md`

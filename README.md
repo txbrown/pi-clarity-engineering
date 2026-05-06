@@ -8,6 +8,8 @@ Core lifecycle:
 Shape → Plan → Build → Review → Compound
 ```
 
+The lifecycle does not grow extra stages. Instead, each stage is context-aware: a command can start from a ticket ID/URL, PR, branch, diff, failing test, review comment, model problem, or explicit user request, resolve the relevant intent, perform the natural workflow actions for that stage, and ask only for blocking ambiguity, scope/risk judgement, or approval-required write-capable operations.
+
 Plan is one lifecycle stage with two substeps:
 
 ```text
@@ -16,7 +18,7 @@ Plan = Slice + Specify
 
 This first pass is intentionally minimal but now includes a **real Pi agent package/extension**: skills, Claude Code command wrappers, Codex/Pi prompt files, Pi extension slash commands, install scripts, validation, docs, and examples. It does not include subagents, MCP servers, hooks, Jira/Linear automation, or full converter infrastructure.
 
-It also includes a lightweight **Setup** mode for adapting Clarity Engineering to any codebase without hardcoding one workflow: where tickets live, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how review/publishing works, and which decisions require human approval.
+It also includes a lightweight **Setup** mode for adapting Clarity Engineering to any codebase without hardcoding one workflow: where tickets live, how stage commands resolve tickets/PRs/branches/diffs/tests, how Plan materializes defined slices/tickets, how Build claims work, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, what automation is safe, and which decisions require human approval.
 
 ## Operator approval gates
 
@@ -45,16 +47,42 @@ In Pi, the preferred approval mechanism is the TUI `ask_user` tool when availabl
 - `scripts/install.sh` — local install helper.
 - `scripts/validate.sh` — manifest/frontmatter/lifecycle/Pi-extension validation.
 
+## Context-aware stage examples
+
+```text
+/cl-build MID-123
+```
+
+Build should resolve the ticket, read the relevant context, move it to In Progress and create/switch branch according to Setup, ask only on implementation-blocking uncertainty, then build TDD-first and run validation.
+
+```text
+/cl-plan MID-123
+```
+
+Plan should resolve the ticket, slice only when useful, and materialize independently buildable slices in the configured issue tracker as child issues, linked follow-ups, checklist items, or local markdown according to Setup and approval policy. If the source ticket is small enough, it should say no child tickets are needed and recommend building the original ticket.
+
+```text
+/cl-review
+```
+
+Review should inspect the current branch/diff, discover an existing PR before creating a duplicate, commit intended changes, push, raise or update a PR by default when the repo uses PRs, include validation evidence in the PR body, then review against shaped intent.
+
+```text
+/cl-review pr:456
+```
+
+Review should fetch the PR, comments, diff, CI, and linked ticket; classify findings/review comments; route valid fixes back through the smallest Build loop; update the PR and decision when ready.
+
 ## Commands, prompts, and skills
 
 | Mode | Purpose |
 | --- | --- |
 | `cl-engineering` | Route delivery work to Shape, Plan, Build, Review, or Compound; route framework-setup requests to `cl-setup`. |
-| `cl-setup` | Configure the Clarity Engineering framework for a codebase: tickets, domain docs, ADRs, validation/e2e tools, MCPs, review workflow, local/global memory, context budgets, and human decision rights. |
+| `cl-setup` | Configure the Clarity Engineering framework for a codebase: tickets, reference resolution, Plan ticket materialization, Build claim workflow, domain docs, ADRs, validation/e2e tools, MCPs, review workflow, local/global memory, context budgets, and human decision rights. |
 | `cl-shape` | Shape fuzzy ideas into tickets and supporting artefacts. |
-| `cl-plan` | Plan shaped work. Plan = Slice + Specify. |
-| `cl-build` | Build already-shaped work TDD-first from a selected slice, complete small ticket, bug, technical improvement, prior plan, draft PR, or existing branch. |
-| `cl-review` | Publish completed work for review, then validate it against shaped intent with the right mix of AI/human review, tests, builds, PR/code-diff review, manual QA, and risk checks. |
+| `cl-plan` | Plan shaped work. Plan = Slice + Specify. Materialize independently buildable planned slices/tickets in the configured issue tracker when useful and safe/approved. |
+| `cl-build` | Build already-shaped or resolvable work TDD-first from a selected slice, ticket ID/URL, complete small ticket, bug, failing test, model problem, technical improvement, prior plan, review comments, draft PR, or existing branch. When given a ticket, resolve it and claim/setup work according to repo Setup. |
+| `cl-review` | Publish completed work by committing, pushing, and raising/updating a PR by default when the repo uses PRs, then validate it against shaped intent with the right mix of AI/human review, tests, builds, PR/code-diff review, manual QA, and risk checks. |
 | `cl-compound` | Decide whether learning should be codified. |
 
 In Pi these are registered as extension commands, so they are slash commands like:
@@ -74,7 +102,7 @@ The Pi extension also shows the current Clarity Engineering state in the footer/
 Preferred local-package install, modelled after Pi package conventions:
 
 ```bash
-pi install /Users/ricardo.abreu/Developer/personal/clarity-engineering-plugin
+pi install /path/to/clarity-engineering-plugin
 ```
 
 This works because `package.json` declares:
@@ -134,7 +162,7 @@ pi install npm:pi-ask-user
 Claude Code can load the local plugin directory directly:
 
 ```bash
-claude --plugin-dir /Users/ricardo.abreu/Developer/personal/clarity-engineering-plugin/plugins/clarity-engineering
+claude --plugin-dir /path/to/clarity-engineering-plugin/plugins/clarity-engineering
 ```
 
 Or print the command with:
@@ -187,7 +215,8 @@ Validation checks JSON manifests, package Pi manifest, Pi extension command regi
 - Treat Setup as Clarity Engineering framework setup/configuration for a codebase, not a delivery lifecycle stage or lifecycle mode.
 - Keep `Plan = Slice + Specify`; do not make Slice and Specify top-level lifecycle stages.
 - Keep Pi extension commands thin wrappers that send skill-oriented prompts.
-- Treat Review as a flexible validation stage: Review = Publish + Validation + Understanding + Decision. On Review entry, normally make completed work reviewable by committing intended changes, pushing the branch, and raising/updating a PR when the repository workflow supports PRs. Then check shaped intent and choose proportional AI/human review, tests, builds, PR/code-diff review, manual QA, release checks, and evidence gathering. Review may reveal refinement loops back to Build, Plan, or Shape.
+- Treat stages as context-aware operating modes, not forms. Resolve ticket/PR/branch/diff/test/user-request intent before doing stage work, and do not force earlier stages when the requested stage has enough clarity.
+- Treat Review as a flexible validation stage: Review = Publish PR + Validation + Understanding + Decision. On Review entry, normally make completed work reviewable by committing intended changes, pushing the branch, discovering existing PRs to avoid duplicates, and raising/updating a PR when the repository workflow supports PRs. Then check shaped intent and choose proportional AI/human review, tests, builds, PR/code-diff review, manual QA, release checks, and evidence gathering. Review may reveal refinement loops back to Build, Plan, or Shape.
 - When preparing PR text during Review, discover and follow the repository-local PR template if one exists; never hardcode machine-specific template paths in framework instructions.
 - Keep skills portable and short enough for use by multiple tools.
 - Setup may document available MCPs/tools and memory locations but should not require one universal toolchain or memory backend.

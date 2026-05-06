@@ -13,12 +13,24 @@ Create clarity before delivery by producing shaped tickets and only the supporti
 
 ## Inputs
 
-- Raw idea, user problem, business request, bug report, or improvement request.
+- Raw idea, user problem, business request, bug report, improvement request, ticket ID/URL, issue, PR, branch, current diff, failing test, or model problem.
 - Optional context, constraints, references, examples, stakeholders, or risks.
+
+## Context-aware Shape entry
+
+At Shape entry, resolve the intent source before creating or rewriting tickets:
+
+1. Identify the input kind: fuzzy idea, ticket ID/URL, issue, PR, branch, diff, failing test, model problem, bug report, or explicit user request.
+2. Fetch/read relevant context using repo setup and available tools.
+3. If a ticket already exists, inspect whether it is already shaped before reshaping it.
+4. Improve or comment on the existing ticket only when useful and safe/approved; otherwise produce suggested wording.
+5. Ask one focused human-judgement question only when scope, priority, desired outcome, or product behavior is materially ambiguous and not discoverable.
+
+Shape creates clarity; it should not invent ceremony for a clear existing ticket.
 
 ## Output
 
-Produce one or more shaped tickets. Minimum ticket shape:
+Produce one or more shaped tickets, or an assessment/update suggestion for an existing ticket. Minimum ticket shape:
 
 - Ticket type: Product Feature, Technical Improvement, Bug, Spike / Research, or Chore / Maintenance.
 - Problem.
@@ -33,7 +45,7 @@ Add supporting artefacts only when useful: context summary, options, trade-offs,
 
 Also include Shape progress status and approval state:
 
-- `Done` — shaped ticket fields completed and supporting artefacts produced.
+- `Done` — intent source resolved, shaped ticket fields completed or existing ticket assessed/improved, and supporting artefacts produced where useful.
 - `Left` — missing scope, outcome, acceptance, references, validation style, or stakeholder decisions.
 - `Blocked` — the single focused question needed to finish Shape, if any.
 - `Ready for Plan?` — yes/no, with the reason. Only say yes when the ticket is clear enough to slice. If yes, ask the operator for explicit approval before moving to Plan; in Pi use the TUI `ask_user` tool when available.
@@ -46,7 +58,7 @@ The human owns scope and priority. If scope, priority, or desired outcome is mat
 
 - Do not advance to the next lifecycle stage without explicit operator approval.
 
-- Ticket is mandatory for deliverable work.
+- Deliverable work needs a clear, trackable intent source. A formal ticket is preferred for non-trivial work, but a PR review comment, failing test, explicit user request, branch/PR goal, bug report, or local markdown task can be sufficient for small work.
 - Quality comes from unambiguous shaped features, captured as executable agreements.
 - Feature can mean application/business capability or a feature-driven architecture boundary.
 - Do not plan implementation details unless needed to clarify scope.

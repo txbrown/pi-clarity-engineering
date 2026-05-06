@@ -8,7 +8,7 @@ Setup is not a new lifecycle stage or lifecycle mode. It is **Clarity Engineerin
 Shape → Plan → Build → Review → Compound
 ```
 
-and the codebase's real ticket system, domain language, validation tools, MCPs, e2e flows, review process, memory locations, context budgets, and human decision rights.
+and the codebase's real ticket system, reference-resolution rules, Plan ticket materialization workflow, Build claim workflow, domain language, validation tools, MCPs, e2e flows, Review PR publishing process, automation policy, memory locations, context budgets, and human decision rights.
 
 ## Recommended artifact
 
@@ -36,15 +36,42 @@ Use whatever names match the repo. Findability matters more than exact paths.
 ```markdown
 # Clarity Engineering Setup
 
-## Work tracking
+## Work tracking and reference resolution
 
 - System:
 - Project/team/repo:
+- Ticket ID patterns:
+- Ticket URL patterns:
+- PR URL/number patterns:
+- Fetch/view/search instructions:
+- Branch-to-ticket inference:
 - Ticket types:
 - Status vocabulary:
-- Link/search instructions:
 - Follow-up ticket convention:
 - Ticket-equivalent artifact for small work:
+
+## Plan ticket materialization
+
+- Should Plan create tracker tickets for independently buildable slices:
+- Materialization style: child issues / linked follow-ups / checklist items / local markdown / none
+- Parent/child convention:
+- Dependency convention:
+- Default project/team/status:
+- Labels/milestones/estimates/priority defaults:
+- Title/body format:
+- Link-back convention:
+- When not to create tickets:
+- Requires approval:
+
+## Build claim workflow
+
+- Move ticket to In Progress during `cl-build`:
+- Assignment convention:
+- Branch convention:
+- Branch naming pattern:
+- Commit/ticket reference convention:
+- Continue existing branch/PR behavior:
+- Requires approval:
 
 ## Domain and decisions
 
@@ -74,10 +101,37 @@ Use whatever names match the repo. Findability matters more than exact paths.
 
 - Branch convention:
 - Commit convention:
+- PR discovery:
+- PR creation/update:
 - PR template:
+- PR title/body convention:
+- Ticket linking/comment/status behavior:
 - CI requirements:
 - Manual QA:
 - Release/rollout:
+- Review evidence expected:
+
+## Automation policy
+
+Allowed without asking:
+- Read tickets/PRs/comments/docs/code:
+- Inspect git status/branch/diff:
+- Create/switch local branches:
+- Run validation commands:
+- Create local commits:
+- Create planned child/follow-up tickets during Plan:
+- Move ticket to In Progress:
+- Push feature branch:
+- Open/update PR:
+
+Ask first:
+- Modify existing ticket scope/title/description:
+- Assign other people:
+- Force push/protected branch writes:
+- Resolve/delete review comments:
+- Mark tickets Done:
+- Merge/deploy/release:
+- Destructive environment/data operations:
 
 ## Memory and context policy
 
@@ -104,7 +158,11 @@ Use whatever names match the repo. Findability matters more than exact paths.
 - Configure enough context for humans and AI agents to share reality.
 - Prefer existing repo conventions over framework defaults.
 - Keep setup lightweight; do not create configuration theatre.
-- Treat write-capable MCPs/tools carefully.
+- Stages are context-aware: resolve ticket/PR/branch/diff/test/user-request intent before doing stage work.
+- `cl-plan <ticket>` should materialize independently buildable slices in the configured issue tracker when useful and safe/approved, or explicitly say no child tickets are needed.
+- `cl-build <ticket>` should fetch the ticket, claim it according to setup, create/switch branch when appropriate, and build TDD-first.
+- `cl-review` should normally commit, push, and raise/update a PR when the repository uses PRs.
+- Treat write-capable MCPs/tools carefully and configure safe vs approval-required automation explicitly.
 - Update setup during Compound when repeated friction appears.
 - Treat memory as indexed retrieval, not a context dump.
 
