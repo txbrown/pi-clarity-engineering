@@ -30,23 +30,24 @@ Shape creates clarity; it should not invent ceremony for a clear existing ticket
 
 ## Output
 
-Produce one or more shaped tickets, or an assessment/update suggestion for an existing ticket. Minimum ticket shape:
+Produce one or more shaped tickets, or an assessment/update suggestion for an existing ticket. Keep ticket bodies concise and aligned to the local issue-tracker conventions discovered during Setup. Default ticket body shape:
 
-- Ticket type: Product Feature, Technical Improvement, Bug, Spike / Research, or Chore / Maintenance.
-- Problem.
-- Why / outcome.
-- Scope and non-goals.
+- Problem statement or user story.
 - Acceptance criteria.
-- References / notes.
-- Open questions.
-- Suggested validation style.
+- Notes / technical notes, only when they add useful context.
+- Design / code design links or details, only when needed.
+- Open questions, only when unresolved decisions remain.
 
-Add supporting artefacts only when useful: context summary, options, trade-offs, risks, assumptions, glossary, or setup/config gaps that affect where tickets live, which validation path applies, or which tools/MCPs are safe to use.
+Keep metadata out of the ticket body when the issue tracker has fields or relationships for it. Parent epic/ticket, project, labels, team, priority, issue type, dependencies, assignee, and links should be set through tracker metadata whenever tools support it, not repeated as body sections.
+
+Do not pad the ticket body with routine planning or process headings unless the repo-local setup or operator explicitly asks for them. Capture boundaries, evidence strategy, and discovery notes in Plan/Review guidance or supporting artefacts instead of the ticket description.
+
+Add supporting artefacts outside the ticket body only when useful: context summary, options, trade-offs, risks, assumptions, glossary, or setup/config gaps that affect where tickets live, which validation path applies, or which tools/MCPs are safe to use.
 
 Also include Shape progress status and approval state:
 
-- `Done` — intent source resolved, shaped ticket fields completed or existing ticket assessed/improved, and supporting artefacts produced where useful.
-- `Left` — missing scope, outcome, acceptance, references, validation style, or stakeholder decisions.
+- `Done` — intent source resolved, concise ticket fields completed or existing ticket assessed/improved, metadata placement identified, and supporting artefacts produced where useful.
+- `Left` — missing problem/user story, outcome, acceptance criteria, required notes/design context, metadata values, or stakeholder decisions.
 - `Blocked` — the single focused question needed to finish Shape, if any.
 - `Ready for Plan?` — yes/no, with the reason. Only say yes when the ticket is clear enough to slice. If yes, ask the operator for explicit approval before moving to Plan; in Pi use the TUI `ask_user` tool when available.
 

@@ -78,7 +78,7 @@ const modes: Mode[] = [
     label: "Shape",
     description: "Shape an idea into Clarity Engineering tickets",
     argumentHint: "[idea, problem, or request]",
-    instruction: "Apply Shape mode. Resolve the intent source first when given a ticket/issue/PR/branch/diff/test/model problem. Create clarity before delivery with shaped tickets, existing-ticket improvements, and useful supporting artefacts. Do not add ceremony for clear existing tickets.",
+    instruction: "Apply Shape mode. Resolve the intent source first when given a ticket/issue/PR/branch/diff/test/model problem. Create clarity before delivery with concise shaped tickets, existing-ticket improvements, and useful supporting artefacts. Keep tracker metadata out of ticket bodies when fields/relationships exist. Do not add ceremony for clear existing tickets.",
   },
   {
     command: "cl-plan",

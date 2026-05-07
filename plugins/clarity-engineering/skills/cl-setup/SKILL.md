@@ -83,13 +83,13 @@ Document how Plan should raise or update issue-tracker tickets when it defines i
 - whether Plan-created slices become child issues, linked follow-up tickets, checklist items on the parent ticket, local markdown, or no tracker items;
 - tracker project/team/default status;
 - parent/child and dependency conventions;
-- labels, milestones, estimates, assignee, and priority defaults;
-- title/body format for planned tickets;
-- how to link created tickets back to the source ticket or plan;
+- labels, milestones, estimates, assignee, priority defaults, and other metadata defaults;
+- concise title/body format for planned tickets, including required and optional body sections;
+- which relationships and fields must be represented as tracker metadata rather than repeated in the description body;
 - whether creating/updating tracker tickets requires approval;
 - when not to create tickets, such as tiny implementation steps or a source ticket that is already small enough.
 
-Plan should not create tracker tickets by default for every slice unless setup says that is the team's workflow. It should materialize only tickets that are independently buildable, reviewable, assignable, or likely to survive beyond the current session.
+Plan should not create tracker tickets by default for every slice unless setup says that is the team's workflow. It should materialize only tickets that are independently buildable, reviewable, assignable, or likely to survive beyond the current session. When materializing tickets, prefer a short body focused on problem/user story, acceptance criteria, and useful notes/design context; use tracker fields and links for parentage, project/team ownership, labels, priority, dependencies, and related issues.
 
 ### 3. Build claim workflow
 
