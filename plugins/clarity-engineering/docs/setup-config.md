@@ -100,7 +100,7 @@ Use whatever names match the repo. Findability matters more than exact paths.
 ## Review and publishing
 
 - Branch convention:
-- Commit convention:
+- Commit convention / inference rule:
 - PR discovery:
 - PR creation/update:
 - PR template:

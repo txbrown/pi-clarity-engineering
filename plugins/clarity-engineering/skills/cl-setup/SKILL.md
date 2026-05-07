@@ -144,7 +144,7 @@ Treat write-capable tools carefully. Creating tickets, mutating Jira/Linear/GitH
 Document how completed work becomes reviewable:
 
 - branch convention;
-- commit convention;
+- commit convention and how to infer it from author/codebase history;
 - PR discovery command/tool;
 - PR creation/update command/tool;
 - PR template location;

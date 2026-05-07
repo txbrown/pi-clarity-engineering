@@ -41,12 +41,14 @@ When moving from Build to Review, the default Review entry workflow is:
 
 1. Inspect git status and confirm the intended branch/scope.
 2. Run or summarize the minimum checks needed before publishing, if not already done in Build.
-3. Commit completed Review-ready work with a clear message, unless the operator explicitly wants an uncommitted local review.
+3. Commit completed Review-ready work with a clear message that follows the author's or codebase's existing commit patterns, unless the operator explicitly wants an uncommitted local review.
 4. Push the branch when a remote workflow exists.
 5. Raise or update a PR when the codebase uses PRs, following the repository-local PR template if found.
 6. Link the PR to the ticket and move the ticket to the configured Review/In Review state when Setup marks those actions safe or the operator approves.
 
-Do not commit unrelated user changes. Do not push directly to a protected/default branch unless the operator explicitly confirms that workflow. If the working tree contains ambiguous changes, ask one focused question before committing.
+Before committing, discover the expected commit style from recent git history, repository docs, configured commit tooling, and the author's existing pattern. Prefer the codebase convention when it is clear; otherwise match the author's recent style for similar changes. Do not invent a new convention.
+
+Do not commit unrelated user changes. Do not push directly to a protected/default branch unless the operator explicitly confirms that workflow. If the working tree contains ambiguous changes or commit style is materially unclear, ask one focused question before committing.
 
 If the repo's publish/review workflow, PR template, CI requirements, e2e/manual QA path, branch convention, ticket/PR linking rules, or tool/MCP expectations are unknown and materially affect Review, use or request Clarity Setup before guessing.
 
