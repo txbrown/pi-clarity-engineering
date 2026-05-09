@@ -1,11 +1,13 @@
 ---
-description: Apply Clarity Engineering router
+description: Route work through Clarity Engineering
 argument-hint: "[request, ticket, plan, diff, or context]"
 ---
 
-Apply the Clarity Engineering router to the input. Route delivery work to Shape, Plan, Build, Review, or Compound. If the request is about configuring how Clarity Engineering should work in this codebase, route it to `cl-setup`. Setup is Clarity Engineering framework setup/configuration for a codebase — tickets, domain docs, validation/e2e tools, MCPs, review workflow, and human decision rights — not a delivery lifecycle stage or lifecycle mode. If the route is ambiguous and materially changes the answer, ask one focused question. Otherwise produce the mode-specific output, including operator progress status with `Done`, `Left`, `Blocked`, and readiness for the next stage.
+Apply Clarity Engineering routing. Clarity Engineering is a lightweight constitution for agentic software delivery — not a project management checklist. The agent owns execution flow; the framework defines principles and escalation boundaries.
 
-Before advancing to another lifecycle stage, request explicit operator approval; in Pi use the TUI `ask_user` tool when available.
+Route this request to Shape, Plan, Build, Review, or Compound. Resolve the intent source, retrieve narrow relevant context, and perform the natural workflow actions for the routed stage. For Build, classify depth at entry and adapt ceremony proportionally.
+
+Proceed autonomously through safe local work. Escalate only when a trigger fires: intent ambiguity, scope conflict, product/UX decision, architecture risk, validation challenge, unauthorized external mutation, or completion. In Pi, use the TUI `ask_user` tool when available. Ask one focused question per escalation.
 
 Input:
 

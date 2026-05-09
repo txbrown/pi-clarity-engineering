@@ -2,13 +2,15 @@
 
 This plugin packages Clarity Engineering for Claude Code, Codex, and Pi / pi-agent.
 
+Clarity Engineering is a lightweight constitution for agentic software delivery — not a project management checklist. The agent owns execution flow; the framework defines principles and escalation boundaries.
+
 Lifecycle:
 
 ```text
 Shape → Plan → Build → Review → Compound
 ```
 
-The lifecycle does not grow extra stages. Instead, each stage is context-aware: a command can start from a ticket ID/URL, PR, branch, diff, failing test, review comment, model problem, or explicit user request, resolve the relevant intent, perform the natural workflow actions for that stage, and ask only for blocking ambiguity, scope/risk judgement, or approval-required write-capable operations.
+The lifecycle does not grow extra stages. Instead, each stage operates under an **autonomy with escalation** model: the agent proceeds through safe work without asking, and surfaces only when a genuine escalation trigger fires.
 
 Plan contains two substeps:
 
@@ -16,19 +18,32 @@ Plan contains two substeps:
 Plan = Slice + Specify
 ```
 
-Setup is available as **Clarity Engineering framework setup/configuration for a codebase**, not as a delivery lifecycle stage or lifecycle mode. It records where tickets live, how stage commands resolve tickets/PRs/branches/diffs/tests, how Plan materializes defined slices/tickets, how Build claims work, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, what automation is safe, where local/global memory lives, what context budget policy applies, and which decisions require human approval.
+Setup is available as **Clarity Engineering framework setup/configuration for a codebase**, not as a delivery lifecycle stage or lifecycle mode. It records where tickets live, how stage commands resolve tickets/PRs/branches/diffs/tests, how Plan materializes defined slices/tickets, how Build claims work, where session state and continuous compound entries live, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, what automation is safe vs requires escalation, where local/global memory lives, what context budget policy applies, and which decisions require human judgement.
 
-## Operator approval gates
+## Escalation model
 
-Agents must not silently advance to the next lifecycle stage. At each transition, summarize what changed and ask for explicit operator approval before continuing:
+Agents own execution flow. They proceed through stages autonomously and escalate only at genuine triggers. Mechanical stage-transition approvals are replaced by the escalation model.
 
-- Shape → Plan
-- Plan `Slice` → Plan `Specify`
-- Plan → Build
-- Build → Review
-- Review → Compound
+Escalation triggers — the only reasons to stop and ask:
 
-In Pi, use the TUI `ask_user` tool when available. In other agents, ask an explicit yes/no question and stop until the operator approves or redirects.
+- **Intent ambiguity** — acceptance criteria don't define behaviour clearly enough.
+- **Scope conflict** — implementation would touch systems the ticket didn't scope.
+- **Product/UX decision** — multiple valid approaches, choice matters.
+- **Architecture risk** — would break invariants or create problematic patterns.
+- **Validation challenge** — test fails in a way that challenges the approach.
+- **External mutation** — tracker/repo/PR/environment change not pre-authorized.
+- **Completion** — work is built, validated, and ready for operator inspection.
+
+## Depth classification
+
+Not all work needs the full lifecycle. The agent classifies work at entry:
+
+| Depth | Scope | Treatment |
+|---|---|---|
+| **Trivial** | Single file, no behaviour change | Fix, done. No ceremony. |
+| **Small** | Local change, known boundary | Light Build + drift check. |
+| **Medium** | Cross-module, new contracts | Full lifecycle. |
+| **Architectural** | New pattern, migration, multi-service | Full lifecycle + ADR consideration. |
 
 ## Pi agent extension
 
@@ -50,7 +65,7 @@ The extension registers slash commands using `pi.registerCommand()`:
 /cl-compound compound the learning from this work: ...
 ```
 
-Each command sends a user message that asks the agent to use the matching skill. If the agent is busy, the command queues as a follow-up. The extension shows the active Clarity Engineering state in Pi's footer/status bar, and `/cl-state` can show or manually set that state. Agents should use status details for context-aware activity such as `resolving MID-123`, `claimed ticket`, `red test`, `publishing PR`, or `validating`. If `@juanibiapina/pi-powerbar` is installed, Clarity Engineering is emitted as a `cl-engineering` powerbar segment so the state remains visible even though powerbar hides Pi's built-in footer.
+Each command sends a user message that asks the agent to use the matching skill. The extension shows the active Clarity Engineering state in Pi's footer/status bar. Agents should use status details for context-aware activity such as `resolving MID-123`, `depth: medium`, `drift check`, `publishing PR`, or `compounding`. If `@juanibiapina/pi-powerbar` is installed, Clarity Engineering is emitted as a `cl-engineering` powerbar segment.
 
 Preferred local Pi package install:
 
@@ -64,19 +79,17 @@ Manual global install:
 ./scripts/install.sh --target pi
 ```
 
-Then run `/reload` in Pi or restart Pi. When installing everything with `./scripts/install.sh --target all`, the installer keeps Clarity Engineering skills only in Pi's `~/.pi/agent/skills` location and removes duplicate `cl-*` copies from `~/.agents/skills`, because Pi scans both directories and reports skill-name collisions if both contain the same skills.
+Then run `/reload` in Pi or restart Pi.
 
 ## Skills
 
-- `cl-engineering` — route delivery work to the right lifecycle mode, or route framework-setup requests to `cl-setup`.
-- `cl-setup` — configure the Clarity Engineering framework for a codebase: tickets, reference resolution, Plan ticket materialization, Build claim workflow, domain docs, ADRs, validation/e2e tools, MCPs, Review PR publishing workflow, automation policy, local/global memory, context budgets, and human decision rights.
+- `cl-engineering` — route delivery work with autonomous escalation.
+- `cl-setup` — configure the framework for a codebase: tickets, reference resolution, Plan ticket materialization, Build claim workflow, session state and compounding storage, domain docs, ADRs, validation/e2e tools, MCPs, Review PR publishing, escalation policy, local/global memory, context budgets, and human decision rights.
 - `cl-shape` — shape ideas or improve existing tickets into clear intent and supporting artefacts.
-- `cl-plan` — create vertical slices and specify the next selected slice only when useful; materialize independently buildable planned slices/tickets in the configured issue tracker when useful and safe/approved; avoid fake slicing for small coherent tickets.
-- `cl-build` — build already-shaped or resolvable work TDD-first from a selected slice, ticket ID/URL, complete small ticket, bug, failing test, model problem, technical improvement, prior plan, review comments, draft PR, or existing branch. When given a ticket, resolve it and claim/setup work according to repo Setup.
-- `cl-review` — publish completed work by committing, pushing, and raising/updating a PR by default when the repo uses PRs, then validate it against shaped intent with the right mix of AI/human review, tests, builds, PR/code-diff review, manual QA, risk checks, and repository PR-template-aware review notes.
-- `cl-compound` — decide whether reusable learning should be codified.
-
-Pi also exposes skills as `/skill:name` commands when Pi skill commands are enabled. Regardless of entrypoint, stage transitions require operator approval before the agent continues.
+- `cl-plan` — create vertical slices and specify the next slice only when useful; materialize buildable slices in the tracker when useful and safe.
+- `cl-build` — build already-shaped work TDD-first. Classify depth at entry, check for session state and resume, run intent drift detection before committing, compound learnings continuously, update session state. Proceed autonomously; escalate on triggers.
+- `cl-review` — publish completed work by committing, pushing, and raising/updating a PR by default, then validate against shaped intent. Review Build's drift notes. Evidence-aware PR descriptions.
+- `cl-compound` — curate accumulated continuous compound learnings: promote, refresh, deduplicate, or archive.
 
 ## Claude Code slash commands
 
@@ -102,24 +115,14 @@ claude --plugin-dir /path/to/clarity-engineering-plugin/plugins/clarity-engineer
 
 Prompt files live in `prompts/` and can be copied into `~/.codex/prompts/` or loaded by Pi from package/manual install.
 
-Codex style:
-
-```text
-/prompts:cl-plan <ticket or request>
-```
-
-Pi prompt templates also become `/cl-*` slash templates. The extension commands are preferred because they work even when prompt-template loading is disabled and they explicitly send the skill-oriented prompt.
-
 ## Ticket types
 
 1. Product Feature — capability outcome; validation: acceptance walkthrough.
-2. Technical Improvement — internal quality/value; validation: checks, target state, references, cleanup where applicable.
+2. Technical Improvement — internal quality/value; validation: checks, target state, references.
 3. Bug — expected vs actual behavior; validation: regression test.
 4. Spike / Research — answer uncertainty; validation: answer/evidence/recommendation/timebox.
 5. Chore / Maintenance — routine upkeep; validation: task completed.
 
-See `examples/` for generic ticket examples.
-
 ## Limitations
 
-This package intentionally does not include subagents, converter infrastructure, MCP servers, hooks, or built-in ticketing automation. Setup may document MCPs/tools that a codebase already uses, including how to fetch tickets, claim work, push branches, and raise PRs, but the plugin does not require or provide those integrations. Skills remain the portable behavior layer; the Pi extension provides native slash-command entrypoints.
+This package intentionally does not include built-in ticketing automation, subagents, or MCP servers. Setup may document MCPs/tools that a codebase already uses, including how to fetch tickets, claim work, push branches, and raise PRs, but the plugin does not require or provide those integrations. Skills remain the portable behavior layer; the Pi extension provides native slash-command entrypoints.

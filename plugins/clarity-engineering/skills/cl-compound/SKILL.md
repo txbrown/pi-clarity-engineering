@@ -1,36 +1,39 @@
 ---
 name: cl-compound
-description: Compound Clarity Engineering learning by deciding whether useful learning should be codified.
+description: Curate and organize accumulated Clarity Engineering learnings from continuous compounding across Build sessions.
 ---
 
 # Clarity Compound
 
-Use this skill after meaningful work completes, especially when something worked, failed, surprised the team, or revealed reusable learning.
+Use this skill to review, curate, and organize learnings that have been continuously compounded during Build sessions. Continuous compounding already captures learning at the end of every Build; the standalone Compound command curates the accumulated learnings — consolidating duplicates, refreshing stale docs, promoting patterns, and deciding what to keep, archive, or elevate.
 
 ## Goal
 
-Decide whether the system should learn.
+Curate the system's learning so it stays useful, current, and findable.
 
 ## Inputs
 
-- Completed work summary.
-- Decisions made.
-- Surprises, failures, bugs, review comments, or repeated patterns.
-- Existing docs/templates/skills/tests that might need updating.
+- Accumulated continuous compound entries from Build sessions.
+- Decisions made, surprises, failures, bugs, review comments, or repeated patterns.
+- Existing docs/templates/skills/tests flagged as stale or conflicting by continuous compounding.
+- Existing repo memory, global memory, and framework memory to search before writing.
 
 ## Output
 
-Always include a compounding decision:
+Always include a curation decision for each accumulated learning or flagged doc:
 
-- `codify learning` — reusable learning exists and should be captured; or
-- `no reusable learning` — nothing should be codified now.
+- `promote` — reusable beyond current ticket; move to durable memory destination;
+- `refresh` — existing doc is stale; update or replace it;
+- `deduplicate` — merge overlapping entries;
+- `archive` — was useful once but no longer relevant;
+- `keep` — leave as-is in continuous compound; useful as session-level context;
+- `no action` — nothing to curate now.
 
-If codifying, include:
+When promoting:
 
 - learning summary;
 - where it should live: repo memory, global memory, framework memory, note, checklist, prompt, skill, doc, ADR, test helper, setup/config update, or follow-up ticket;
-- concrete update or draft text;
-- owner / next action when relevant.
+- concrete update or draft text.
 
 Use the memory destination rule:
 
@@ -43,18 +46,29 @@ Use the memory destination rule:
 
 Search before writing. Do not bulk-load or duplicate local/global memory; retrieve related entries narrowly and update/consolidate when appropriate.
 
-Also include Compound progress status:
+## Relationship to continuous compounding
 
-- `Done` — learning reviewed, decision made, and codification target or no-op rationale captured.
-- `Left` — missing learning context, target location, owner, draft text, or follow-up action.
-- `Blocked` — the single focused question needed to finish Compound, if any.
-- `Lifecycle complete?` — yes/no, with the reason. Compound does not advance to another lifecycle stage, but call out any optional follow-up rather than silently starting new work.
+Continuous compounding (in Build) is the capture layer — it happens automatically at the end of every Build. This standalone Compound command is the curation layer — it reviews accumulated captures and makes durability decisions.
+
+Think of it as:
+
+- **Continuous compound** = quick daily notes (automatic, per-Build).
+- **Standalone compound** = weekly review and organization (explicit, curation).
+
+Both produce the same structured output; the difference is when and how they're invoked.
+
+## Operator guidance
+
+Keep Compound progress explicit:
+
+- `Done` — accumulated learnings reviewed, curation decisions made, memory destinations updated, stale docs refreshed or flagged.
+- `Left` — uncurated entries, stale docs not yet updated, missing target locations.
+- `Blocked` — escalation trigger fired, the single focused question needed to finish curation.
 
 ## Rules
 
-- Compound is decision-based, not automatic documentation churn.
+- Compound is curation, not automatic documentation churn.
 - Prefer small reusable updates over large process documents.
 - Do not codify private or one-off context unless it changes future behavior.
 - Treat memory as indexed retrieval, not a context dump; preserve context budget by reading only relevant memory entries.
-- Ask one focused question if the reuse value or target location is unclear.
-
+- Escalate with one focused question if the reuse value or target location is unclear.

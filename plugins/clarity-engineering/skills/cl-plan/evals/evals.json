@@ -1,0 +1,42 @@
+{
+  "skill_name": "cl-plan",
+  "evals": [
+    {
+      "id": "slice-large-feature",
+      "name": "Slice a broad feature into vertical buildable units",
+      "prompt": "Plan ticket MID-200: 'Add real-time collaboration to the model editor — multiple users can edit simultaneously, see each other's cursors, and resolve conflicts.'",
+      "expected_output": "The agent creates ordered vertical slices, each delivering observable value, with dependencies, validation strategy, and a recommended next slice. Slices are capability-oriented, not horizontal technical layers.",
+      "assertions": [
+        "Produces multiple ordered vertical slices",
+        "Each slice delivers observable value",
+        "Slices are not horizontal technical layers",
+        "Includes a recommended next slice",
+        "Specifies acceptance details for the selected slice"
+      ]
+    },
+    {
+      "id": "skip-slicing-small-ticket",
+      "name": "Avoid fake slicing for a small coherent ticket",
+      "prompt": "Plan MID-301: 'Add email validation to the signup form — check format on blur, show inline error message, block submission until valid.'",
+      "expected_output": "The agent determines the ticket is small and coherent enough to build directly without slicing. It specifies acceptance details and recommends Build on the whole ticket.",
+      "assertions": [
+        "States the ticket is small enough and does not need slicing",
+        "Specifies acceptance details for the whole ticket",
+        "Recommends building the whole ticket directly",
+        "Does not create artificial child tickets"
+      ]
+    },
+    {
+      "id": "materialize-tracker-tickets",
+      "name": "Materialize buildable slices in the issue tracker",
+      "prompt": "Plan MID-400: 'Build the notification system — email notifications, in-app bell, push notifications, and notification preferences.' This is a large feature in a Linear-tracked repo where child issues are the convention.",
+      "expected_output": "The agent identifies independently buildable slices and proposes creating child issue tickets in Linear for each slice, linking them back to the parent. If not safe, it produces proposed ticket text rather than creating silently.",
+      "assertions": [
+        "Identifies independently buildable slices",
+        "Proposes materializing them in the issue tracker",
+        "References the tracker convention from Setup",
+        "Links created/proposed tickets back to the source"
+      ]
+    }
+  ]
+}

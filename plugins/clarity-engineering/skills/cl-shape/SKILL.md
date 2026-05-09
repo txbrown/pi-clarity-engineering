@@ -26,7 +26,7 @@ At Shape entry, resolve the intent source before creating or rewriting tickets:
 4. Improve or comment on the existing ticket only when useful and safe/approved; otherwise produce suggested wording.
 5. Ask one focused human-judgement question only when scope, priority, desired outcome, or product behavior is materially ambiguous and not discoverable.
 
-Shape creates clarity; it should not invent ceremony for a clear existing ticket.
+Shape creates clarity; it should not invent ceremony for a clear existing ticket. Proceed autonomously through shaping; escalate only when scope, priority, desired outcome, or product behaviour is materially ambiguous and not discoverable.
 
 ## Output
 
@@ -48,8 +48,8 @@ Also include Shape progress status and approval state:
 
 - `Done` — intent source resolved, concise ticket fields completed or existing ticket assessed/improved, metadata placement identified, and supporting artefacts produced where useful.
 - `Left` — missing problem/user story, outcome, acceptance criteria, required notes/design context, metadata values, or stakeholder decisions.
-- `Blocked` — the single focused question needed to finish Shape, if any.
-- `Ready for Plan?` — yes/no, with the reason. Only say yes when the ticket is clear enough to slice. If yes, ask the operator for explicit approval before moving to Plan; in Pi use the TUI `ask_user` tool when available.
+- `Blocked` — escalation trigger fired, the single focused question needed to finish Shape.
+- `Ready for Plan?` — yes/no, with the reason. Only say yes when the ticket is clear enough to slice. Escalate for operator confirmation before Plan; in Pi use the TUI `ask_user` tool when available.
 
 ## Human ownership
 

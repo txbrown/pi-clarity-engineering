@@ -1,0 +1,43 @@
+{
+  "skill_name": "cl-review",
+  "evals": [
+    {
+      "id": "review-publish-pr",
+      "name": "Publish a PR with evidence-aware description",
+      "prompt": "Review the current branch. Build completed MID-123 (model hydration fix). Branch is mid-123-model-hydration. Tests pass, typecheck passes, the Build drift check flagged one deliberate divergence (strict parsing instead of graceful degradation). No existing PR for this branch.",
+      "expected_output": "The agent commits, pushes, discovers no existing PR, raises a new PR with an evidence-aware description including the intentional drift note, validates against ticket intent, and produces a review decision.",
+      "assertions": [
+        "Commits changes or confirms they are committed",
+        "Discovers no existing PR for the branch",
+        "Raises a new PR",
+        "PR description includes the deliberate drift from Build",
+        "PR description includes validation evidence",
+        "Produces a review decision"
+      ]
+    },
+    {
+      "id": "review-update-existing-pr",
+      "name": "Update an existing PR instead of creating a duplicate",
+      "prompt": "Review the current branch for MID-456. There's already PR #789 open for this branch with unresolved review comments. New commits address two of the three comments.",
+      "expected_output": "The agent discovers the existing PR, updates it with the new commits rather than creating a duplicate, resolves the addressed comments, and reviews the remaining open comment.",
+      "assertions": [
+        "Discovers the existing PR #789",
+        "Updates the existing PR instead of creating a new one",
+        "Addresses the resolved review comments",
+        "Identifies the remaining unresolved comment"
+      ]
+    },
+    {
+      "id": "review-refinement-loop",
+      "name": "Classify review findings and route to Build",
+      "prompt": "Review PR #456 for MID-123. The PR has three comments: (1) 'Add a comment explaining the strict parsing rationale' — valid, (2) 'Rename this variable' — trivial style preference, (3) 'This might break the mobile app's error handling' — needs product decision about whether mobile can handle strict errors.",
+      "expected_output": "The agent classifies each comment: (1) valid and actionable — route to Build, (2) trivial — note but low priority, (3) needs product decision — escalate. Routes actionable fixes to the smallest Build loop.",
+      "assertions": [
+        "Classifies each review comment individually",
+        "Routes the actionable fix to Build",
+        "Escalates the product-sensitive comment",
+        "Does not silently resolve the disputed comment"
+      ]
+    }
+  ]
+}

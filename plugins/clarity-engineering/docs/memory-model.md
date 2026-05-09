@@ -9,17 +9,37 @@ The framework leaves room for both:
 
 The current ticket/slice still owns intent. If memory conflicts with the shaped ticket, surface the conflict instead of silently overriding intent.
 
+Session state and continuous compound are live, per-session artifacts that sit alongside repo memory — they're transient working memory, not durable reference material.
+
 ## Memory hierarchy
 
 Use memory in this order, from most task-specific to most general:
 
 ```text
 Current session context
+Session state (per ticket, resume-capable)
 Ticket / slice context
+Continuous compound (per-Build captures)
 Repo memory
 Global memory
 Framework memory
 ```
+
+## Session state and continuous compound
+
+Session state is per-ticket working memory that survives across sessions. The agent writes it at the end of every Build and reads it at Build entry to resume where it left off.
+
+Content:
+
+- branch name;
+- last session date;
+- depth classification;
+- completed work items;
+- remaining work items;
+- PR link;
+- current blockers.
+
+Continuous compound is the automatic capture of learnings at the end of every Build. It stays in scope during the current work cycle and is curated (promoted, refreshed, deduplicated, or archived) by the standalone Compound command.
 
 ## Repo memory
 
@@ -35,6 +55,7 @@ docs/agents/domain.md
 docs/agents/validation.md
 docs/agents/tools-and-mcps.md
 docs/agents/review-workflow.md
+docs/agents/session-state/
 docs/adr/
 docs/solutions/
 docs/clarity/learnings/
@@ -93,6 +114,8 @@ If context grows too large:
 
 - Local repo memory:
 - Global memory:
+- Session state location:
+- Continuous compound location:
 - Load order:
 - Do not bulk-load:
 - Default context budget:
@@ -104,6 +127,7 @@ If context grows too large:
 
 | Learning type | Preferred home |
 |---|---|
+| Build-specific learning (per ticket) | Continuous compound; promoted to repo/global by standalone Compound |
 | Codebase-specific fact or fix | Repo memory, such as `docs/solutions/` or `docs/clarity/learnings/` |
 | Domain term | Repo `CONTEXT.md` or domain glossary |
 | Architecture decision | Repo `docs/adr/` |

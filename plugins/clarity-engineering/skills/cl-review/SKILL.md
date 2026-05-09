@@ -25,7 +25,7 @@ Publish completed work into a reviewable form when appropriate, validate it agai
 
 - Shaped ticket, ticket ID/URL, acceptance details, selected slice, or intended outcome.
 - Current branch state, commits, diff, PR URL/number, design, implementation summary, build artefact, app environment, or file paths.
-- Relevant tests/check results, build status, CI status, manual QA notes, screenshots, logs, or reviewer comments.
+- Relevant tests/check results, build status, CI status, manual QA notes, screenshots, logs, intent drift check from Build, or reviewer comments.
 
 ## Context-aware Review entry: publish for review
 
@@ -34,43 +34,47 @@ At Review entry, resolve the intent source and review target before deciding whe
 1. Identify the input kind: no argument/current branch, ticket ID/URL, PR URL/number, branch, diff, review comments, implementation summary, or explicit user request.
 2. Fetch/read the relevant context using repo setup and available tools. For tickets, read title, description, status, comments, acceptance criteria, and linked branches/PRs. For PRs, read diff, description, comments, checks/CI, review state, and linked ticket.
 3. Inspect current branch awareness: git status, current branch, commits ahead of base, current diff, remote tracking branch, and whether branch/commits imply a ticket key.
-4. Discover existing PRs before creating new ones: current branch PR, PR linked to ticket, draft/ready state, unresolved review comments, and CI status.
-5. Decide publish action: create PR if none exists and work is review-ready; update PR if one exists; perform local-only review only when requested/configured or when work is not ready to publish.
+4. **Check for session state**: if Build maintained a session state, read it for context on what was completed, what remains, and any blockers.
+5. **Review the intent drift check** from Build: note any deliberate drift flagged for review attention.
+6. Discover existing PRs before creating new ones: current branch PR, PR linked to ticket, draft/ready state, unresolved review comments, and CI status.
+7. Decide publish action: create PR if none exists and work is review-ready; update PR if one exists; perform local-only review only when requested/configured or when work is not ready.
 
-When moving from Build to Review, the default Review entry workflow is:
+When moving from Build to Review, the Review entry workflow is:
 
 1. Inspect git status and confirm the intended branch/scope.
 2. Run or summarize the minimum checks needed before publishing, if not already done in Build.
-3. Commit completed Review-ready work with a clear message that follows the author's or codebase's existing commit patterns, unless the operator explicitly wants an uncommitted local review.
+3. Commit completed Review-ready work with a clear message, unless the operator explicitly wants an uncommitted local review.
 4. Push the branch when a remote workflow exists.
 5. Raise or update a PR when the codebase uses PRs, following the repository-local PR template if found.
 6. Link the PR to the ticket and move the ticket to the configured Review/In Review state when Setup marks those actions safe or the operator approves.
 
-Before committing, discover the expected commit style from recent git history, repository docs, configured commit tooling, and the author's existing pattern. Prefer the codebase convention when it is clear; otherwise match the author's recent style for similar changes. Do not invent a new convention.
-
-Do not commit unrelated user changes. Do not push directly to a protected/default branch unless the operator explicitly confirms that workflow. If the working tree contains ambiguous changes or commit style is materially unclear, ask one focused question before committing.
+Do not commit unrelated user changes. Do not push directly to a protected/default branch unless the operator explicitly confirms that workflow. If the working tree contains ambiguous changes, escalate with one focused question before committing.
 
 If the repo's publish/review workflow, PR template, CI requirements, e2e/manual QA path, branch convention, ticket/PR linking rules, or tool/MCP expectations are unknown and materially affect Review, use or request Clarity Setup before guessing.
 
-## Uncertainty and automation policy
+## Escalation and automation policy
 
-Before asking the operator, classify uncertainty:
+Review follows the framework escalation model. Proceed autonomously through safe validation; escalate only when a trigger fires.
 
-- **discoverable** — inspect ticket/PR comments, CI, docs, code, setup, current branch, tests, or logs first;
-- **non-blocking assumption** — proceed, state the assumption, and include it in Review/PR notes;
-- **blocking** — ask one focused question before publishing, changing scope, or deciding.
+Escalation triggers during Review:
 
-Follow Setup's automation policy. If no policy exists, ask before write-capable external actions such as pushing, raising/updating PRs, moving tickets, modifying ticket descriptions, resolving comments, merging, deploying, releasing, or touching protected branches. Setup may pre-authorize normal Review publishing so `cl-review` can commit, push, and raise/update PR without interrupting when changes are unambiguous.
+- **Publish ambiguity** — unclear whether to create or update a PR, or whether the work is review-ready.
+- **Intent drift unresolved** — Build flagged deliberate drift that needs operator judgement.
+- **Validation failure** — CI, e2e, or manual QA finds a defect that challenges the approach.
+- **Scope or product concern** — review finding requires a product/architecture decision.
+- **External mutation** — committing, pushing, raising/updating PR, moving ticket, resolving comments — unless Setup pre-authorizes.
+
+Follow Setup's automation policy. If no policy exists, escalate before write-capable external actions. Setup may pre-authorize normal Review publishing so Review can commit, push, and raise/update PR without interrupting when changes are unambiguous.
 
 ## Review feedback loop
 
-If Review finds existing PR comments or human/AI findings, treat them as a normal refinement loop, not a new stage:
+If Review finds existing PR comments or human/AI findings, treat them as a normal refinement loop:
 
 1. Collect comments/findings.
 2. Classify each as valid, invalid, duplicate, already fixed, or needs human/product decision.
 3. Route valid actionable fixes to the smallest necessary Build loop, preferably TDD-first.
 4. Re-run targeted validation.
-5. Update the PR and comment/resolve threads according to setup and approval policy.
+5. Update the PR and comment/resolve threads according to setup and escalation policy.
 6. Re-review until the decision is clear.
 
 ## Review modes
@@ -88,8 +92,8 @@ After or alongside publishing, choose the smallest useful mix for the risk and c
 
 Keep shaped intent first even when the review mode varies:
 
-1. **Publish PR** — commit completed work, push the branch, discover/create/update the PR, and link ticket/PR when appropriate for the repository workflow.
-2. **Validation** — shaped intent and acceptance details first: does the work solve the agreed problem without silent scope drift?
+1. **Publish PR** — commit completed work, push the branch, discover/create/update the PR, and link ticket/PR when appropriate.
+2. **Validation** — shaped intent and acceptance details first: does the work solve the agreed problem without silent scope drift? Review the intent drift check from Build.
 3. **Validation evidence** — tests, manual QA, automation, builds, or other checks appropriate to the risk.
 4. **Implementation quality** — type/state clarity, boundaries, composition, maintainability, and failure modes.
 5. **Understanding** — PR/readme/review notes explain what changed, why, how to review it, and any important trade-offs.
@@ -110,20 +114,19 @@ Discovery should be local and conventional, for example:
 
 If a template is found, preserve its headings and intent when drafting PR text. Fill sections with review evidence such as why the change is needed, how it was implemented, test/build/e2e/manual validation, screenshots or links when relevant, and known risks. If no template is found, use a compact structure that covers `Why`, `How`, `Validation`, and `Risks / Follow-up`.
 
-PR descriptions should be evidence-aware: derive them from ticket intent, implementation summary, tests run, manual QA/e2e, screenshots/logs when relevant, known risks, and follow-up decisions. Avoid generic PR text.
+PR descriptions should be evidence-aware: derive them from ticket intent, implementation summary, intent drift notes, tests run, manual QA/e2e, screenshots/logs when relevant, known risks, and follow-up decisions. Avoid generic PR text.
 
 ## Operator guidance
 
-At the start, state which review modes are appropriate and why. Do not require every review mode for every change; choose proportionally.
+At the start, state which review modes are appropriate and why. Do not require every review mode for every change; choose proportionally to the depth classified during Build.
 
-Guide the operator through the review visibly so they can see which checks are complete and which evidence is missing.
+Guide the operator through the review visibly so they can see which checks are complete and which evidence is missing. Proceed autonomously; escalate only when a trigger fires.
 
 Keep completion state explicit:
 
-- `Done` — intent source resolved, PR created/updated or deliberately skipped, review modes completed, evidence considered, and findings/decision captured.
+- `Done` — intent source resolved, PR created/updated or deliberately skipped, review modes completed, evidence considered, session state updated, and findings/decision captured.
 - `Left` — uncommitted/unpushed work, PR creation/update, unchecked review modes, missing test/build/manual evidence, unresolved risks, PR/human review tasks, or follow-up fixes.
-- `Blocked` — the single focused question or missing evidence needed to finish Review, if any.
-- `Ready for Compound?` — yes/no, with the reason. Say yes when the review decision is clear and required changes are resolved, explicitly assigned, or deliberately accepted as follow-up. If yes, ask the operator for explicit approval before moving to Compound; in Pi use the TUI `ask_user` tool when available.
+- `Blocked` — escalation trigger fired, the single focused question or missing evidence needed to continue.
 
 ## Output
 
@@ -139,15 +142,14 @@ Then include, as needed:
 - suggested fixes or refinement loop target;
 - risks and follow-up;
 - setup/config gaps discovered, if future Review would be clearer with local workflow documentation;
-- Review progress status: `Done`, `Left`, `Blocked`, `Ready for Compound?`, and approval state;
-- one focused question if human judgement blocks the decision.
+- Review completion status and any escalation trigger + question.
 
 ## Rules
 
-- Do not advance to the next lifecycle stage without explicit operator approval; a direct `cl-review` command may complete all Review responsibilities, including PR publication, without conceptual sub-approvals inside Review when Setup authorizes the required operations.
+- Proceed autonomously through safe validation; escalate only when a trigger fires.
 - Do not start with style nits when intent correctness is unresolved.
 - Prefer actionable findings tied to acceptance details and evidence.
 - Mark `request-changes` when Review finds fixable issues that should be addressed before approval.
 - Mark `blocked` when key evidence or human judgement is missing.
 - Mark `rescope` when implementation and shaped intent diverge but the new direction may be valid.
-- A Review refinement loop may return to Build, Plan, or Shape, but crossing lifecycle stages still requires explicit operator approval.
+- A Review refinement loop may return to Build, Plan, or Shape. Escalate before crossing lifecycle stages.

@@ -1,13 +1,13 @@
 ---
 name: cl-setup
-description: Configure Clarity Engineering for a codebase by discovering where tickets, domain docs, ADRs, validation/e2e tools, MCPs, review workflows, and human decision rights live.
+description: Configure Clarity Engineering for a codebase by discovering where tickets, domain docs, ADRs, validation/e2e tools, MCPs, review workflows, session state, and escalation boundaries live.
 ---
 
 # Clarity Setup
 
 Use this skill when applying Clarity Engineering to a new repo/codebase, when an agent lacks local workflow context, or when repeated friction shows the codebase setup is incomplete.
 
-Setup is not a new delivery lifecycle stage or lifecycle mode. It is **Clarity Engineering framework setup/configuration for a codebase**: the adapter that lets the lifecycle work across different teams, ticket systems, MCPs, e2e tools, validation commands, and review workflows.
+Setup is not a new delivery lifecycle stage or lifecycle mode. It is **Clarity Engineering framework setup/configuration for a codebase**: the adapter that lets the lifecycle work across different teams, ticket systems, MCPs, e2e tools, validation commands, session-state storage, and escalation policies.
 
 ## Goal
 
@@ -19,11 +19,13 @@ The setup should answer:
 - how stage commands resolve work references such as ticket IDs/URLs, PRs, branches, diffs, failing tests, and review comments;
 - how Plan materializes defined slices/tickets in the issue tracker when appropriate;
 - how Build claims work through ticket status, assignment, and branch creation;
+- where session state is stored and how it survives across sessions;
+- where continuous compound entries are written;
 - where domain language, ADRs, and supporting docs live;
 - which validation, build, e2e, manual QA, and app-running paths prove behavior;
-- which tools or MCPs are available, what they are for, and which operations require approval;
+- which tools or MCPs are available, what they are for, and which operations require escalation;
 - how Review publishes PRs through commits, branches, PR discovery/creation/update, CI, release checks, and evidence;
-- which normal automation is pre-authorized and which actions require approval;
+- which normal automation is safe and which actions require escalation;
 - where local repo memory and global memory live;
 - what memory should not be bulk-loaded;
 - what context budget expectations apply by stage;
@@ -83,13 +85,13 @@ Document how Plan should raise or update issue-tracker tickets when it defines i
 - whether Plan-created slices become child issues, linked follow-up tickets, checklist items on the parent ticket, local markdown, or no tracker items;
 - tracker project/team/default status;
 - parent/child and dependency conventions;
-- labels, milestones, estimates, assignee, priority defaults, and other metadata defaults;
-- concise title/body format for planned tickets, including required and optional body sections;
-- which relationships and fields must be represented as tracker metadata rather than repeated in the description body;
-- whether creating/updating tracker tickets requires approval;
+- labels, milestones, estimates, assignee, and priority defaults;
+- title/body format for planned tickets;
+- how to link created tickets back to the source ticket or plan;
+- whether creating/updating tracker tickets requires escalation;
 - when not to create tickets, such as tiny implementation steps or a source ticket that is already small enough.
 
-Plan should not create tracker tickets by default for every slice unless setup says that is the team's workflow. It should materialize only tickets that are independently buildable, reviewable, assignable, or likely to survive beyond the current session. When materializing tickets, prefer a short body focused on problem/user story, acceptance criteria, and useful notes/design context; use tracker fields and links for parentage, project/team ownership, labels, priority, dependencies, and related issues.
+Plan should not create tracker tickets by default for every slice unless setup says that is the team's workflow. It should materialize only tickets that are independently buildable, reviewable, assignable, or likely to survive beyond the current session.
 
 ### 3. Build claim workflow
 
@@ -100,11 +102,21 @@ Document how Build should claim and prepare active work:
 - branch creation/switching convention;
 - branch naming pattern;
 - commit/ticket reference convention;
-- whether ticket mutations require approval;
+- whether ticket mutations require escalation;
 - whether local branch creation is safe without asking;
 - how to continue from an existing branch or draft PR.
 
-### 4. Domain and decisions
+### 4. Session state and compounding
+
+Document where session state and continuous compound entries live:
+
+- session state location, such as `docs/agents/session-state/` or inline in tickets;
+- session state format;
+- whether session state is per-ticket, per-branch, or global;
+- continuous compound location;
+- standalone compound curation cadence or trigger.
+
+### 5. Domain and decisions
 
 Document where agents should learn language and past choices:
 
@@ -115,7 +127,7 @@ Document where agents should learn language and past choices:
 
 ADR rule: offer an ADR only when the decision is hard to reverse, surprising without context, and the result of a real trade-off.
 
-### 5. Validation and feedback loops
+### 6. Validation and feedback loops
 
 Document the fastest reliable checks:
 
@@ -130,21 +142,21 @@ Document the fastest reliable checks:
 
 For bugs, the setup should help Build establish a feedback loop before hypothesising.
 
-### 6. Tools and MCPs
+### 7. Tools and MCPs
 
 Document available tools and their safety boundaries:
 
-| Tool / MCP | Purpose | Safe operations | Requires approval | Fallback |
+| Tool / MCP | Purpose | Safe operations | Requires escalation | Fallback |
 |---|---|---|---|---|
 
-Treat write-capable tools carefully. Creating tickets, mutating Jira/Linear/GitHub, pushing branches, updating PRs, touching environments, or accessing sensitive data should have explicit approval expectations.
+Treat write-capable tools carefully. Creating tickets, mutating Jira/Linear/GitHub, pushing branches, updating PRs, touching environments, or accessing sensitive data should have explicit escalation expectations.
 
-### 7. Review and publishing
+### 8. Review and publishing
 
 Document how completed work becomes reviewable:
 
 - branch convention;
-- commit convention and how to infer it from author/codebase history;
+- commit convention;
 - PR discovery command/tool;
 - PR creation/update command/tool;
 - PR template location;
@@ -164,25 +176,27 @@ Review = Publish PR + Validation + Understanding + Decision
 
 `cl-review` should normally commit intended changes, push the branch, and raise or update a PR when the repository uses PRs. It should first discover whether a PR already exists for the current branch or ticket to avoid duplicates.
 
-### 8. Automation policy
+### 9. Automation and escalation policy
 
-Document what agents may do without asking and what requires approval. Prefer repo/user-specific policy over universal assumptions.
+Document what agents may do autonomously and what triggers escalation. Prefer repo/user-specific policy over universal assumptions.
 
-Examples usually safe when configured:
+Autonomous (no escalation):
 
 - read tickets, PRs, comments, docs, logs, and code;
 - inspect git status/branch/diff;
-- create planned child/follow-up tickets during Plan;
+- classify depth at Build entry;
 - create or switch local branches;
 - run tests, typecheck, lint, build, e2e, or manual QA scripts;
 - create local commits;
+- write/update session state;
+- perform continuous compounding;
 - move ticket to In Progress;
 - push a feature branch;
 - open or update a draft/normal PR.
 
-Examples usually approval-required unless explicitly pre-authorized:
+Escalation-required (ask before):
 
-- modify existing ticket title/description/scope;
+- modify ticket title/description/scope;
 - assign other people;
 - force push;
 - push to protected/default branches;
@@ -192,7 +206,9 @@ Examples usually approval-required unless explicitly pre-authorized:
 - deploy/release;
 - destructive data or environment operations.
 
-### 9. Memory and context policy
+Additional framework-defined escalation triggers: intent ambiguity, scope conflict, product/UX decision, architecture risk, validation challenge, completion.
+
+### 10. Memory and context policy
 
 Document local/global memory and retrieval discipline:
 
@@ -206,11 +222,12 @@ Document local/global memory and retrieval discipline:
 
 Rule of thumb: local repo memory is authoritative for codebase-specific facts. Global memory is supplementary for cross-repo preferences, reusable patterns, and framework learning. Current ticket/slice intent overrides both.
 
-### 10. Human decision rights
+### 11. Human decision rights
 
 Document what cannot be assumed by the agent:
 
-- lifecycle transition approvals for guided multi-stage work;
+- escalation judgement for scope, product, architecture, security, and release;
+- lifecycle transition when in guided mode;
 - scope changes;
 - product/taste decisions;
 - architecture/security/privacy decisions;
@@ -219,13 +236,13 @@ Document what cannot be assumed by the agent:
 
 ## Operator guidance
 
-When setup is incomplete, ask one focused question at a time. Do not ask questions whose answers can be discovered from the repo.
+When setup is incomplete, escalate one focused question at a time. Do not ask questions whose answers can be discovered from the repo.
 
 Keep setup progress explicit:
 
 - `Done` — discovered context and written/updated setup sections.
-- `Left` — missing work tracking, domain docs, validation, MCP/tool, review, memory/context policy, or decision-rights context.
-- `Blocked` — the single focused question needed to finish setup.
+- `Left` — missing work tracking, domain docs, validation, MCP/tool, review, session state, escalation, memory/context policy, or decision-rights context.
+- `Blocked` — escalation trigger fired, the single focused question needed to finish setup.
 - `Ready for use?` — yes/no, with what parts of Clarity Engineering are now better supported.
 
 ## Output
@@ -233,8 +250,8 @@ Keep setup progress explicit:
 - Setup artifact path(s) created or updated.
 - Summary of discovered local workflow.
 - Missing context or recommended follow-up.
-- Work reference resolution, Plan ticket materialization, and Build claim/Review publish behavior.
-- Automation policy for safe vs approval-required operations.
+- Work reference resolution, Plan ticket materialization, Build claim/Review publish behavior, session state and compounding locations.
+- Automation and escalation policy for safe vs escalation-required operations.
 - Tool/MCP safety notes.
 - Validation commands and review evidence expectations.
 - Memory locations, load order, and context budget expectations.
@@ -247,4 +264,4 @@ Keep setup progress explicit:
 - Do not create configuration theatre; setup exists to reduce ambiguity and improve validation.
 - Do not perform write-capable external operations during setup unless explicitly requested and approved.
 - Link setup from agent instructions when useful so future agents can find it.
-- During Compound, update setup when repeated friction shows local configuration is missing or wrong.
+- During continuous compounding or standalone Compound, update setup when repeated friction shows local configuration is missing or wrong.

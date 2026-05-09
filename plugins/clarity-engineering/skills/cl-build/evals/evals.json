@@ -1,0 +1,56 @@
+{
+  "skill_name": "cl-build",
+  "evals": [
+    {
+      "id": "build-small-bug-tdd",
+      "name": "Build a bug fix TDD-first with depth classification",
+      "prompt": "Build MID-123: 'Model hydration crashes when optional fields are null instead of missing. Expected: null fields treated same as missing — defaults applied. Validation errors for required fields must be preserved.' The existing test file is ModelHydration.test.ts with a clear test seam.",
+      "expected_output": "The agent classifies depth (small), writes a failing regression test first, implements the minimal fix, runs checks, and reports results. No scope creep.",
+      "assertions": [
+        "Depth is classified at the start",
+        "A failing test is written before implementation code",
+        "Implementation is minimal",
+        "Checks are run",
+        "Existing validation behavior is preserved"
+      ]
+    },
+    {
+      "id": "drift-check-intentional",
+      "name": "Detect deliberate intent drift and flag it without escalating",
+      "prompt": "Build MID-789: 'Gracefully degrade when malformed payloads arrive — return partial model with warnings.' After TDD implementation, you realize the approach needs to shift: the team decided strict rejection is better because silent degradation has been hiding data bugs for months.",
+      "expected_output": "The agent runs an intent drift check, classifies the divergence (strict rejection vs graceful degradation) as a deliberate improvement, flags it for review, and does NOT escalate because it's intentional and justified.",
+      "assertions": [
+        "Runs an intent drift check that references the original acceptance criteria",
+        "Classifies the divergence as deliberate improvement",
+        "Explains the rationale for the deliberate change",
+        "Flags the drift for review attention",
+        "Does NOT escalate"
+      ]
+    },
+    {
+      "id": "drift-check-accidental",
+      "name": "Detect accidental scope creep and escalate",
+      "prompt": "Build MID-456: 'Add a cancel button to the model edit form.' While building, you realize you've also refactored the entire form validation system because it seemed related. The ticket didn't ask for that.",
+      "expected_output": "The agent runs an intent drift check, identifies the form validation refactor as accidental scope creep, and escalates with a focused question about whether to reduce scope or keep the refactor.",
+      "assertions": [
+        "Runs an intent drift check",
+        "Identifies the form validation refactor as outside ticket scope",
+        "Classifies it as accidental scope creep",
+        "Escalates to the operator with a focused question"
+      ]
+    },
+    {
+      "id": "compound-continuously",
+      "name": "Compound learnings at end of Build",
+      "prompt": "Build MID-567: 'Fix the race condition in concurrent model saves.' After implementing with an optimistic lock, the agent learned: (1) the save pipeline had no concurrency control at all, (2) the existing integration tests didn't cover concurrent scenarios, (3) optimistic locking was simpler than pessimistic for this use case.",
+      "expected_output": "The agent writes a continuous compound section identifying all three learnings, deciding reusability (repo memory for concurrency gap discovery and missing test coverage, skip for locking choice since it's context-specific), and flagging the stale integration test coverage.",
+      "assertions": [
+        "Identifies all three learnings",
+        "Classifies each learning for reusability",
+        "Directs codebase-specific findings to repo memory",
+        "Flags stale test coverage as needing attention",
+        "Includes the compound in Build output"
+      ]
+    }
+  ]
+}

@@ -27,7 +27,7 @@ At Plan entry, resolve the intent source before slicing:
 5. If the ticket is broad, risky, or contains independent capabilities, slice it vertically.
 6. Ask one focused question only when acceptance behavior, selected slice, or scope is materially ambiguous.
 
-Do not make a large plan just because Plan was called. Plan should produce only enough structure to make the next Build safe and clear.
+Do not make a large plan just because Plan was called. Plan should produce only enough structure to make the next Build safe and clear. Proceed autonomously through slicing and specifying; escalate only when the selected slice, acceptance behaviour, or tracker-materialization decision requires operator judgement.
 
 ## Slice
 
@@ -92,9 +92,9 @@ Keep completion state explicit:
 
 - `Done` — slices created, tracker tickets created/updated or deliberately skipped/proposed, recommended slice selected, acceptance details captured.
 - `Left` — missing acceptance examples, edge cases, outcomes, non-goals, dependencies, validation notes, or pending tracker creation approval.
-- `Blocked` — the single focused question needed to finish Plan, if any.
-- `Ready for Specify?` after Slice — yes/no, with the reason. Ask the operator to approve the ordered slice breakdown and selected next slice before writing Specify details; in Pi use the TUI `ask_user` tool when available.
-- `Ready for Build?` — yes/no, with the reason. Only say yes when the next slice has enough acceptance detail for Build to write the first failing behavior test. If yes, ask the operator for explicit approval before moving to Build.
+- `Blocked` — escalation trigger fired, the single focused question needed to finish Plan.
+- `Ready for Specify?` after Slice — yes/no, with the reason. Escalate only when the slice breakdown or selected next slice requires operator judgement; for straightforward breakdowns, proceed to Specify autonomously.
+- `Ready for Build?` — yes/no, with the reason. Only say yes when the next slice/ticket has enough acceptance detail for Build to write the first failing behavior test. Escalate for operator confirmation before Build; in Pi use the TUI `ask_user` tool when available.
 
 ## Output
 

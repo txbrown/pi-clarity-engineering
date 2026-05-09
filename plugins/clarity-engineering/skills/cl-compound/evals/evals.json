@@ -1,0 +1,30 @@
+{
+  "skill_name": "cl-compound",
+  "evals": [
+    {
+      "id": "curate-accumulated",
+      "name": "Curate accumulated continuous compound learnings",
+      "prompt": "Curate these accumulated learnings from recent Build sessions: (1) 'ModelHydration parser silently drops unknown fields — MID-123 — saved to docs/solutions/model-hydration.md' (2) 'Race condition in concurrent saves fixed with optimistic locking — MID-567 — saved to docs/solutions/concurrent-saves.md' (3) 'The same optimistic locking pattern appeared in MID-567 and MID-589 — potential cross-repo pattern' (4) 'Stale doc: docs/solutions/model-parsing.md — out of date after MID-123'",
+      "expected_output": "The agent curates each entry: (1) keeps in docs/solutions, (2) keeps in docs/solutions, (3) promotes to global memory as a reusable cross-repo pattern, (4) refreshes the stale doc. No duplicates or conflicts found.",
+      "assertions": [
+        "Reviews all four accumulated learnings",
+        "Promotes the repeated optimistic locking pattern to global memory",
+        "Flags the stale doc for refresh",
+        "Decides appropriate action for each entry",
+        "Searches for conflicts before writing"
+      ]
+    },
+    {
+      "id": "deduplicate-overlap",
+      "name": "Deduplicate overlapping learnings",
+      "prompt": "Curate these accumulated learnings: (1) 'Default values for optional fields should come from a centralized module — MID-123' (2) 'Moved all field defaults to defaults.ts — MID-123' (3) 'Centralized defaults are better than per-field defaults — MID-456'",
+      "expected_output": "The agent identifies all three entries describe the same pattern — centralized defaults — and merges them into one durable entry rather than keeping three near-identical captures.",
+      "assertions": [
+        "Identifies the three entries as describing the same learning",
+        "Merges them into a single durable entry",
+        "Removes duplicates rather than keeping all three",
+        "Preserves the essential learning"
+      ]
+    }
+  ]
+}

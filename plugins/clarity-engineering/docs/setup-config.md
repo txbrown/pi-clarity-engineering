@@ -8,7 +8,7 @@ Setup is not a new lifecycle stage or lifecycle mode. It is **Clarity Engineerin
 Shape → Plan → Build → Review → Compound
 ```
 
-and the codebase's real ticket system, reference-resolution rules, Plan ticket materialization workflow, Build claim workflow, domain language, validation tools, MCPs, e2e flows, Review PR publishing process, automation policy, memory locations, context budgets, and human decision rights.
+and the codebase's real ticket system, reference-resolution rules, Plan ticket materialization workflow, Build claim workflow, session-state and compounding storage, domain language, validation tools, MCPs, e2e flows, Review PR publishing process, escalation policy, memory locations, context budgets, and human decision rights.
 
 ## Recommended artifact
 
@@ -71,7 +71,15 @@ Use whatever names match the repo. Findability matters more than exact paths.
 - Branch naming pattern:
 - Commit/ticket reference convention:
 - Continue existing branch/PR behavior:
-- Requires approval:
+- Requires escalation:
+
+## Session state and compounding
+
+- Session state location:
+- Session state format:
+- Per-ticket or per-branch:
+- Continuous compound location:
+- Standalone compound curation cadence:
 
 ## Domain and decisions
 
@@ -93,7 +101,7 @@ Use whatever names match the repo. Findability matters more than exact paths.
 
 ## Tools and MCPs
 
-| Tool / MCP | Purpose | Safe operations | Requires approval | Fallback |
+| Tool / MCP | Purpose | Safe operations | Requires escalation | Fallback |
 |---|---|---|---|---|
 |  |  |  |  |  |
 
@@ -111,20 +119,23 @@ Use whatever names match the repo. Findability matters more than exact paths.
 - Release/rollout:
 - Review evidence expected:
 
-## Automation policy
+## Automation and escalation policy
 
-Allowed without asking:
+Autonomous (no escalation):
 - Read tickets/PRs/comments/docs/code:
 - Inspect git status/branch/diff:
+- Classify depth at Build entry:
 - Create/switch local branches:
 - Run validation commands:
 - Create local commits:
+- Write/update session state:
+- Perform continuous compounding:
 - Create planned child/follow-up tickets during Plan:
 - Move ticket to In Progress:
 - Push feature branch:
 - Open/update PR:
 
-Ask first:
+Escalation-required (ask first):
 - Modify existing ticket scope/title/description:
 - Assign other people:
 - Force push/protected branch writes:
@@ -158,10 +169,10 @@ Ask first:
 - Configure enough context for humans and AI agents to share reality.
 - Prefer existing repo conventions over framework defaults.
 - Keep setup lightweight; do not create configuration theatre.
-- Stages are context-aware: resolve ticket/PR/branch/diff/test/user-request intent before doing stage work.
-- `cl-plan <ticket>` should materialize independently buildable slices in the configured issue tracker when useful and safe/approved, or explicitly say no child tickets are needed.
-- `cl-build <ticket>` should fetch the ticket, claim it according to setup, create/switch branch when appropriate, and build TDD-first.
-- `cl-review` should normally commit, push, and raise/update a PR when the repository uses PRs.
+- Stages are context-aware under an autonomy-with-escalation model. Agents proceed through safe work without asking; escalate only when a trigger fires.
+- `cl-build <ticket>` should classify depth, check session state, build TDD-first, run drift check, compound continuously, update session state.
+- `cl-review` should commit, push, raise/update PR by default including drift notes.
+- `cl-compound` curates accumulated learnings; continuous compounding already happens during Build.
 - Treat write-capable MCPs/tools carefully and configure safe vs approval-required automation explicitly.
 - Update setup during Compound when repeated friction appears.
 - Treat memory as indexed retrieval, not a context dump.

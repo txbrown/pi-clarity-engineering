@@ -60,7 +60,7 @@ const modes: Mode[] = [
     label: "Routing",
     description: "Route work through Clarity Engineering",
     argumentHint: "[request, ticket, plan, diff, or context]",
-    instruction: "Route this request to Shape, Plan, Build, Review, or Compound, then apply the selected mode.",
+    instruction: "Route this request to Shape, Plan, Build, Review, or Compound, then apply the selected mode. Clarity Engineering is a lightweight constitution, not a checklist. The agent owns execution flow. Resolve intent source, retrieve narrow relevant context, classify depth at Build entry, perform stage work autonomously, and escalate only when a trigger fires.",
   },
   {
     command: "cl-setup",
@@ -69,7 +69,7 @@ const modes: Mode[] = [
     label: "Setup",
     description: "Configure the Clarity Engineering framework for this codebase",
     argumentHint: "[repo context, ticket system, tools, MCPs, validation, or review workflow]",
-    instruction: "Apply Clarity Engineering framework setup. Discover or draft the local Clarity Engineering setup/configuration for this codebase: where tickets live, how stage commands resolve ticket/PR/branch/diff/test references, how Plan materializes defined slices/tickets in the issue tracker, how Build claims work, where domain language and ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, where local/global memory lives, what context budget policy applies, what automation is safe, and which decisions require human approval. Setup is framework configuration, not a delivery lifecycle stage or lifecycle mode. Keep it lightweight, adaptable, and grounded in existing repo conventions.",
+    instruction: "Apply Clarity Engineering framework setup. Discover or draft the local Clarity Engineering setup/configuration for this codebase: where tickets live, how stage commands resolve ticket/PR/branch/diff/test references, how Plan materializes defined slices/tickets in the issue tracker, how Build claims work, where session state and continuous compound entries live, where domain language and ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, where local/global memory lives, what context budget policy applies, what automation is safe and what requires escalation, and which decisions require human judgement. Setup is framework configuration, not a delivery lifecycle stage or lifecycle mode. Keep it lightweight, adaptable, and grounded in existing repo conventions.",
   },
   {
     command: "cl-shape",
@@ -78,7 +78,7 @@ const modes: Mode[] = [
     label: "Shape",
     description: "Shape an idea into Clarity Engineering tickets",
     argumentHint: "[idea, problem, or request]",
-    instruction: "Apply Shape mode. Resolve the intent source first when given a ticket/issue/PR/branch/diff/test/model problem. Create clarity before delivery with concise shaped tickets, existing-ticket improvements, and useful supporting artefacts. Keep tracker metadata out of ticket bodies when fields/relationships exist. Do not add ceremony for clear existing tickets.",
+    instruction: "Apply Shape mode. Resolve the intent source first when given a ticket/issue/PR/branch/diff/test/model problem. Create clarity before delivery with concise shaped tickets, existing-ticket improvements, and useful supporting artefacts. Proceed autonomously; escalate only when scope, priority, or product behaviour is materially ambiguous and not discoverable.",
   },
   {
     command: "cl-plan",
@@ -87,7 +87,7 @@ const modes: Mode[] = [
     label: "Plan",
     description: "Plan shaped work with Slice + Specify",
     argumentHint: "[ticket, request, or shaped context]",
-    instruction: `Apply Plan mode. Resolve the intent source first when given a ticket/issue/PR/branch/diff/test/model problem. ${PLAN}. Start in Slice unless a slice is already selected; when moving from Slice to Specify, update the Clarity status to \`plan-specify\`. Slice only when useful; if a ticket is already small and coherent, say no child tickets are needed and specify enough for Build. When Plan defines concrete independently buildable slices/tickets, materialize them in the configured issue tracker as child issues, linked follow-ups, checklist items, or local markdown according to Setup and approval policy. If tracker creation is useful but not safe/approved, produce proposed ticket text and ask one focused approval question before mutating the tracker. Do not define the first failing test.`,
+    instruction: `Apply Plan mode. Resolve the intent source first when given a ticket/issue/PR/branch/diff/test/model problem. ${PLAN}. Start in Slice unless a slice is already selected; when moving from Slice to Specify, update the Clarity status to \`plan-specify\`. Slice only when useful; if a ticket is already small and coherent, say no child tickets are needed and specify enough for Build. When Plan defines concrete independently buildable slices/tickets, materialize them in the configured issue tracker as child issues, linked follow-ups, checklist items, or local markdown according to Setup and escalation policy. If tracker creation is useful but not safe, produce proposed ticket text and escalate before mutating the tracker. Do not define the first failing test.`,
   },
   {
     command: "cl-build",
@@ -96,7 +96,7 @@ const modes: Mode[] = [
     label: "Build",
     description: "Build already-shaped work TDD-first",
     argumentHint: "[slice, ticket, bug, draft PR, acceptance details, or task]",
-    instruction: "Apply Build mode. Resolve the intent source first. Build already-shaped work TDD-first from any well-known or resolvable position with enough clarity: selected slice, ticket ID/URL, complete small ticket, bug, technical improvement, failing test, model problem, prior Shape/Plan artefact, draft PR, review comments, or existing branch. For tickets, fetch context, claim/move In Progress and create/switch branch according to Setup and approval policy. First classify the Build entry and choose the smallest useful work unit. Translate acceptance details, expected behavior, target state, or review feedback into the first failing behavior test or validation target, implement the smallest useful behavior, run checks, and refactor while green.",
+    instruction: "Apply Build mode. Resolve the intent source first. Check for session state and resume if it exists. Classify depth at entry and adapt ceremony proportionally. Build already-shaped work TDD-first from any well-known or resolvable position with enough clarity: selected slice, ticket ID/URL, complete small ticket, bug, technical improvement, failing test, model problem, prior Shape/Plan artefact, draft PR, review comments, or existing branch. For tickets, fetch context, claim/move In Progress and create/switch branch according to Setup and escalation policy. First classify the Build entry and choose the smallest useful work unit. Translate acceptance details, expected behavior, target state, or review feedback into the first failing behavior test or validation target, implement the smallest useful behavior, run checks, and refactor while green. Before committing, run intent drift check. After implementation, compound learnings continuously and update session state. Proceed autonomously; escalate only when a trigger fires.",
   },
   {
     command: "cl-review",
@@ -105,7 +105,7 @@ const modes: Mode[] = [
     label: "Review",
     description: "Validate built work with the right review mix",
     argumentHint: "[diff, PR, build, app behavior, test evidence, or implementation context]",
-    instruction: "Apply Review mode. Review = Publish PR + Validation + Understanding + Decision. Resolve the intent source first: current branch/diff, ticket ID/URL, PR, branch, or review comments. On Review entry, normally make completed work reviewable: inspect git status, discover existing PRs to avoid duplicates, commit intended changes using the author's or codebase's existing commit patterns, push the branch, and raise or update a PR when the repository workflow supports PRs. Then check shaped intent first and choose the smallest useful mix of AI review, human review, automated/manual/e2e testing, builds, PR/code-diff review, release checks, and evidence gathering. If preparing PR text, discover and follow the repository-local PR template when one exists; do not hardcode absolute template paths. Make the PR description evidence-aware. Output approve/request-changes/blocked/rescope, and identify the smallest refinement loop target when issues are found.",
+    instruction: "Apply Review mode. Review = Publish PR + Validation + Understanding + Decision. Resolve the intent source first: current branch/diff, ticket ID/URL, PR, branch, or review comments. Check session state and Build's intent drift check for context. On Review entry, normally make completed work reviewable: inspect git status, discover existing PRs to avoid duplicates, commit intended changes using the author's or codebase's existing commit patterns, push the branch, and raise or update a PR when the repository workflow supports PRs. Then check shaped intent first and choose the smallest useful mix of AI review, human review, automated/manual/e2e testing, builds, PR/code-diff review, release checks, and evidence gathering. If preparing PR text, discover and follow the repository-local PR template when one exists; do not hardcode absolute template paths. Make the PR description evidence-aware including drift notes. Output approve/request-changes/blocked/rescope, and identify the smallest refinement loop target when issues are found. Proceed autonomously; escalate only when a trigger fires.",
   },
   {
     command: "cl-compound",
@@ -114,7 +114,7 @@ const modes: Mode[] = [
     label: "Compound",
     description: "Decide whether learning should be codified",
     argumentHint: "[completed work, decision, or learning]",
-    instruction: "Apply Compound mode. Always output a compounding decision: codify learning or no reusable learning.",
+    instruction: "Apply Compound mode. Continuous compounding already captures learnings at the end of every Build. Curate accumulated learnings: review, consolidate duplicates, refresh stale docs, promote reusable patterns, archive what's no longer relevant. For each, decide: promote, refresh, deduplicate, archive, keep, or no action. Search before writing to avoid duplicates. Escalate with one focused question if the reuse value or target location is unclear.",
   },
 ];
 
@@ -303,9 +303,9 @@ function buildPrompt(mode: Mode, input: string): string {
     mode.instruction,
     OPERATOR_PROGRESS,
     APPROVAL_GATE,
-    "Stages are context-aware: resolve ticket/PR/branch/diff/test/user-request intent before stage work, retrieve narrow relevant context, and do not force earlier stages when the requested stage has enough clarity.",
-    "Follow Setup's automation policy. Ask only for blocking ambiguity, scope/risk judgement, or approval-required write-capable operations.",
-    "Keep the Pi status bar accurate by using the `cl_engineering_state` tool when you route/select a lifecycle stage, move from Plan Slice to Plan Specify, reach an approval gate, become blocked, publish a PR during Review, or complete/clear Clarity mode.",
+    "Stages are context-aware: resolve ticket/PR/branch/diff/test/user-request intent, classify depth at Build entry, check session state and resume if it exists, proceed autonomously through safe work.",
+    "Escalate only when a trigger fires: intent ambiguity, scope conflict, product/UX decision, architecture risk, validation challenge, unauthorized external mutation, or completion. Ask one focused question per escalation.",
+    "Keep the Pi status bar accurate by using the `cl_engineering_state` tool when you route/select a lifecycle stage, move from Plan Slice to Plan Specify, classify depth, detect drift, publish a PR, compound learnings, become blocked, or complete/clear Clarity mode.",
     "Ask one focused question when human judgement is needed.",
     "",
     "<input>",

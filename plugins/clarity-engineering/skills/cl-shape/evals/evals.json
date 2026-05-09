@@ -1,0 +1,30 @@
+{
+  "skill_name": "cl-shape",
+  "evals": [
+    {
+      "id": "shape-bug-report",
+      "name": "Shape a vague bug report into a ticket",
+      "prompt": "Shape this: 'The model editor keeps crashing when I paste large JSON — happened three times this morning.'",
+      "expected_output": "The agent creates a shaped bug ticket with: ticket type Bug, the problem described, expected vs actual behavior, scope, acceptance criteria, and suggested validation style. It does not add unnecessary ceremony.",
+      "assertions": [
+        "Produces a ticket with type Bug",
+        "Describes expected vs actual behavior",
+        "Includes acceptance criteria",
+        "Suggests a validation style",
+        "Does not plan implementation details"
+      ]
+    },
+    {
+      "id": "improve-existing-ticket",
+      "name": "Assess an existing ticket rather than blindly reshaping it",
+      "prompt": "Shape MID-456: 'Add dark mode support to the settings page. Acceptance: toggle works, persists across sessions, respects system preference.'",
+      "expected_output": "The agent inspects the existing ticket, determines it is already sufficiently shaped, and proposes only useful improvements — not a full reshape. It does not add ceremony for an already-clear ticket.",
+      "assertions": [
+        "Acknowledges the existing ticket is already shaped",
+        "Does not create a full replacement ticket unnecessarily",
+        "Identifies any missing detail if present",
+        "States if the ticket is ready for Plan"
+      ]
+    }
+  ]
+}

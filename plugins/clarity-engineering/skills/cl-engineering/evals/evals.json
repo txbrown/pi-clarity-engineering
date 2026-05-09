@@ -1,0 +1,39 @@
+{
+  "skill_name": "cl-engineering",
+  "evals": [
+    {
+      "id": "route-build-ticket",
+      "name": "Route a clear ticket to Build",
+      "prompt": "I have a ticket MID-123: 'Fix model hydration when optional fields are missing — defaults should be applied, validation errors preserved.' How should Clarity Engineering handle this?",
+      "expected_output": "The agent routes to Build because the ticket is clear and scoped enough. It resolves the intent source, notes the ticket has enough clarity to build without Shape or Plan, and recommends cl-build.",
+      "assertions": [
+        "Routes the request to Build mode",
+        "Explains why routing to Build is appropriate",
+        "References the ticket's clarity as the reason",
+        "Does not force Shape or Plan when the ticket is already clear"
+      ]
+    },
+    {
+      "id": "route-shape-fuzzy",
+      "name": "Route a fuzzy idea to Shape",
+      "prompt": "Users keep complaining about the model editor, I think we need to fix it. What should Clarity Engineering do?",
+      "expected_output": "The agent routes to Shape because the input is fuzzy and lacks a deliverable ticket. It recommends shaping before delivery.",
+      "assertions": [
+        "Routes the request to Shape mode",
+        "Identifies that the input is too fuzzy for Build or Plan",
+        "Does not start implementing or planning without a shaped ticket"
+      ]
+    },
+    {
+      "id": "route-escalation-model",
+      "name": "Explain the escalation model",
+      "prompt": "How does Clarity Engineering decide when to ask me for approval during a build session?",
+      "expected_output": "The agent explains the escalation model: the agent proceeds autonomously through safe local work and escalates only at genuine triggers — intent ambiguity, scope conflict, product/UX decision, architecture risk, validation challenge, unauthorized external mutation, or completion.",
+      "assertions": [
+        "Mentions the autonomy-with-escalation model",
+        "Lists multiple escalation triggers",
+        "Does not mention mechanical stage-transition approvals"
+      ]
+    }
+  ]
+}

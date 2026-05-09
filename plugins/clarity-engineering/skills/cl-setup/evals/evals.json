@@ -1,0 +1,32 @@
+{
+  "skill_name": "cl-setup",
+  "evals": [
+    {
+      "id": "discover-work-tracking",
+      "name": "Discover and document work tracking configuration",
+      "prompt": "Set up Clarity Engineering for a codebase that uses Linear for tracking, has a docs/ directory with ADRs and a CONTEXT.md, and uses pnpm for build/test. The repo has a .github/PULL_REQUEST_TEMPLATE.md and uses conventional commits.",
+      "expected_output": "The agent discovers and documents the ticket system, reference resolution patterns, domain docs, validation commands, review workflow, and escalation policy. It keeps the setup lightweight and grounded in existing conventions.",
+      "assertions": [
+        "Documents the ticket system as Linear",
+        "Documents validation commands from the repo",
+        "Documents the PR template location",
+        "Documents the commit convention",
+        "Produces a setup artifact or summary",
+        "Keeps setup lightweight and avoids configuration theatre"
+      ]
+    },
+    {
+      "id": "escalation-policy",
+      "name": "Configure escalation policy with safe vs escalation-required actions",
+      "prompt": "Configure the automation policy for a repo where the team wants: local branches and tests to run automatically, but pushing, opening PRs, and moving Linear tickets should ask first.",
+      "expected_output": "The agent documents autonomous actions (local branches, tests) and escalation-required actions (push, open PR, move tickets) in the setup policy section.",
+      "assertions": [
+        "Lists local branch creation as autonomous",
+        "Lists running tests as autonomous",
+        "Lists pushing as escalation-required",
+        "Lists opening PRs as escalation-required",
+        "Lists moving tickets as escalation-required"
+      ]
+    }
+  ]
+}
