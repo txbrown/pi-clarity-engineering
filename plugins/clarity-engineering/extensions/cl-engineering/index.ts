@@ -14,6 +14,7 @@ type ClarityStage =
   | "blocked"
   | "idle";
 
+
 type ClarityState = {
   stage: ClarityStage;
   detail?: string;
@@ -121,16 +122,27 @@ const modes: Mode[] = [
 const stateSchema = Type.Object({
   stage: Type.Union([
     Type.Literal("route"),
+    Type.Literal("Route"),
     Type.Literal("setup"),
+    Type.Literal("Setup"),
     Type.Literal("shape"),
+    Type.Literal("Shape"),
     Type.Literal("plan-slice"),
+    Type.Literal("Plan: Slice"),
     Type.Literal("plan-specify"),
+    Type.Literal("Plan: Specify"),
     Type.Literal("build"),
+    Type.Literal("Build"),
     Type.Literal("review"),
+    Type.Literal("Review"),
     Type.Literal("compound"),
+    Type.Literal("Compound"),
     Type.Literal("approval"),
+    Type.Literal("Approval"),
     Type.Literal("blocked"),
+    Type.Literal("Blocked"),
     Type.Literal("idle"),
+    Type.Literal("Idle"),
   ]),
   detail: Type.Optional(Type.String({ description: "Short optional status detail, for example the gate or blocker." })),
 });
@@ -191,12 +203,13 @@ export default function clarityEngineeringExtension(pi: ExtensionAPI) {
         return;
       }
 
-      if (!isClarityStage(rawStage)) {
+      const stage = normalizeClarityStage(rawStage);
+      if (!stage) {
         ctx.ui.notify("Usage: /cl-state route|setup|shape|plan-slice|plan-specify|build|review|compound|approval|blocked|idle [detail]", "error");
         return;
       }
 
-      setState(ctx, { stage: rawStage, detail: detailParts.join(" ") || undefined });
+      setState(ctx, { stage, detail: detailParts.join(" ") || undefined });
     },
   });
 
@@ -211,12 +224,17 @@ export default function clarityEngineeringExtension(pi: ExtensionAPI) {
     ],
     parameters: stateSchema,
     async execute(_toolCallId, params: StateToolInput, _signal, _onUpdate, ctx) {
-      setState(ctx, { stage: params.stage, detail: params.detail });
+      const stage = normalizeClarityStage(params.stage);
+      if (!stage) {
+        throw new Error(`Unsupported Clarity stage: ${params.stage}`);
+      }
+
+      setState(ctx, { stage, detail: params.detail });
       return {
         content: [
           {
             type: "text",
-            text: `Clarity Engineering status set to ${STAGE_LABELS[params.stage]}${params.detail ? ` · ${params.detail}` : ""}.`,
+            text: `Clarity Engineering status set to ${STAGE_LABELS[stage]}${params.detail ? ` · ${params.detail}` : ""}.`,
           },
         ],
         details: { state },
@@ -328,6 +346,17 @@ function restoreState(ctx: ExtensionContext): ClarityState | undefined {
   }
 
   return undefined;
+}
+
+function normalizeClarityStage(value: string): ClarityStage | undefined {
+  const normalized =
+    value === "Plan: Slice"
+      ? "plan-slice"
+      : value === "Plan: Specify"
+        ? "plan-specify"
+        : (value.toLowerCase() as ClarityStage);
+
+  return isClarityStage(normalized) ? normalized : undefined;
 }
 
 function isClarityStage(value: string): value is ClarityStage {
