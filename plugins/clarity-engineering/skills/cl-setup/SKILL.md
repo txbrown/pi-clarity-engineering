@@ -171,10 +171,10 @@ Document how completed work becomes reviewable:
 Review remains:
 
 ```text
-Review = Publish PR + Validation + Understanding + Decision
+Review = Reviewable Context + Validation + Understanding + Decision
 ```
 
-`cl-review` should normally commit intended changes, push the branch, and raise or update a PR when the repository uses PRs. It should first discover whether a PR already exists for the current branch or ticket to avoid duplicates.
+`cl-review` should normally start from the existing review surface: draft PR, ready PR, or pushed branch. It should first discover whether a PR already exists for the current branch or ticket, update it when needed, and create one only when no suitable review surface exists yet.
 
 ### 9. Automation and escalation policy
 

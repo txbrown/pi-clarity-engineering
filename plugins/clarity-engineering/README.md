@@ -88,7 +88,7 @@ Then run `/reload` in Pi or restart Pi.
 - `cl-shape` — shape ideas or improve existing tickets into clear intent and supporting artefacts.
 - `cl-plan` — create vertical slices and specify the next slice only when useful; materialize buildable slices in the tracker when useful and safe.
 - `cl-build` — build already-shaped work TDD-first. Classify depth at entry, check for session state and resume, run intent drift detection before committing, compound learnings continuously, update session state. Proceed autonomously; escalate on triggers.
-- `cl-review` — publish completed work by committing, pushing, and raising/updating a PR by default, then validate against shaped intent. Review Build's drift notes. Evidence-aware PR descriptions.
+- `cl-review` — work from the existing review surface, usually a draft PR or pushed branch, then validate against shaped intent. Update/create PR context only as needed. Review Build's drift notes. Evidence-aware PR descriptions with scenario-focused `Testing notes`.
 - `cl-compound` — curate accumulated continuous compound learnings: promote, refresh, deduplicate, or archive.
 
 ## Claude Code slash commands

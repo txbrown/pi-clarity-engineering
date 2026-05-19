@@ -12,14 +12,14 @@ Review is a **flexible validation stage**, not only a code-review pass. Its purp
 Review can be summarized as:
 
 ```text
-Review = Publish PR + Validation + Understanding + Decision
+Review = Reviewable Context + Validation + Understanding + Decision
 ```
 
-`Publish PR` means making the work reviewable: commit completed changes, push the branch, and raise or update a PR when the repository workflow uses PRs. Review is the stage that raises the PR. This usually happens at Review entry, before human review and PR-code-diff validation. Skip or adapt this only when the operator explicitly wants local-only review, the repo has no remote/PR workflow, or the work is not ready to publish.
+`Reviewable Context` means the work is visible in a form others can inspect: usually an existing draft PR, ready PR, or at least a pushed branch/diff. Review does not need to be the first moment a PR is created. In many teams, Build opens or updates a draft PR as soon as the work is meaningful enough to share, and Review happens later when the work is ready for deeper validation or handoff. At Review entry, discover the existing PR first and update it when needed; create one only if the work is now reviewable and no PR exists yet. Skip or adapt this only when the operator explicitly wants local-only review, the repo has no remote/PR workflow, or the work is not ready to publish.
 
 ## Goal
 
-Publish completed work into a reviewable form when appropriate, validate it against shaped intent first, make the work understandable, then gather the evidence needed to decide whether to approve, request changes, block, or rescope.
+Validate built work against shaped intent once it is already reviewable or can safely be made reviewable, make the work understandable, then gather the evidence needed to decide whether to approve, request changes, block, or rescope.
 
 ## Inputs
 
@@ -42,10 +42,10 @@ At Review entry, resolve the intent source and review target before deciding whe
 When moving from Build to Review, the Review entry workflow is:
 
 1. Inspect git status and confirm the intended branch/scope.
-2. Run or summarize the minimum checks needed before publishing, if not already done in Build.
-3. Commit completed Review-ready work with a clear message, unless the operator explicitly wants an uncommitted local review.
-4. Push the branch when a remote workflow exists.
-5. Raise or update a PR when the codebase uses PRs, following the repository-local PR template if found.
+2. Discover the current review surface first: existing draft PR, ready PR, pushed branch, or only local diff.
+3. Run or summarize the minimum checks needed before deeper review, if not already done in Build.
+4. Commit and push additional Review-ready changes when needed, unless the operator explicitly wants an uncommitted local review.
+5. Update the existing PR when one already exists; otherwise raise a draft or ready PR when the codebase uses PRs and the work is meaningful enough to share, following the repository-local PR template if found.
 6. Link the PR to the ticket and move the ticket to the configured Review/In Review state when Setup marks those actions safe or the operator approves.
 
 Do not commit unrelated user changes. Do not push directly to a protected/default branch unless the operator explicitly confirms that workflow. If the working tree contains ambiguous changes, escalate with one focused question before committing.
@@ -92,7 +92,7 @@ After or alongside publishing, choose the smallest useful mix for the risk and c
 
 Keep shaped intent first even when the review mode varies:
 
-1. **Publish PR** — commit completed work, push the branch, discover/create/update the PR, and link ticket/PR when appropriate.
+1. **Establish review context** — confirm the current branch/diff, discover or update the existing PR, or create one only if needed, and link ticket/PR when appropriate.
 2. **Validation** — shaped intent and acceptance details first: does the work solve the agreed problem without silent scope drift? Review the intent drift check from Build.
 3. **Validation evidence** — tests, manual QA, automation, builds, or other checks appropriate to the risk.
 4. **Implementation quality** — type/state clarity, boundaries, composition, maintainability, and failure modes.
@@ -112,9 +112,9 @@ Discovery should be local and conventional, for example:
 - `.github/pull_request_template/*.md`
 - `docs/PULL_REQUEST_TEMPLATE.md`
 
-If a template is found, preserve its headings and intent when drafting PR text. Fill sections with review evidence such as why the change is needed, how it was implemented, test/build/e2e/manual validation, screenshots or links when relevant, and known risks. If no template is found, use a compact structure that covers `Why`, `How`, `Validation`, and `Risks / Follow-up`.
+If a template is found, preserve its headings and intent when drafting PR text. Fill sections with review evidence such as why the change is needed, how it was implemented, scenario-focused validation, screenshots or links when relevant, and known risks. When a template includes `Testing notes` or similar, describe the concrete user or system behaviors exercised for this PR (for example happy path, regression path, edge case, device/app flow, or rollout check). Do not pad testing notes with generic statements about unit tests being added or passing; code reviewers can already see test changes in the diff. Mention automated tests only when they add review-relevant signal, such as a targeted regression, missing coverage, or an intentionally skipped check. This applies especially to Trainline-style PR descriptions, where testing notes should help reviewers understand what was actually verified for the change under review. If no template is found, use a compact structure that covers `Why`, `How`, `Validation`, and `Risks / Follow-up`.
 
-PR descriptions should be evidence-aware: derive them from ticket intent, implementation summary, intent drift notes, tests run, manual QA/e2e, screenshots/logs when relevant, known risks, and follow-up decisions. Avoid generic PR text.
+PR descriptions should be evidence-aware: derive them from ticket intent, implementation summary, intent drift notes, concrete validation scenarios, manual QA/e2e, screenshots/logs when relevant, known risks, and follow-up decisions. Avoid generic PR text.
 
 ## Operator guidance
 

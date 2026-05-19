@@ -11,7 +11,7 @@ Build means **execute already-shaped work with the Clarity Engineering ethos**: 
 
 ## Goal
 
-Implement the next clearly scoped unit of work, prove it with tests or appropriate validation, improve design safely, and keep feedback tight.
+Implement the next clearly scoped unit of work, prove it with tests or appropriate validation, improve design safely, keep feedback tight, and make the work shareable early when that helps the team's PR workflow.
 
 Default discipline:
 
@@ -50,6 +50,7 @@ At Build entry, resolve the intent source before writing code:
 6. Decide whether this is new work, continuation, bug fix, review-feedback work, or small work.
 7. Claim/setup the work according to Setup: move ticket to In Progress, assign to the operator, create/switch branch, and align branch naming when configured and safe/approved.
 8. Decide the smallest useful work unit.
+9. Decide whether the work is meaningful enough to open or update a draft PR now. If the team's workflow benefits from early visibility, Build may create or refresh a draft PR before the work is fully ready for formal Review.
 
 At Build entry, decide the smallest useful work unit:
 
@@ -81,7 +82,7 @@ State the depth classification explicitly at the start of Build. Use it to decid
 
 Maintain a lightweight session state per ticket or intent source so work survives context switches.
 
-At the end of every Build, write or update a session state summary:
+At the end of every Build, write or update a session state summary. If a draft PR already exists, keep it current enough that another engineer can understand progress and review incrementally:
 
 ```markdown
 ## Session state: <ticket key or intent source>

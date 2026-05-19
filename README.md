@@ -84,7 +84,7 @@ Plan should resolve the ticket, slice only when useful, and materialize independ
 /cl-review
 ```
 
-Review should inspect the current branch/diff, check session state and Build's drift notes, discover an existing PR before creating a duplicate, commit intended changes, push, raise or update a PR by default, include evidence-aware description, then validate against shaped intent.
+Review should inspect the current branch/diff, check session state and Build's drift notes, discover the existing review surface first, update a draft PR or pushed branch when one already exists, create a PR only when needed, include an evidence-aware description, then validate against shaped intent.
 
 ## Commands, prompts, and skills
 
@@ -95,7 +95,7 @@ Review should inspect the current branch/diff, check session state and Build's d
 | `cl-shape` | Shape fuzzy ideas into tickets and supporting artefacts. |
 | `cl-plan` | Plan shaped work. Plan = Slice + Specify. Materialize slices in the tracker when useful and safe. |
 | `cl-build` | Build already-shaped work TDD-first. Classify depth, check session state, run intent drift detection, compound learnings continuously, update session state. |
-| `cl-review` | Publish PR + validate against shaped intent. Review Build's drift notes. Evidence-aware PR descriptions. |
+| `cl-review` | Work from the existing review surface, validate against shaped intent, and update/create PR context as needed. Review Build's drift notes. Evidence-aware PR descriptions. |
 | `cl-compound` | Curate accumulated continuous compound learnings — promote, refresh, deduplicate, or archive. |
 
 In Pi these are registered as extension commands, so they are slash commands like:
@@ -193,8 +193,8 @@ Install skills and prompts into Codex's local directories:
 - Run intent drift checks before committing.
 - Compound learnings continuously at the end of every Build.
 - Maintain session state per ticket for resume across sessions.
-- Treat Review as: Review = Publish PR + Validation + Understanding + Decision.
-- Make PR descriptions evidence-aware including drift notes.
+- Treat Review as: Review = Reviewable Context + Validation + Understanding + Decision.
+- Make PR descriptions evidence-aware including drift notes, and keep `Testing notes` focused on concrete scenarios exercised for the PR rather than generic unit-test mentions.
 - Keep skills portable; Setup configures codebase-specific workflow.
 - Treat memory as indexed retrieval, not a context dump.
 - Run `./scripts/validate.sh` after edits.
