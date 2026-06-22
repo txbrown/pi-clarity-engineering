@@ -94,6 +94,7 @@ Document reference resolution so `cl-build <ticket>`, `cl-plan <ticket>`, `cl-re
 Document how ambiguous work should be shaped in this repo or company:
 
 - preferred shaping outputs: epic, spike, shaped ticket, RFC, local markdown, tracker-native project, or other;
+- default destination for each output type: tracker-native, `docs/brainstorms/`, `docs/rfcs/`, or other;
 - who typically brings ambiguous work: PM, EM, SEM, founder, support, self-directed engineering, or mixed;
 - whether appetite/effort hints matter here and whether they are optional or required;
 - whether options analysis is expected by default or only for larger work;
@@ -293,7 +294,7 @@ Keep setup progress explicit:
 - Local config path(s) confirmed, created, or recommended.
 - Summary of discovered local workflow.
 - Missing context or recommended follow-up.
-- Work reference resolution, shaping norms, Plan ticket materialization, Build claim/Review publish behavior, session state and compounding locations.
+- Work reference resolution, shaping norms, shaping output destinations, Plan ticket materialization, Build claim/Review publish behavior, session state and compounding locations.
 - Automation and escalation policy for safe vs escalation-required operations.
 - Tool/MCP safety notes.
 - Validation commands and review evidence expectations.

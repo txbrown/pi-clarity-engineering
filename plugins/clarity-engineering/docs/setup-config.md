@@ -65,6 +65,7 @@ A committed example file such as `.clarity-engineering/config.local.example.yaml
 Document how ambiguous work should be shaped in this codebase:
 
 - Preferred outputs: epic / spike / shaped ticket / RFC / local markdown / tracker-native project
+- Default destination per output: tracker-native / `docs/brainstorms/` / `docs/rfcs/` / other
 - Typical input source: PM / EM / SEM / founder / support / self-directed engineering / mixed
 - Appetite or effort hints: required / optional / not used
 - Options analysis: expected by default / only for larger work / rarely needed
@@ -190,6 +191,8 @@ Escalation-required (ask first):
 - Security/privacy:
 - Write-capable tools:
 ```
+
+When Setup does not define a stronger local rule, use `plugins/clarity-engineering/docs/shaping-output-paths.md` for default shape destinations and naming.
 
 ## Suggested default scaffold
 

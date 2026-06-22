@@ -95,6 +95,8 @@ Then run `/reload` in Pi or restart Pi.
 
 Default artifact templates for epic, spike, shaped ticket, RFC, and ticket-improvement outputs live in `plugins/clarity-engineering/docs/shaping-templates.md`. They are fallback scaffolds when Setup has not defined a stronger local shaping style.
 
+Default destinations and naming conventions for those artifacts live in `plugins/clarity-engineering/docs/shaping-output-paths.md`.
+
 ## Local config
 
 Use `.clarity-engineering/config.local.yaml` for machine-local defaults such as tracker aliases, review preferences, or local multi-repo paths. Keep shared workflow truth in repo-tracked setup docs. A starter template is shipped at `.clarity-engineering/config.local.example.yaml`.

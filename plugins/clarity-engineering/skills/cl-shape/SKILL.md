@@ -217,11 +217,14 @@ Keep the artifact concise and aligned to the local tracker or doc conventions di
 
 When Setup does not define a stronger house style, use `plugins/clarity-engineering/docs/shaping-templates.md` as the default scaffold for epics, spikes, shaped tickets, RFCs, and existing-ticket improvements.
 
+When Setup does not define a stronger destination rule, use `plugins/clarity-engineering/docs/shaping-output-paths.md` for the default artifact location and naming convention.
+
 - Keep metadata out of the body when the tracker has fields for it.
 - Do not add tracker comments on the operator's behalf.
 - Do not jump into implementation details unless the artifact itself is a technical decision document.
 - Do not force RFCs, options sections, or appetite fields when the work does not warrant them.
 - If the repo prefers markdown artifacts before tracker mutation, produce the markdown first.
+- Do not create duplicate local and tracker artifacts unless setup explicitly calls for both.
 
 ## Progress status
 

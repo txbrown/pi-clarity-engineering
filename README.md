@@ -75,6 +75,7 @@ In Pi, the preferred approval mechanism is the TUI `ask_user` tool when availabl
 - `plugins/clarity-engineering/docs/memory-model.md` — local/global memory hierarchy, retrieval policy, context budgets, and learning destinations.
 - `plugins/clarity-engineering/docs/learning-destinations.md` — default promotion rules for session state, continuous compound, solutions, and ADRs.
 - `plugins/clarity-engineering/docs/shaping-templates.md` — fallback scaffolds for epic, spike, shaped ticket, RFC, and existing-ticket improvement outputs.
+- `plugins/clarity-engineering/docs/shaping-output-paths.md` — default destination and naming guidance for shape outputs when Setup does not override them.
 - `.clarity-engineering/config.local.example.yaml` — optional machine-local defaults template for trackers, review behavior, and memory destinations.
 - `scripts/install.sh` — local install helper.
 - `scripts/validate.sh` — manifest/frontmatter/lifecycle/Pi-extension validation.
