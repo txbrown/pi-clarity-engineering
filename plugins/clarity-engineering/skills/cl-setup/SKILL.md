@@ -15,6 +15,8 @@ Create or update the smallest useful Clarity Engineering framework setup artifac
 
 The setup should answer:
 
+- whether repo-local helper files such as `.clarity-engineering/config.local.yaml` are used for machine-local defaults;
+
 - where shaped tickets or ticket-equivalent artifacts live;
 - how stage commands resolve work references such as ticket IDs/URLs, PRs, branches, diffs, failing tests, and review comments;
 - how Plan materializes defined slices/tickets in the issue tracker when appropriate;
@@ -35,13 +37,15 @@ The setup should answer:
 
 - A repository, service, app, package, or monorepo.
 - Optional pointers to Jira, Linear, GitHub Issues, local ticket folders, Obsidian notes, docs, MCPs, test tools, PR templates, CI, or release workflows.
-- Existing `AGENTS.md`, `CLAUDE.md`, `CONTEXT.md`, docs, scripts, package manifests, CI files, issue links, or PR templates.
+- Existing `AGENTS.md`, `CLAUDE.md`, `CONTEXT.md`, docs, scripts, package manifests, CI files, issue links, PR templates, or `.clarity-engineering/` config files.
 
 ## Setup discovery
 
 Explore before asking. If the answer can be discovered from files, scripts, git remotes, docs, or existing config, discover it instead of asking.
 
 Look for:
+
+- repo-local machine config: `.clarity-engineering/config.local.yaml`, `.clarity-engineering/config.local.example.yaml`, and gitignore coverage for machine-local settings;
 
 - repo instructions: `AGENTS.md`, `CLAUDE.md`, `README.md`, `.github/`, docs;
 - work tracking clues: Jira/Linear/GitHub links, issue templates, ticket references, ticket key patterns, `.scratch/`, planning docs;
@@ -55,6 +59,12 @@ Look for:
 ## Setup sections
 
 Prefer a repo-local artifact such as:
+
+```text
+.clarity-engineering/config.local.yaml
+```
+
+for machine-local defaults, plus a repo-local durable artifact such as:
 
 ```text
 docs/agents/clarity-engineering.md
@@ -107,6 +117,18 @@ Document how Build should claim and prepare active work:
 - whether local branch creation is safe without asking;
 - how to continue from an existing branch or draft PR.
 
+### 0. Local config ergonomics
+
+Document whether the repo uses a machine-local config layer for Clarity defaults:
+
+- config file path, usually `.clarity-engineering/config.local.yaml`;
+- committed example path, usually `.clarity-engineering/config.local.example.yaml`;
+- gitignore rule for machine-local config;
+- what belongs there, such as tracker defaults, repo aliases, review preferences, and local tool assumptions;
+- what must stay in repo-tracked setup docs instead of local config.
+
+Use local config for convenience, not for hiding essential team workflow.
+
 ### 4. Session state and compounding
 
 Document where session state and continuous compound entries live:
@@ -114,7 +136,7 @@ Document where session state and continuous compound entries live:
 - session state location, such as `docs/agents/session-state/` or inline in tickets;
 - session state format;
 - whether session state is per-ticket, per-branch, or global;
-- continuous compound location;
+- continuous compound location, such as `docs/clarity/continuous-compound/`;
 - standalone compound curation cadence or trigger.
 
 ### 5. Domain and decisions
@@ -216,7 +238,7 @@ Additional framework-defined escalation triggers: intent ambiguity, scope confli
 
 Document local/global memory and retrieval discipline:
 
-- local repo memory locations;
+- local repo memory locations, especially `docs/solutions/`, `docs/adr/`, `docs/agents/`, and `docs/clarity/continuous-compound/` when they exist;
 - global memory location, if available;
 - load order for ticket, repo memory, global memory, and framework memory;
 - files/directories that should not be bulk-loaded;
@@ -252,6 +274,7 @@ Keep setup progress explicit:
 ## Output
 
 - Setup artifact path(s) created or updated.
+- Local config path(s) confirmed, created, or recommended.
 - Summary of discovered local workflow.
 - Missing context or recommended follow-up.
 - Work reference resolution, Plan ticket materialization, Build claim/Review publish behavior, session state and compounding locations.
@@ -269,3 +292,4 @@ Keep setup progress explicit:
 - Do not perform write-capable external operations during setup unless explicitly requested and approved.
 - Link setup from agent instructions when useful so future agents can find it.
 - During continuous compounding or standalone Compound, update setup when repeated friction shows local configuration is missing or wrong.
+- Prefer a small machine-local config file for local defaults, but keep shared workflow truth in repo-tracked docs.

@@ -1,0 +1,31 @@
+# Clarity Engineering local config
+# Copy to .clarity-engineering/config.local.yaml and customize per machine or checkout.
+# Keep the real config file gitignored.
+
+# --- Work tracking defaults ---
+# tracker_system: jira              # jira | linear | github-issues | local-markdown | other
+# tracker_project: PLATFORM
+# tracker_team: core-platform
+# ticket_status_in_progress: In Progress
+# ticket_status_done: Done
+# ticket_key_pattern: "[A-Z]+-[0-9]+"
+
+# --- Review / publish defaults ---
+# pr_create_default: true
+# pr_draft_default: true
+# pr_link_ticket: true
+# review_surface: github-pr         # github-pr | branch-only | local-diff
+
+# --- Session state / learning destinations ---
+# session_state_dir: docs/agents/session-state
+# continuous_compound_dir: docs/clarity/continuous-compound
+# solutions_dir: docs/solutions
+# adr_dir: docs/adr
+
+# --- Context budgets ---
+# default_context_budget: 100k
+# build_context_budget: 50k
+
+# --- Optional repo aliases for multi-codebase work ---
+# repo_alias: clarity-plugin
+# related_repos: ../mobile-app,../backend-api

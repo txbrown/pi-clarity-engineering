@@ -22,6 +22,16 @@ This first pass includes a **real Pi agent package/extension** with skills, comm
 
 It also includes a lightweight **Setup** mode for adapting Clarity Engineering to any codebase without hardcoding one workflow: where tickets live, how stage commands resolve tickets/PRs/branches/diffs/tests, how Plan materializes defined slices/tickets, how Build claims work, where session state and continuous compound entries live, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, what automation is safe vs requires escalation, and which decisions require human judgement.
 
+The plugin now also ships a minimal durable artifact system so learning and execution survive across sessions:
+
+```text
+docs/agents/session-state/
+docs/clarity/continuous-compound/
+docs/solutions/
+docs/adr/
+.clarity-engineering/config.local.example.yaml
+```
+
 ## Escalation model
 
 Agents own execution flow. They proceed through stages autonomously and escalate only at genuine triggers. Mechanical stage-transition approvals are replaced by the escalation model.
@@ -63,6 +73,8 @@ In Pi, the preferred approval mechanism is the TUI `ask_user` tool when availabl
 - `plugins/clarity-engineering/examples/` — generic ticket examples for all five ticket types.
 - `plugins/clarity-engineering/docs/setup-config.md` — portable guidance for per-codebase Clarity Engineering setup/configuration.
 - `plugins/clarity-engineering/docs/memory-model.md` — local/global memory hierarchy, retrieval policy, context budgets, and learning destinations.
+- `plugins/clarity-engineering/docs/learning-destinations.md` — default promotion rules for session state, continuous compound, solutions, and ADRs.
+- `.clarity-engineering/config.local.example.yaml` — optional machine-local defaults template for trackers, review behavior, and memory destinations.
 - `scripts/install.sh` — local install helper.
 - `scripts/validate.sh` — manifest/frontmatter/lifecycle/Pi-extension validation.
 
@@ -107,6 +119,20 @@ In Pi these are registered as extension commands, so they are slash commands lik
 ```
 
 The Pi extension also shows the current Clarity Engineering state in the footer/status bar, for example `🧭 CL: Shape` or `🧭 CL: Build · drift check`. The status is set automatically by `/cl-*` commands, can be updated by the agent through the `cl_engineering_state` tool when it routes work, classifies depth, detects drift, publishes a PR, compounds learnings, or becomes blocked, and can be inspected or adjusted manually with `/cl-state`. When `@juanibiapina/pi-powerbar` is installed, the extension also emits a `cl-engineering` powerbar segment.
+
+## Default artifact scaffold
+
+When a repo has no Clarity-specific structure yet, the smallest useful starting scaffold is:
+
+```text
+docs/agents/session-state/
+docs/clarity/continuous-compound/
+docs/solutions/
+docs/adr/
+.clarity-engineering/config.local.example.yaml
+```
+
+`cl-build` uses session state and continuous compound by default when setup does not override them. `cl-compound` curates those captures into `docs/solutions/`, `docs/adr/`, or setup docs.
 
 ## Install
 
@@ -184,6 +210,16 @@ Install skills and prompts into Codex's local directories:
 ```bash
 ./scripts/validate.sh
 ```
+
+## Local config
+
+For machine-local defaults, copy:
+
+```bash
+cp .clarity-engineering/config.local.example.yaml .clarity-engineering/config.local.yaml
+```
+
+Then keep the real `config.local.yaml` gitignored. Use it for convenience defaults such as tracker aliases, preferred PR behavior, or local multi-repo paths. Keep shared workflow truth in repo-tracked setup docs.
 
 ## Development notes
 

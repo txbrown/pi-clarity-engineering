@@ -82,6 +82,12 @@ State the depth classification explicitly at the start of Build. Use it to decid
 
 Maintain a lightweight session state per ticket or intent source so work survives context switches.
 
+Default location when repo setup does not say otherwise:
+
+```text
+docs/agents/session-state/
+```
+
 At the end of every Build, write or update a session state summary. If a draft PR already exists, keep it current enough that another engineer can understand progress and review incrementally:
 
 ```markdown
@@ -103,6 +109,8 @@ Blockers: <description or "none">
 ```
 
 At the start of Build, check whether a session state exists. If it does, read it, acknowledge where the previous session left off, and resume from the next remaining item instead of restarting. If no session state exists, create one after the first Build unit.
+
+If repo setup is incomplete, create the directory if needed and use a simple file per ticket or intent source. Prefer stable, human-readable names derived from the ticket key or branch goal.
 
 ## Intent drift detection
 
@@ -136,6 +144,16 @@ Escalate if accidental drift or misunderstandings are found. Proceed if all gaps
 
 ## Continuous compounding
 
+At the end of every Build, before the session state is written, automatically compound learnings.
+
+Default location when repo setup does not say otherwise:
+
+```text
+docs/clarity/continuous-compound/
+```
+
+Promotion targets should follow `plugins/clarity-engineering/docs/learning-destinations.md` when available.
+
 At the end of every Build, before the session state is written, automatically compound learnings:
 
 1. Identify what was learned during this Build session:
@@ -145,9 +163,11 @@ At the end of every Build, before the session state is written, automatically co
    - decisions made and why.
 2. Decide whether each learning is reusable beyond this ticket.
 3. Write or update the appropriate memory destination:
-   - repo memory for codebase-specific facts;
+   - repo memory for codebase-specific facts, usually `docs/solutions/`;
+   - `docs/adr/` for hard-to-reverse trade-off decisions;
+   - setup docs for workflow or tooling rules;
    - global memory for cross-repo patterns;
-   - skip if learning is session-local only.
+   - skip promotion if the learning is session-local only.
 4. Flag any stale or conflicting existing docs discovered during this session.
 
 Keep this lightweight. A few bullet points is enough:
@@ -164,7 +184,7 @@ Keep this lightweight. A few bullet points is enough:
 - No cross-repo patterns.
 ```
 
-Continuous compounding is not optional. It happens at the end of every Build.
+Continuous compounding is not optional. It happens at the end of every Build, even when the promoted output is only a short note plus a follow-up flag for later curation in Compound.
 
 ## Uncertainty handling and escalation
 

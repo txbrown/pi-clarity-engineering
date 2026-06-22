@@ -20,6 +20,16 @@ Plan = Slice + Specify
 
 Setup is available as **Clarity Engineering framework setup/configuration for a codebase**, not as a delivery lifecycle stage or lifecycle mode. It records where tickets live, how stage commands resolve tickets/PRs/branches/diffs/tests, how Plan materializes defined slices/tickets, how Build claims work, where session state and continuous compound entries live, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, what automation is safe vs requires escalation, where local/global memory lives, what context budget policy applies, and which decisions require human judgement.
 
+Default durable artifact scaffold when setup does not override it:
+
+```text
+docs/agents/session-state/
+docs/clarity/continuous-compound/
+docs/solutions/
+docs/adr/
+.clarity-engineering/config.local.example.yaml
+```
+
 ## Escalation model
 
 Agents own execution flow. They proceed through stages autonomously and escalate only at genuine triggers. Mechanical stage-transition approvals are replaced by the escalation model.
@@ -80,6 +90,10 @@ Manual global install:
 ```
 
 Then run `/reload` in Pi or restart Pi.
+
+## Local config
+
+Use `.clarity-engineering/config.local.yaml` for machine-local defaults such as tracker aliases, review preferences, or local multi-repo paths. Keep shared workflow truth in repo-tracked setup docs. A starter template is shipped at `.clarity-engineering/config.local.example.yaml`.
 
 ## Skills
 

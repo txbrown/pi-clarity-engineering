@@ -58,6 +58,7 @@ docs/agents/review-workflow.md
 docs/agents/session-state/
 docs/adr/
 docs/solutions/
+docs/clarity/continuous-compound/
 docs/clarity/learnings/
 ```
 
@@ -135,6 +136,19 @@ If context grows too large:
 | Cross-repo engineering preference | Global memory |
 | Framework principle or workflow | Framework vault and, when useful, plugin update |
 | Temporary session detail | Current session only; summarize if it must survive |
+
+## Recommended default scaffold
+
+When a repo has no Clarity-specific memory structure yet, the smallest useful default scaffold is:
+
+```text
+docs/agents/session-state/
+docs/clarity/continuous-compound/
+docs/solutions/
+docs/adr/
+```
+
+See `plugins/clarity-engineering/docs/learning-destinations.md` for promotion rules.
 
 ## Rule of thumb
 

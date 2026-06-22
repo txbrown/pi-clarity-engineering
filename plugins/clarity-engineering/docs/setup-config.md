@@ -10,13 +10,21 @@ Shape → Plan → Build → Review → Compound
 
 and the codebase's real ticket system, reference-resolution rules, Plan ticket materialization workflow, Build claim workflow, session-state and compounding storage, domain language, validation tools, MCPs, e2e flows, Review PR publishing process, escalation policy, memory locations, context budgets, and human decision rights.
 
-## Recommended artifact
+## Recommended artifacts
 
-Prefer a repo-local file:
+Prefer a repo-tracked setup file:
 
 ```text
 docs/agents/clarity-engineering.md
 ```
+
+Optionally pair it with a machine-local defaults file:
+
+```text
+.clarity-engineering/config.local.yaml
+```
+
+Use the local config file for convenience defaults such as tracker aliases, preferred review/publish behavior, or local tool assumptions. Do not hide shared workflow truth there.
 
 For small repos, a section in `AGENTS.md`, `CLAUDE.md`, or `CONTEXT.md` can be enough. For larger repos, split by concern:
 
@@ -30,6 +38,8 @@ docs/agents/review-workflow.md
 ```
 
 Use whatever names match the repo. Findability matters more than exact paths.
+
+A committed example file such as `.clarity-engineering/config.local.example.yaml` helps new contributors discover the available local knobs without committing personal settings.
 
 ## Minimal template
 
@@ -164,6 +174,19 @@ Escalation-required (ask first):
 - Architecture:
 - Security/privacy:
 - Write-capable tools:
+```
+
+## Suggested default scaffold
+
+When starting from scratch, the smallest useful Clarity filesystem scaffold is:
+
+```text
+.clarity-engineering/config.local.example.yaml
+docs/agents/clarity-engineering.md
+docs/agents/session-state/
+docs/clarity/continuous-compound/
+docs/solutions/
+docs/adr/
 ```
 
 ## Principles

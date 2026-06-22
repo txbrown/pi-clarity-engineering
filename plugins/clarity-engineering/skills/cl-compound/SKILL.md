@@ -7,6 +7,15 @@ description: Curate and organize accumulated Clarity Engineering learnings from 
 
 Use this skill to review, curate, and organize learnings that have been continuously compounded during Build sessions. Continuous compounding already captures learning at the end of every Build; the standalone Compound command curates the accumulated learnings — consolidating duplicates, refreshing stale docs, promoting patterns, and deciding what to keep, archive, or elevate.
 
+Default source and destination locations when repo setup does not say otherwise:
+
+```text
+docs/clarity/continuous-compound/
+docs/solutions/
+docs/adr/
+docs/agents/session-state/
+```
+
 ## Goal
 
 Curate the system's learning so it stays useful, current, and findable.
@@ -35,6 +44,8 @@ When promoting:
 - where it should live: repo memory, global memory, framework memory, note, checklist, prompt, skill, doc, ADR, test helper, setup/config update, or follow-up ticket;
 - concrete update or draft text.
 
+Use the memory destination rule from `plugins/clarity-engineering/docs/learning-destinations.md` when available.
+
 Use the memory destination rule:
 
 - codebase-specific facts/fixes → repo memory, such as `docs/solutions/` or `docs/clarity/learnings/`;
@@ -45,6 +56,13 @@ Use the memory destination rule:
 - framework principles/workflows → framework vault and, when useful, plugin update.
 
 Search before writing. Do not bulk-load or duplicate local/global memory; retrieve related entries narrowly and update/consolidate when appropriate.
+
+When repo setup is incomplete, prefer these defaults:
+
+- session resume artifacts stay in `docs/agents/session-state/`;
+- raw per-Build captures stay in `docs/clarity/continuous-compound/`;
+- durable codebase learnings go to `docs/solutions/`;
+- architectural decisions go to `docs/adr/`.
 
 ## Relationship to continuous compounding
 
@@ -61,7 +79,7 @@ Both produce the same structured output; the difference is when and how they're 
 
 Keep Compound progress explicit:
 
-- `Done` — accumulated learnings reviewed, curation decisions made, memory destinations updated, stale docs refreshed or flagged.
+- `Done` — accumulated learnings reviewed, curation decisions made, memory destinations updated, stale docs refreshed or flagged, and any default directories created or used consistently when setup was missing.
 - `Left` — uncurated entries, stale docs not yet updated, missing target locations.
 - `Blocked` — escalation trigger fired, the single focused question needed to finish curation.
 
