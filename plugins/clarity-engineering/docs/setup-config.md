@@ -60,6 +60,21 @@ A committed example file such as `.clarity-engineering/config.local.example.yaml
 - Follow-up ticket convention:
 - Ticket-equivalent artifact for small work:
 
+## Shaping norms
+
+Document how ambiguous work should be shaped in this codebase:
+
+- Preferred outputs: epic / spike / shaped ticket / RFC / local markdown / tracker-native project
+- Typical input source: PM / EM / SEM / founder / support / self-directed engineering / mixed
+- Appetite or effort hints: required / optional / not used
+- Options analysis: expected by default / only for larger work / rarely needed
+- Spike trigger: when uncertainty should become learning work instead of delivery scope
+- RFC trigger: when work is cross-team, hard to reverse, or high-blast-radius
+- Tracker mutation style during Shape: draft wording first / create or update tracker directly / ask first
+- Strategy or initiative linkage expectations:
+
+These norms let `cl-shape` adapt across company styles instead of assuming one shaping doctrine.
+
 ## Plan ticket materialization
 
 - Should Plan create tracker tickets for independently buildable slices:

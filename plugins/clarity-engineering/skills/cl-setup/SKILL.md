@@ -19,6 +19,7 @@ The setup should answer:
 
 - where shaped tickets or ticket-equivalent artifacts live;
 - how stage commands resolve work references such as ticket IDs/URLs, PRs, branches, diffs, failing tests, and review comments;
+- how Shape should behave locally: preferred outputs, expected depth, and when work becomes an epic, spike, ticket, or RFC;
 - how Plan materializes defined slices/tickets in the issue tracker when appropriate;
 - how Build claims work through ticket status, assignment, and branch creation;
 - where session state is stored and how it survives across sessions;
@@ -87,6 +88,21 @@ Document the local ticket system and conventions:
 - what counts as a ticket-equivalent artifact for small work.
 
 Document reference resolution so `cl-build <ticket>`, `cl-plan <ticket>`, `cl-review <ticket-or-pr>`, and `cl-shape <issue>` can retrieve context without guessing.
+
+### 1.5 Shaping norms
+
+Document how ambiguous work should be shaped in this repo or company:
+
+- preferred shaping outputs: epic, spike, shaped ticket, RFC, local markdown, tracker-native project, or other;
+- who typically brings ambiguous work: PM, EM, SEM, founder, support, self-directed engineering, or mixed;
+- whether appetite/effort hints matter here and whether they are optional or required;
+- whether options analysis is expected by default or only for larger work;
+- what should trigger a spike instead of forced delivery scope;
+- what should trigger an RFC instead of a normal ticket;
+- whether shaping should directly mutate the tracker or produce draft wording first;
+- whether initiative/project linkage is expected.
+
+The goal is to let `cl-shape` adapt to local norms without hardcoding one product-development doctrine.
 
 ### 2. Plan ticket materialization
 
@@ -277,7 +293,7 @@ Keep setup progress explicit:
 - Local config path(s) confirmed, created, or recommended.
 - Summary of discovered local workflow.
 - Missing context or recommended follow-up.
-- Work reference resolution, Plan ticket materialization, Build claim/Review publish behavior, session state and compounding locations.
+- Work reference resolution, shaping norms, Plan ticket materialization, Build claim/Review publish behavior, session state and compounding locations.
 - Automation and escalation policy for safe vs escalation-required operations.
 - Tool/MCP safety notes.
 - Validation commands and review evidence expectations.
