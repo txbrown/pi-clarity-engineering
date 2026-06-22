@@ -18,6 +18,8 @@ Plan contains two substeps:
 Plan = Slice + Specify
 ```
 
+Strategy is an upstream judgement layer, not a delivery lifecycle stage. Use Strategy before Shape when the question is whether an idea, opportunity, product bet, or engineering investment is worth pursuing at all. Strategy can recommend Shape, Spike, Prototype, RFC, Park, or Kill.
+
 Principles:
 
 1. Quality comes from unambiguous shaped features, captured as executable agreements.
@@ -30,6 +32,22 @@ Principles:
 8. Compound the learning continuously — not as an optional afterthought.
 9. Escalate on genuine decisions, not on mechanical stage boundaries.
 10. Match ceremony to risk: trivial work should feel trivial.
+
+## Strategy layer
+
+Strategy answers: what should we bet on, why, why now, and what would make it matter?
+
+Use Strategy for founder/product judgement, major engineering investments, roadmap bets, ambiguous opportunities, or “should we build this?” questions. Strategy should clarify:
+
+- strategic thesis;
+- pain/value intensity;
+- story: before, turning point, after, proof;
+- readiness and timing;
+- options and trade-offs;
+- smallest tangible learning path;
+- kill or park criteria.
+
+Strategy hands off to Shape only when the bet is worth pursuing. Otherwise it may recommend a spike, prototype, RFC, parking, or killing the idea. Do not force Strategy into routine tickets or daily Build work.
 
 ## Execution model: autonomy with escalation
 

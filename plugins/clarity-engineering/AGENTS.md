@@ -4,6 +4,7 @@ When editing this plugin:
 
 - Keep the lifecycle wording exactly aligned with `Shape → Plan → Build → Review → Compound`.
 - Treat Setup as Clarity Engineering framework setup/configuration for a codebase, not a delivery lifecycle stage or lifecycle mode.
+- Treat Strategy as an upstream judgement layer for bets/opportunities, not a delivery lifecycle stage or lifecycle mode.
 - Keep `Plan = Slice + Specify`; Slice and Specify are substeps of Plan, not top-level lifecycle stages.
 - Keep skills portable across Claude Code, Codex, and Pi.
 - Keep command and prompt files thin wrappers around skills.

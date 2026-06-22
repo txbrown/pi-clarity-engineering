@@ -1,7 +1,7 @@
 {
   "name": "clarity-engineering-plugin",
   "version": "0.1.0",
-  "description": "Clarity Engineering setup, skills, prompts, and Pi extension commands for Claude Code, Codex, and Pi.",
+  "description": "Clarity Strategy plus Engineering setup, skills, prompts, and Pi extension commands for Claude Code, Codex, and Pi.",
   "private": true,
   "keywords": [
     "pi-package",

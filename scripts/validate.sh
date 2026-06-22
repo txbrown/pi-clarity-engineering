@@ -68,7 +68,7 @@ extension_path = plugin / 'extensions/cl-engineering/index.ts'
 if not extension_path.exists():
     raise SystemExit(f'missing Pi extension: {extension_path}')
 extension_text = extension_path.read_text()
-for command in ['cl-engineering', 'cl-setup', 'cl-shape', 'cl-plan', 'cl-build', 'cl-review', 'cl-compound']:
+for command in ['cl-engineering', 'cl-strategy', 'cl-setup', 'cl-shape', 'cl-plan', 'cl-build', 'cl-review', 'cl-compound']:
     if f'command: \"{command}\"' not in extension_text:
         raise SystemExit(f'missing Pi extension command: /{command}')
 print(f'valid Pi extension: {extension_path}')
