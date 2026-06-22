@@ -13,25 +13,36 @@ Plan = Slice + Specify
 
 ## Inputs
 
-- A shaped ticket, ticket ID/URL, issue, PR, branch, failing test, model problem, or clear request.
+- A shaped ticket, epic, approved RFC, spike result, ticket ID/URL, issue, PR, branch, failing test, model problem, or clear request.
 - Optional constraints, dependencies, references, risks, and existing acceptance criteria.
 
 ## Context-aware Plan entry
 
 At Plan entry, resolve the intent source before slicing:
 
-1. Identify the input kind: ticket ID/URL, issue, PR, branch, current diff, failing test, model problem, or explicit user request.
+1. Identify the input kind: ticket ID/URL, issue, epic, approved RFC, spike result, PR, branch, current diff, failing test, model problem, or explicit user request.
 2. Fetch/read relevant context using repo setup and available tools.
 3. Determine whether the work is already sufficiently shaped.
-4. If the ticket is small and coherent, avoid fake slicing and recommend building the whole ticket.
-5. If the ticket is broad, risky, or contains independent capabilities, slice it vertically.
-6. Ask one focused question only when acceptance behavior, selected slice, or scope is materially ambiguous.
+4. If the input is an epic, choose whether Plan should (a) define the vertical breakdown, (b) recommend a first buildable child ticket, or (c) stop and ask for a sharper scope if the epic is still too broad.
+5. If the input is a spike, use its output as planning input only if the key uncertainty is resolved. If the spike is still open-ended, stop and say the work is not yet ready for Plan.
+6. If the input is an RFC, plan from the approved or recommended direction rather than re-litigating the decision document.
+7. If the ticket is small and coherent, avoid fake slicing and recommend building the whole ticket.
+8. If the work is broad, risky, or contains independent capabilities, slice it vertically.
+9. Ask one focused question only when acceptance behavior, selected slice, or scope is materially ambiguous.
 
 Do not make a large plan just because Plan was called. Plan should produce only enough structure to make the next Build safe and clear. Proceed autonomously through slicing and specifying; escalate only when the selected slice, acceptance behaviour, or tracker-materialization decision requires operator judgement.
+
+Plan should respect the output of Shape. If Shape produced an epic, spike, or RFC, Plan should work from that artifact instead of forcing everything into a normal ticket-shaped path.
 
 ## Slice
 
 Create an ordered ticket breakdown around meaningful vertical capability. Prefer slices that each deliver observable value or validated learning.
+
+If the shaped artifact is:
+
+- **Epic** — break it into independently buildable children or phases, then recommend the best next child.
+- **RFC** — translate the chosen direction into buildable slices without reopening already-made architectural decisions unless new evidence forces it.
+- **Spike** — only slice follow-on delivery work once the spike has produced a usable recommendation or answer.
 
 Include:
 
@@ -101,8 +112,8 @@ Keep completion state explicit:
 
 ## Output
 
-- Intent source resolved: ticket/issue/PR/branch/diff/failing test/model problem/user request and links/IDs where applicable.
-- Decision on whether slicing is needed, including “whole ticket is small enough” when appropriate.
+- Intent source resolved: ticket/issue/epic/spike/RFC/PR/branch/diff/failing test/model problem/user request and links/IDs where applicable.
+- Decision on whether slicing is needed, including “whole ticket is small enough” when appropriate, or “this spike/RFC/epic is not yet ready for planning” when that is the honest outcome.
 - Ordered vertical ticket breakdown with title, AFK/HITL type, blockers, purpose, validation, and risk/learning reduced when slicing is useful.
 - Tracker materialization decision: created/updated ticket IDs, proposed tickets awaiting approval, checklist/local-doc decision, comment intentionally not posted when relevant, or no tracker items needed.
 - Recommended next slice or next Build ticket ID.

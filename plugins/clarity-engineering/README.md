@@ -100,7 +100,7 @@ Use `.clarity-engineering/config.local.yaml` for machine-local defaults such as 
 - `cl-engineering` — route delivery work with autonomous escalation.
 - `cl-setup` — configure the framework for a codebase: tickets, reference resolution, Plan ticket materialization, Build claim workflow, session state and compounding storage, domain docs, ADRs, validation/e2e tools, MCPs, Review PR publishing, escalation policy, local/global memory, context budgets, and human decision rights.
 - `cl-shape` — adapt ambiguous work into the right artifact for the repo: epic, spike, shaped ticket, RFC, or an improved existing ticket. Uses setup-aware shaping norms instead of assuming one company method.
-- `cl-plan` — create vertical slices and specify the next slice only when useful; materialize buildable slices in the tracker when useful and safe.
+- `cl-plan` — create vertical slices and specify the next slice only when useful; works from shaped tickets, epics, approved RFCs, and resolved spikes, then materializes buildable slices in the tracker when useful and safe.
 - `cl-build` — build already-shaped work TDD-first. Classify depth at entry, check for session state and resume, run intent drift detection before committing, compound learnings continuously, update session state. Proceed autonomously; escalate on triggers.
 - `cl-review` — work from the existing review surface, usually a draft PR or pushed branch, then validate against shaped intent. Update/create PR context only as needed. Review Build's drift notes. Evidence-aware PR descriptions with scenario-focused `Testing notes`.
 - `cl-compound` — curate accumulated continuous compound learnings: promote, refresh, deduplicate, or archive.

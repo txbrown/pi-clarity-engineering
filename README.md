@@ -105,7 +105,7 @@ Review should inspect the current branch/diff, check session state and Build's d
 | `cl-engineering` | Route delivery work with autonomous escalation. |
 | `cl-setup` | Configure the framework for a codebase: tickets, reference resolution, Plan ticket materialization, Build claim workflow, session state and compounding storage, domain docs, ADRs, validation/e2e tools, MCPs, Review PR publishing, escalation policy, local/global memory, context budgets, and human decision rights. |
 | `cl-shape` | Adapt ambiguous work into the right artifact for the repo: epic, spike, shaped ticket, RFC, or an improved existing ticket. |
-| `cl-plan` | Plan shaped work. Plan = Slice + Specify. Materialize slices in the tracker when useful and safe. |
+| `cl-plan` | Plan shaped work from tickets, epics, approved RFCs, or resolved spikes. Plan = Slice + Specify. Materialize slices in the tracker when useful and safe. |
 | `cl-build` | Build already-shaped work TDD-first. Classify depth, check session state, run intent drift detection, compound learnings continuously, update session state. |
 | `cl-review` | Work from the existing review surface, validate against shaped intent, and update/create PR context as needed. Review Build's drift notes. Evidence-aware PR descriptions. |
 | `cl-compound` | Curate accumulated continuous compound learnings — promote, refresh, deduplicate, or archive. |
