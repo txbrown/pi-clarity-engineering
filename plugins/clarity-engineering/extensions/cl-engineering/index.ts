@@ -3,6 +3,7 @@ import { Type, type Static } from "typebox";
 
 type ClarityStage =
   | "route"
+  | "strategy"
   | "setup"
   | "shape"
   | "plan-slice"
@@ -39,6 +40,7 @@ const APPROVAL_GATE =
 
 const STAGE_LABELS: Record<ClarityStage, string> = {
   route: "Routing",
+  strategy: "Strategy",
   setup: "Setup",
   shape: "Shape",
   "plan-slice": "Plan: Slice",
@@ -61,7 +63,16 @@ const modes: Mode[] = [
     label: "Routing",
     description: "Route work through Clarity Engineering",
     argumentHint: "[request, ticket, plan, diff, or context]",
-    instruction: "Route this request to Shape, Plan, Build, Review, or Compound, then apply the selected mode. Clarity Engineering is a lightweight constitution, not a checklist. The agent owns execution flow. Resolve intent source, retrieve narrow relevant context, classify depth at Build entry, perform stage work autonomously, and escalate only when a trigger fires.",
+    instruction: "Route this request to Strategy, Shape, Plan, Build, Review, or Compound, then apply the selected mode. Strategy is upstream of the delivery lifecycle, not a lifecycle stage. Clarity Engineering is a lightweight constitution, not a checklist. The agent owns execution flow. Resolve intent source, retrieve narrow relevant context, classify depth at Build entry, perform stage work autonomously, and escalate only when a trigger fires.",
+  },
+  {
+    command: "cl-strategy",
+    skill: "cl-strategy",
+    stage: "strategy",
+    label: "Strategy",
+    description: "Evaluate whether an idea is worth shaping",
+    argumentHint: "[idea, opportunity, product bet, engineering investment, or strategic question]",
+    instruction: "Apply Strategy mode. Strategy is upstream of the Clarity Engineering delivery lifecycle, not a lifecycle stage. Evaluate whether the idea, opportunity, product bet, founder instinct, or engineering investment should become Shape, Spike, Prototype, RFC, Park, or Kill. Consider strategic thesis, pain/value intensity, story, readiness, options/trade-offs, tangible learning path, and kill/park criteria. If worth pursuing, hand off to Shape rather than planning implementation details. Ask one focused question only when strategic judgement requires human input.",
   },
   {
     command: "cl-setup",
@@ -123,6 +134,8 @@ const stateSchema = Type.Object({
   stage: Type.Union([
     Type.Literal("route"),
     Type.Literal("Route"),
+    Type.Literal("strategy"),
+    Type.Literal("Strategy"),
     Type.Literal("setup"),
     Type.Literal("Setup"),
     Type.Literal("shape"),
@@ -193,7 +206,7 @@ export default function clarityEngineeringExtension(pi: ExtensionAPI) {
   }
 
   pi.registerCommand("cl-state", {
-    description: "Show or set Clarity Engineering status: route|setup|shape|plan-slice|plan-specify|build|review|compound|approval|blocked|idle [detail]",
+    description: "Show or set Clarity Engineering status: route|strategy|setup|shape|plan-slice|plan-specify|build|review|compound|approval|blocked|idle [detail]",
     handler: async (args, ctx) => {
       const [rawStage, ...detailParts] = args.trim().split(/\s+/).filter(Boolean);
       if (!rawStage) {
@@ -205,7 +218,7 @@ export default function clarityEngineeringExtension(pi: ExtensionAPI) {
 
       const stage = normalizeClarityStage(rawStage);
       if (!stage) {
-        ctx.ui.notify("Usage: /cl-state route|setup|shape|plan-slice|plan-specify|build|review|compound|approval|blocked|idle [detail]", "error");
+        ctx.ui.notify("Usage: /cl-state route|strategy|setup|shape|plan-slice|plan-specify|build|review|compound|approval|blocked|idle [detail]", "error");
         return;
       }
 
@@ -219,7 +232,7 @@ export default function clarityEngineeringExtension(pi: ExtensionAPI) {
     description: "Update the Clarity Engineering lifecycle status shown in Pi's footer/status bar.",
     promptSnippet: "Update the visible Clarity Engineering status bar stage.",
     promptGuidelines: [
-      "Use cl_engineering_state when a Clarity Engineering command routes to a specific lifecycle stage, moves from Plan Slice to Plan Specify, reaches an approval gate, or becomes blocked.",
+      "Use cl_engineering_state when a Clarity Engineering command routes to Strategy or a specific lifecycle stage, moves from Plan Slice to Plan Specify, reaches an approval gate, or becomes blocked.",
       "Keep cl_engineering_state.detail short; it is displayed in the status bar.",
     ],
     parameters: stateSchema,

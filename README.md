@@ -18,6 +18,8 @@ Plan is one lifecycle stage with two substeps:
 Plan = Slice + Specify
 ```
 
+The package also includes **Strategy** as an upstream judgement layer. Strategy is not a delivery lifecycle stage; it helps decide whether an idea, product bet, founder instinct, or engineering investment should become Shape, Spike, Prototype, RFC, Park, or Kill.
+
 This first pass includes a **real Pi agent package/extension** with skills, commands, prompts, docs, and examples.
 
 It also includes a lightweight **Setup** mode for adapting Clarity Engineering to any codebase without hardcoding one workflow: where tickets live, how stage commands resolve tickets/PRs/branches/diffs/tests, how Plan materializes defined slices/tickets, how Build claims work, where session state and continuous compound entries live, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, what automation is safe vs requires escalation, and which decisions require human judgement.
@@ -45,6 +47,20 @@ Escalation triggers — the only reasons to stop and ask:
 - **Validation challenge** — test fails in a way that challenges the approach.
 - **External mutation** — tracker/repo/PR/environment change not pre-authorized.
 - **Completion** — work is built, validated, and ready for operator inspection.
+
+## Strategy layer
+
+Strategy answers the question before delivery: what should we bet on, why, why now, and what would make it matter?
+
+Use `/cl-strategy` for questions like:
+
+- should we build this?
+- what should we focus on?
+- is this worth shaping?
+- which product or engineering bet should we make?
+- should this become a spike, prototype, RFC, or be parked/killed?
+
+Strategy can examine pain/value intensity, story, readiness, options, trade-offs, tangible learning paths, and kill/park criteria. If the recommendation is to proceed, Strategy hands off to Shape without changing the lifecycle.
 
 ## Depth classification
 
@@ -102,9 +118,10 @@ Review should inspect the current branch/diff, check session state and Build's d
 
 | Mode | Purpose |
 | --- | --- |
-| `cl-engineering` | Route delivery work with autonomous escalation. |
+| `cl-engineering` | Route Strategy or delivery work with autonomous escalation. |
+| `cl-strategy` | Evaluate whether an idea, opportunity, product bet, or engineering investment should become Shape, Spike, Prototype, RFC, Park, or Kill. Strategy is upstream of the delivery lifecycle. |
 | `cl-setup` | Configure the framework for a codebase: tickets, reference resolution, Plan ticket materialization, Build claim workflow, session state and compounding storage, domain docs, ADRs, validation/e2e tools, MCPs, Review PR publishing, escalation policy, local/global memory, context budgets, and human decision rights. |
-| `cl-shape` | Adapt ambiguous work into the right artifact for the repo: epic, spike, shaped ticket, RFC, or an improved existing ticket. |
+| `cl-shape` | Adapt ambiguous work into the right artifact for the repo: epic, spike, shaped ticket, RFC, or an improved existing ticket. Route to Strategy first when the question is still whether the work is worth pursuing. |
 | `cl-plan` | Plan shaped work from tickets, epics, approved RFCs, or resolved spikes. Plan = Slice + Specify. Materialize slices in the tracker when useful and safe. |
 | `cl-build` | Build already-shaped work TDD-first. Classify depth, check session state, run intent drift detection, compound learnings continuously, update session state. |
 | `cl-review` | Work from the existing review surface, validate against shaped intent, and update/create PR context as needed. Review Build's drift notes. Evidence-aware PR descriptions. |
@@ -113,6 +130,7 @@ Review should inspect the current branch/diff, check session state and Build's d
 In Pi these are registered as extension commands, so they are slash commands like:
 
 ```text
+/cl-strategy should we build this idea?
 /cl-shape shape this idea: ...
 /cl-plan plan this ticket: ...
 /cl-review review this diff against the ticket: ...
@@ -179,6 +197,7 @@ After installing manually, run `/reload` in Pi or restart Pi. The extension regi
 
 ```text
 /cl-engineering
+/cl-strategy
 /cl-setup
 /cl-shape
 /cl-plan
@@ -229,6 +248,7 @@ Then keep the real `config.local.yaml` gitignored. Use it for convenience defaul
 
 - Keep lifecycle wording as `Shape → Plan → Build → Review → Compound`.
 - Agents own execution flow; escalate only when a trigger fires.
+- Treat Strategy as upstream of the lifecycle, not as an added lifecycle stage.
 - Classify depth at Build entry and adapt ceremony proportionally.
 - Run intent drift checks before committing.
 - Compound learnings continuously at the end of every Build.

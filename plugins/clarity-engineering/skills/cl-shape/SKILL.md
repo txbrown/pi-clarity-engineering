@@ -7,6 +7,8 @@ description: Shape ambiguous work into the right executable artifact for the cur
 
 Use this skill when the work is ambiguous, underdefined, strategically important, or not yet in the right form for planning or building.
 
+If the request is still asking **whether** an idea is worth pursuing, what to bet on, or why now, route to `cl-strategy` first. Shape starts once the bet is chosen or at least worth exploring as a spike/RFC/prototype.
+
 `cl-shape` is not a Shape Up clone and not just a ticket-polishing step. Its job is to take unclear work and turn it into the **right level of executable clarity for this repo**.
 
 ## Goal
@@ -22,6 +24,7 @@ Produce the smallest artifact that makes the work understandable, bounded, and r
 ## Inputs
 
 - Ambiguous request from a staff engineer, EM, PM, founder, teammate, issue tracker, support signal, PR discussion, bug report, or personal project note.
+- Strategy recommendation that says the next move is Shape, Spike, Prototype, or RFC.
 - Existing ticket/issue/epic/RFC/spike that is vague or incomplete.
 - Optional context: customer requests, strategy/initiative links, constraints, examples, dependencies, risks, prior docs, and setup/config.
 
@@ -41,9 +44,10 @@ At Shape entry, resolve the intent source before writing artifacts:
 
 1. Identify the input kind: fuzzy goal, existing issue/ticket, epic, spike request, PR thread, bug report, branch goal, or explicit user request.
 2. Read relevant repo setup, strategy, tracker context, existing docs, linked tickets, and current code/diff when useful.
-3. Determine whether the work is already shaped enough. If so, improve only the missing parts instead of redoing the artifact.
-4. Determine the likely artifact type: epic, spike, shaped ticket, RFC, or ticket improvement.
-5. Ask one focused question only when the missing judgement is not discoverable from existing context.
+3. Determine whether this is still a Strategy question. If the main uncertainty is “is this worth doing?” rather than “what exactly should we do?”, recommend `cl-strategy` before shaping.
+4. Determine whether the work is already shaped enough. If so, improve only the missing parts instead of redoing the artifact.
+5. Determine the likely artifact type: epic, spike, shaped ticket, RFC, or ticket improvement.
+6. Ask one focused question only when the missing judgement is not discoverable from existing context.
 
 Proceed autonomously through shaping. Escalate only when scope, intent, priority, ownership, or product behaviour is materially ambiguous and not discoverable.
 

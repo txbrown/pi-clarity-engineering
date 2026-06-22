@@ -18,6 +18,8 @@ Plan contains two substeps:
 Plan = Slice + Specify
 ```
 
+Strategy is available as an upstream judgement layer, not as a delivery lifecycle stage. Use it to decide whether an idea, product bet, founder instinct, or engineering investment should become Shape, Spike, Prototype, RFC, Park, or Kill.
+
 Setup is available as **Clarity Engineering framework setup/configuration for a codebase**, not as a delivery lifecycle stage or lifecycle mode. It records where tickets live, how stage commands resolve tickets/PRs/branches/diffs/tests, how Plan materializes defined slices/tickets, how Build claims work, where session state and continuous compound entries live, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, what automation is safe vs requires escalation, where local/global memory lives, what context budget policy applies, and which decisions require human judgement.
 
 Default durable artifact scaffold when setup does not override it:
@@ -44,6 +46,20 @@ Escalation triggers — the only reasons to stop and ask:
 - **External mutation** — tracker/repo/PR/environment change not pre-authorized.
 - **Completion** — work is built, validated, and ready for operator inspection.
 
+## Strategy layer
+
+Strategy asks what to bet on before delivery begins:
+
+- should we build this?
+- why now?
+- is the pain/value intense enough?
+- what story would make this compelling?
+- which option should we choose?
+- what tangible learning would reduce uncertainty?
+- should this be shaped, spiked, prototyped, written as an RFC, parked, or killed?
+
+Strategy hands off to Shape when the bet is worth pursuing. It does not add a stage to `Shape → Plan → Build → Review → Compound`.
+
 ## Depth classification
 
 Not all work needs the full lifecycle. The agent classifies work at entry:
@@ -67,6 +83,7 @@ The extension registers slash commands using `pi.registerCommand()`:
 
 ```text
 /cl-engineering help me route this request
+/cl-strategy should we build this idea?
 /cl-setup configure this repo for Clarity Engineering
 /cl-shape shape this idea: ...
 /cl-plan plan this ticket: ...
@@ -97,9 +114,10 @@ Use `.clarity-engineering/config.local.yaml` for machine-local defaults such as 
 
 ## Skills
 
-- `cl-engineering` — route delivery work with autonomous escalation.
+- `cl-engineering` — route Strategy or delivery work with autonomous escalation.
+- `cl-strategy` — evaluate whether an idea, opportunity, product bet, or engineering investment should become Shape, Spike, Prototype, RFC, Park, or Kill. Strategy is upstream of the delivery lifecycle.
 - `cl-setup` — configure the framework for a codebase: tickets, reference resolution, Plan ticket materialization, Build claim workflow, session state and compounding storage, domain docs, ADRs, validation/e2e tools, MCPs, Review PR publishing, escalation policy, local/global memory, context budgets, and human decision rights.
-- `cl-shape` — adapt ambiguous work into the right artifact for the repo: epic, spike, shaped ticket, RFC, or an improved existing ticket. Uses setup-aware shaping norms instead of assuming one company method.
+- `cl-shape` — adapt ambiguous work into the right artifact for the repo: epic, spike, shaped ticket, RFC, or an improved existing ticket. Uses setup-aware shaping norms instead of assuming one company method. Route to Strategy first when the question is still whether the work is worth pursuing.
 - `cl-plan` — create vertical slices and specify the next slice only when useful; works from shaped tickets, epics, approved RFCs, and resolved spikes, then materializes buildable slices in the tracker when useful and safe.
 - `cl-build` — build already-shaped work TDD-first. Classify depth at entry, check for session state and resume, run intent drift detection before committing, compound learnings continuously, update session state. Proceed autonomously; escalate on triggers.
 - `cl-review` — work from the existing review surface, usually a draft PR or pushed branch, then validate against shaped intent. Update/create PR context only as needed. Review Build's drift notes. Evidence-aware PR descriptions with scenario-focused `Testing notes`.
@@ -111,6 +129,7 @@ Command files live in `commands/` and wrap the matching skill:
 
 ```text
 /cl-engineering help me route this request
+/cl-strategy should we build this idea?
 /cl-setup configure this repo for Clarity Engineering
 /cl-shape shape this idea: ...
 /cl-plan plan this ticket: ...

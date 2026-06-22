@@ -1,6 +1,6 @@
 ---
 name: cl-engineering
-description: Apply Ricardo's Clarity Engineering framework consistently with AI. Use for routing work across Shape, Plan, Build, Review, and Compound.
+description: Apply Ricardo's Clarity Engineering framework consistently with AI. Use for routing work across upstream Strategy plus Shape, Plan, Build, Review, and Compound.
 ---
 
 # Clarity Engineering Router
@@ -21,9 +21,11 @@ Plan contains two substeps:
 Plan = Slice + Specify
 ```
 
+Strategy is upstream of the lifecycle, not a delivery stage. Use Strategy when the question is whether an idea, opportunity, product bet, or engineering investment is worth pursuing before it becomes shaped work.
+
 ## Inputs
 
-- A raw idea, request, ticket, issue URL, PR URL, branch, diff, failing test, implementation task, completed-work recap, or Clarity Engineering framework setup/configuration request.
+- A raw idea, strategic question, product bet, engineering investment, request, ticket, issue URL, PR URL, branch, diff, failing test, implementation task, completed-work recap, or Clarity Engineering framework setup/configuration request.
 - Optional context such as constraints, references, code paths, or acceptance criteria.
 
 ## Context-aware stage entry
@@ -45,8 +47,9 @@ Do not force earlier stages when a later stage receives enough context. Do not a
 
 Route to the most useful mode:
 
+- Strategy: upstream founder/product/engineering judgement is needed before delivery, such as “should we build this?”, “what should we focus on?”, “why now?”, “is this worth shaping?”, or “which bet should we make?”. Strategy is not a delivery lifecycle stage; it recommends Shape, Spike, Prototype, RFC, Park, or Kill.
 - Setup: Clarity Engineering framework setup/configuration for the codebase is missing or requested, such as where tickets live, how Plan should materialize planned slices/tickets, which MCPs/tools to use, validation/e2e commands, domain docs, ADRs, review workflow, or human decision rights. Setup is not a delivery lifecycle stage or lifecycle mode.
-- Shape: fuzzy idea, unclear problem, or deliverable work without a ticket.
+- Shape: fuzzy idea, unclear problem, or deliverable work without a ticket. If the request is still asking whether the work is worth pursuing, route to Strategy before Shape.
 - Plan: shaped work that needs vertical slicing, tracker ticket materialization for independently buildable slices, or acceptance details for the next slice.
 - Build: already-shaped or resolvable work with enough clarity to implement TDD-first. This can be a selected slice, a complete small ticket, a bug with expected/actual behavior, a technical improvement with target state, a prior Shape/Plan artefact from another session, a ticket URL/ID that can be resolved, a failing test, a model problem with clear invariants, or a draft PR/branch that needs continued implementation or review-feedback fixes. When Build receives a ticket, it should normally resolve it, classify depth, claim/setup work according to setup, create/switch branch, then build. Build includes intent drift detection before committing, continuous compounding after completion, and may open or update a draft PR once the work is meaningful enough to share.
 - Review: built work that already has, or can now be given, a clear review surface such as a draft PR, ready PR, or pushed branch/diff. Review validates against shaped intent through AI review, human review, tests, builds, PR/code-diff review, manual QA, or release-risk checks. It should discover and update an existing PR first, creating one only if needed. Review includes escalation for findings that require operator judgement.
@@ -112,7 +115,7 @@ Memory should be treated as indexed retrieval, not a context dump. Load current 
 - Chosen mode and why.
 - Depth classification at Build entry.
 - Intent source resolved, including ticket/PR/branch/diff/test/user request when applicable.
-- The mode-specific output, using the matching `cl-*` skill behavior.
+- The mode-specific output, using the matching `cl-*` skill behavior. For Strategy, output the recommendation and next move rather than delivery tasks.
 - Operator status: `Done`, `Left`, and escalation trigger + question when `Blocked`.
 - Any single next action or single focused escalation question.
 
