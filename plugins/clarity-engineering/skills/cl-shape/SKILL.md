@@ -23,7 +23,7 @@ At Shape entry, resolve the intent source before creating or rewriting tickets:
 1. Identify the input kind: fuzzy idea, ticket ID/URL, issue, PR, branch, diff, failing test, model problem, bug report, or explicit user request.
 2. Fetch/read relevant context using repo setup and available tools.
 3. If a ticket already exists, inspect whether it is already shaped before reshaping it.
-4. Improve or comment on the existing ticket only when useful and safe/approved; otherwise produce suggested wording.
+4. If an existing ticket needs improvement, update its title/description/metadata only when useful and safe/approved; otherwise produce suggested wording. Never add issue-tracker comments on the operator's behalf.
 5. Ask one focused human-judgement question only when scope, priority, desired outcome, or product behavior is materially ambiguous and not discoverable.
 
 Shape creates clarity; it should not invent ceremony for a clear existing ticket. Proceed autonomously through shaping; escalate only when scope, priority, desired outcome, or product behaviour is materially ambiguous and not discoverable.
@@ -43,6 +43,8 @@ Keep metadata out of the ticket body when the issue tracker has fields or relati
 Do not pad the ticket body with routine planning or process headings unless the repo-local setup or operator explicitly asks for them. Capture boundaries, evidence strategy, and discovery notes in Plan/Review guidance or supporting artefacts instead of the ticket description.
 
 Add supporting artefacts outside the ticket body only when useful: context summary, options, trade-offs, risks, assumptions, glossary, or setup/config gaps that affect where tickets live, which validation path applies, or which tools/MCPs are safe to use.
+
+Do not add tracker comments on the operator's behalf. If a comment would be helpful, return proposed wording in the output instead of posting it.
 
 Also include Shape progress status and approval state:
 

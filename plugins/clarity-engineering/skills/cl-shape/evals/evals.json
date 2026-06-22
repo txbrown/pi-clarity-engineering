@@ -18,12 +18,13 @@
       "id": "improve-existing-ticket",
       "name": "Assess an existing ticket rather than blindly reshaping it",
       "prompt": "Shape MID-456: 'Add dark mode support to the settings page. Acceptance: toggle works, persists across sessions, respects system preference.'",
-      "expected_output": "The agent inspects the existing ticket, determines it is already sufficiently shaped, and proposes only useful improvements — not a full reshape. It does not add ceremony for an already-clear ticket.",
+      "expected_output": "The agent inspects the existing ticket, determines it is already sufficiently shaped, and proposes only useful improvements — not a full reshape. It does not add ceremony for an already-clear ticket and does not add tracker comments on the user's behalf.",
       "assertions": [
         "Acknowledges the existing ticket is already shaped",
         "Does not create a full replacement ticket unnecessarily",
         "Identifies any missing detail if present",
-        "States if the ticket is ready for Plan"
+        "States if the ticket is ready for Plan",
+        "Does not post or suggest posting a tracker comment on the user's behalf"
       ]
     }
   ]

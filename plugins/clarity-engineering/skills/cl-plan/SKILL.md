@@ -55,7 +55,8 @@ Use Setup to determine:
 - issue tracker and project/team;
 - parent/child, dependency, milestone, label, and status conventions;
 - whether planned slices become child issues, linked follow-ups, checklist items on the parent ticket, local markdown only, or no tracker item;
-- approval policy for creating or updating external tracker state.
+- approval policy for creating or updating external tracker state;
+- tracker comment policy, which should default to never adding comments on the operator's behalf.
 
 Create or update tracker tickets during Plan when all are true:
 
@@ -65,7 +66,9 @@ Create or update tracker tickets during Plan when all are true:
 
 Do not create tracker tickets for every tiny implementation step. If the original ticket is small enough, state that no child tickets are needed and recommend building the original ticket directly. If tracker creation is useful but not safe/approved, produce proposed ticket text and ask one focused approval question before mutating the tracker.
 
-When tickets are created or updated, link them back to the parent/source ticket or plan context, preserve ordering/dependencies, and output the created/updated IDs plus the recommended next Build ticket.
+Never add tracker comments on the operator's behalf during Plan. Put required context in the ticket body, relationships, checklist, or Plan output instead. If a comment would help a human follow up, return proposed comment wording without posting it.
+
+When tickets are created or updated, link them back to the parent/source ticket or plan context through tracker fields/relationships when possible, preserve ordering/dependencies, and output the created/updated IDs plus the recommended next Build ticket.
 
 ## Specify
 
@@ -101,7 +104,7 @@ Keep completion state explicit:
 - Intent source resolved: ticket/issue/PR/branch/diff/failing test/model problem/user request and links/IDs where applicable.
 - Decision on whether slicing is needed, including “whole ticket is small enough” when appropriate.
 - Ordered vertical ticket breakdown with title, AFK/HITL type, blockers, purpose, validation, and risk/learning reduced when slicing is useful.
-- Tracker materialization decision: created/updated ticket IDs, proposed tickets awaiting approval, checklist/local-doc decision, or no tracker items needed.
+- Tracker materialization decision: created/updated ticket IDs, proposed tickets awaiting approval, checklist/local-doc decision, comment intentionally not posted when relevant, or no tracker items needed.
 - Recommended next slice or next Build ticket ID.
 - Acceptance details for the recommended or user-selected next slice.
 - Plan progress status: `Done`, `Left`, `Blocked`, `Ready for Specify?`, `Ready for Build?`, and approval state.

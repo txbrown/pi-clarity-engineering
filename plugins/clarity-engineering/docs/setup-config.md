@@ -61,6 +61,7 @@ Use whatever names match the repo. Findability matters more than exact paths.
 - Title/body format:
 - Link-back convention:
 - When not to create tickets:
+- Tracker comment policy (recommended default: never add comments on the operator's behalf; draft suggested wording instead):
 - Requires approval:
 
 ## Build claim workflow
@@ -113,7 +114,7 @@ Use whatever names match the repo. Findability matters more than exact paths.
 - PR creation/update:
 - PR template:
 - PR title/body convention:
-- Ticket linking/comment/status behavior:
+- Ticket linking/comment/status behavior (including whether tracker comments are ever allowed; recommended default is no):
 - CI requirements:
 - Manual QA:
 - Release/rollout:
@@ -137,6 +138,7 @@ Autonomous (no escalation):
 
 Escalation-required (ask first):
 - Modify existing ticket scope/title/description:
+- Add tracker comments on the operator's behalf (recommended default: no):
 - Assign other people:
 - Force push/protected branch writes:
 - Resolve/delete review comments:

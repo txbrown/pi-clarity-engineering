@@ -70,7 +70,7 @@ const modes: Mode[] = [
     label: "Setup",
     description: "Configure the Clarity Engineering framework for this codebase",
     argumentHint: "[repo context, ticket system, tools, MCPs, validation, or review workflow]",
-    instruction: "Apply Clarity Engineering framework setup. Discover or draft the local Clarity Engineering setup/configuration for this codebase: where tickets live, how stage commands resolve ticket/PR/branch/diff/test references, how Plan materializes defined slices/tickets in the issue tracker, how Build claims work, where session state and continuous compound entries live, where domain language and ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, where local/global memory lives, what context budget policy applies, what automation is safe and what requires escalation, and which decisions require human judgement. Setup is framework configuration, not a delivery lifecycle stage or lifecycle mode. Keep it lightweight, adaptable, and grounded in existing repo conventions.",
+    instruction: "Apply Clarity Engineering framework setup. Discover or draft the local Clarity Engineering setup/configuration for this codebase: where tickets live, how stage commands resolve ticket/PR/branch/diff/test references, how Plan materializes defined slices/tickets in the issue tracker, whether tracker comments are ever allowed on the operator's behalf, how Build claims work, where session state and continuous compound entries live, where domain language and ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, where local/global memory lives, what context budget policy applies, what automation is safe and what requires escalation, and which decisions require human judgement. Setup is framework configuration, not a delivery lifecycle stage or lifecycle mode. Keep it lightweight, adaptable, and grounded in existing repo conventions.",
   },
   {
     command: "cl-shape",
@@ -79,7 +79,7 @@ const modes: Mode[] = [
     label: "Shape",
     description: "Shape an idea into Clarity Engineering tickets",
     argumentHint: "[idea, problem, or request]",
-    instruction: "Apply Shape mode. Resolve the intent source first when given a ticket/issue/PR/branch/diff/test/model problem. Create clarity before delivery with concise shaped tickets, existing-ticket improvements, and useful supporting artefacts. Proceed autonomously; escalate only when scope, priority, or product behaviour is materially ambiguous and not discoverable.",
+    instruction: "Apply Shape mode. Resolve the intent source first when given a ticket/issue/PR/branch/diff/test/model problem. Create clarity before delivery with concise shaped tickets, existing-ticket improvements, and useful supporting artefacts. Never add issue-tracker comments on the operator's behalf; return suggested wording instead when useful. Proceed autonomously; escalate only when scope, priority, or product behaviour is materially ambiguous and not discoverable.",
   },
   {
     command: "cl-plan",
@@ -88,7 +88,7 @@ const modes: Mode[] = [
     label: "Plan",
     description: "Plan shaped work with Slice + Specify",
     argumentHint: "[ticket, request, or shaped context]",
-    instruction: `Apply Plan mode. Resolve the intent source first when given a ticket/issue/PR/branch/diff/test/model problem. ${PLAN}. Start in Slice unless a slice is already selected; when moving from Slice to Specify, update the Clarity status to \`plan-specify\`. Slice only when useful; if a ticket is already small and coherent, say no child tickets are needed and specify enough for Build. When Plan defines concrete independently buildable slices/tickets, materialize them in the configured issue tracker as child issues, linked follow-ups, checklist items, or local markdown according to Setup and escalation policy. If tracker creation is useful but not safe, produce proposed ticket text and escalate before mutating the tracker. Do not define the first failing test.`,
+    instruction: `Apply Plan mode. Resolve the intent source first when given a ticket/issue/PR/branch/diff/test/model problem. ${PLAN}. Start in Slice unless a slice is already selected; when moving from Slice to Specify, update the Clarity status to \`plan-specify\`. Slice only when useful; if a ticket is already small and coherent, say no child tickets are needed and specify enough for Build. When Plan defines concrete independently buildable slices/tickets, materialize them in the configured issue tracker as child issues, linked follow-ups, checklist items, or local markdown according to Setup and escalation policy. Never add issue-tracker comments on the operator's behalf; return proposed wording instead when a comment would help. If tracker creation is useful but not safe, produce proposed ticket text and escalate before mutating the tracker. Do not define the first failing test.`,
   },
   {
     command: "cl-build",

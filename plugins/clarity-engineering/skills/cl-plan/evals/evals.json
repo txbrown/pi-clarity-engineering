@@ -30,12 +30,13 @@
       "id": "materialize-tracker-tickets",
       "name": "Materialize buildable slices in the issue tracker",
       "prompt": "Plan MID-400: 'Build the notification system — email notifications, in-app bell, push notifications, and notification preferences.' This is a large feature in a Linear-tracked repo where child issues are the convention.",
-      "expected_output": "The agent identifies independently buildable slices and proposes creating child issue tickets in Linear for each slice, linking them back to the parent. If not safe, it produces proposed ticket text rather than creating silently.",
+      "expected_output": "The agent identifies independently buildable slices and proposes creating child issue tickets in Linear for each slice, linking them back to the parent. If not safe, it produces proposed ticket text rather than creating silently. It does not add tracker comments on the user's behalf.",
       "assertions": [
         "Identifies independently buildable slices",
         "Proposes materializing them in the issue tracker",
         "References the tracker convention from Setup",
-        "Links created/proposed tickets back to the source"
+        "Links created/proposed tickets back to the source",
+        "Does not post or suggest posting a tracker comment on the user's behalf"
       ]
     }
   ]

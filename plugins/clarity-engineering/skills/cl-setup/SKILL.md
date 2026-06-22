@@ -88,6 +88,7 @@ Document how Plan should raise or update issue-tracker tickets when it defines i
 - labels, milestones, estimates, assignee, and priority defaults;
 - title/body format for planned tickets;
 - how to link created tickets back to the source ticket or plan;
+- tracker comment policy, which should default to never adding comments on the operator's behalf;
 - whether creating/updating tracker tickets requires escalation;
 - when not to create tickets, such as tiny implementation steps or a source ticket that is already small enough.
 
@@ -161,7 +162,7 @@ Document how completed work becomes reviewable:
 - PR creation/update command/tool;
 - PR template location;
 - PR title/body conventions, including ticket links;
-- ticket status/linking/comment behavior when PR is opened;
+- ticket status/linking/comment behavior when PR is opened, including whether tracker comments are ever allowed;
 - reviewer expectations;
 - CI/build requirements;
 - e2e/manual QA requirements;
@@ -194,9 +195,12 @@ Autonomous (no escalation):
 - push a feature branch;
 - open or update a draft/normal PR.
 
+Tracker comments should default to disallowed on the operator's behalf unless the repo/user setup explicitly says otherwise.
+
 Escalation-required (ask before):
 
 - modify ticket title/description/scope;
+- add tracker comments on behalf of the operator;
 - assign other people;
 - force push;
 - push to protected/default branches;

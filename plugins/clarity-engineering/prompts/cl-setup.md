@@ -7,7 +7,7 @@ Apply Clarity Engineering framework setup to this codebase. Discover or draft th
 
 - where tickets or ticket-equivalent artifacts live;
 - how stage commands resolve ticket IDs/URLs, PRs, branches, diffs, failing tests, and review comments;
-- how Plan materializes defined slices/tickets in the issue tracker when appropriate;
+- how Plan materializes defined slices/tickets in the issue tracker when appropriate, including whether tracker comments are ever allowed;
 - how Build claims work through ticket status, assignment, and branch creation;
 - where session state is stored and how it survives across sessions;
 - where continuous compound entries are written;
