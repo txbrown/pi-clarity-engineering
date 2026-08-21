@@ -11,10 +11,10 @@ Usage: scripts/install.sh --target codex|pi|agents|claude|all
 
 Targets:
   codex   Copy skills to ~/.codex/skills and prompts to ~/.codex/prompts
-  pi      Install Pi agent package assets under ~/.pi/agent (skills, prompts, extension, manifest)
+  pi      Install Pi assets under ~/.pi/agent (skills, extension, manifest)
   agents  Copy skills to ~/.agents/skills
   claude  Print Claude Code local plugin command
-  all     Install codex and pi assets, remove duplicate shared-agent Clarity skills,
+  all     Install codex and pi assets without modifying shared-agent skills,
           then print Claude instructions
 
 Pi also supports local package install directly:
@@ -60,41 +60,9 @@ copy_prompts() {
   echo "Copied prompts to $dest"
 }
 
-cleanup_legacy_clarity_names() {
-  local skills_dest="$1"
-  local prompts_dest="${2:-}"
-  local old_names=(clarity-engineering clarity-shape clarity-plan clarity-build clarity-review clarity-compound)
-  for name in "${old_names[@]}"; do
-    rm -rf "$skills_dest/$name"
-    if [[ -n "$prompts_dest" ]]; then
-      rm -f "$prompts_dest/$name.md"
-    fi
-  done
-}
-
-cleanup_current_clarity_names() {
-  local skills_dest="$1"
-  local prompts_dest="${2:-}"
-  local current_names=(cl-engineering cl-shape cl-plan cl-build cl-review cl-compound)
-  for name in "${current_names[@]}"; do
-    rm -rf "$skills_dest/$name"
-    if [[ -n "$prompts_dest" ]]; then
-      rm -f "$prompts_dest/$name.md"
-    fi
-  done
-}
-
-cleanup_agents_conflicts_for_pi() {
-  local agents_skills="$HOME/.agents/skills"
-  cleanup_current_clarity_names "$agents_skills"
-  cleanup_legacy_clarity_names "$agents_skills"
-  echo "Removed Clarity Engineering skills from $agents_skills to avoid Pi skill-name collisions."
-}
-
 install_codex() {
   copy_skills "$HOME/.codex/skills"
   copy_prompts "$HOME/.codex/prompts"
-  cleanup_legacy_clarity_names "$HOME/.codex/skills" "$HOME/.codex/prompts"
 }
 
 install_pi() {
@@ -103,9 +71,6 @@ install_pi() {
   local extension_dir="$pi_root/extensions/cl-engineering"
 
   copy_skills "$pi_root/skills"
-  copy_prompts "$pi_root/prompts"
-  cleanup_legacy_clarity_names "$pi_root/skills" "$pi_root/prompts"
-  rm -rf "$pi_root/extensions/clarity-engineering" "$pi_root/clarity-engineering"
 
   mkdir -p "$extension_dir" "$managed"
   cp "$PLUGIN/extensions/cl-engineering/index.ts" "$extension_dir/index.ts"
@@ -115,20 +80,14 @@ install_pi() {
   "pluginName": "cl-engineering",
   "skills": [
     "cl-engineering",
+    "cl-setup",
     "cl-shape",
     "cl-plan",
     "cl-build",
     "cl-review",
     "cl-compound"
   ],
-  "prompts": [
-    "cl-engineering.md",
-    "cl-shape.md",
-    "cl-plan.md",
-    "cl-build.md",
-    "cl-review.md",
-    "cl-compound.md"
-  ],
+  "prompts": [],
   "extensions": [
     "cl-engineering/index.ts"
   ],
@@ -142,7 +101,6 @@ EOF
 
 install_agents() {
   copy_skills "$HOME/.agents/skills"
-  cleanup_legacy_clarity_names "$HOME/.agents/skills"
 }
 
 print_claude() {
@@ -166,9 +124,8 @@ case "$TARGET" in
   all)
     install_codex
     install_pi
-    cleanup_agents_conflicts_for_pi
-    echo "Skipped shared ~/.agents install because Pi also scans that directory and would report duplicate cl-* skills."
-    echo "Run './scripts/install.sh --target agents' separately only when you need shared-agent skills without Pi."
+    echo "Skipped shared ~/.agents install because Pi also scans that directory and may report duplicate cl-* skills."
+    echo "Existing ~/.agents skills were left untouched. Run '--target agents' separately only when needed."
     print_claude
     ;;
   *)

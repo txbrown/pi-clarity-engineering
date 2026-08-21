@@ -28,11 +28,12 @@
       "id": "route-escalation-model",
       "name": "Explain the escalation model",
       "prompt": "How does Clarity Engineering decide when to ask me for approval during a build session?",
-      "expected_output": "The agent explains the escalation model: the agent proceeds autonomously through safe local work and escalates only at genuine triggers — intent ambiguity, scope conflict, product/UX decision, architecture risk, validation challenge, unauthorized external mutation, or completion.",
+      "expected_output": "The agent explains that safe, authorized work proceeds autonomously and escalation is limited to unresolved intent, scope change, meaningful product/architecture/security decisions, approach-challenging validation, or unauthorized external/destructive mutation. Completion is reported without an approval turn.",
       "assertions": [
         "Mentions the autonomy-with-escalation model",
-        "Lists multiple escalation triggers",
-        "Does not mention mechanical stage-transition approvals"
+        "Lists multiple genuine escalation triggers",
+        "Does not mention mechanical stage-transition approvals",
+        "Treats completion as a result rather than an escalation"
       ]
     }
   ]

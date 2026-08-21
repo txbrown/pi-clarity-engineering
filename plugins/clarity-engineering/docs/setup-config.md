@@ -1,225 +1,37 @@
-# Clarity Engineering Setup and Configuration
-
-Clarity Engineering is intentionally portable. The framework stays stable, while each codebase provides a small setup/configuration layer that tells agents how to apply it locally.
-
-Setup is not a new lifecycle stage or lifecycle mode. It is **Clarity Engineering framework setup/configuration for a codebase**: the adapter between the framework's lifecycle
-
-```text
-Shape → Plan → Build → Review → Compound
-```
-
-and the codebase's real ticket system, reference-resolution rules, Plan ticket materialization workflow, Build claim workflow, session-state and compounding storage, domain language, validation tools, MCPs, e2e flows, Review PR publishing process, escalation policy, memory locations, context budgets, and human decision rights.
-
-## Recommended artifacts
-
-Prefer a repo-tracked setup file:
-
-```text
-docs/agents/clarity-engineering.md
-```
-
-Optionally pair it with a machine-local defaults file:
-
-```text
-.clarity-engineering/config.local.yaml
-```
-
-Use the local config file for convenience defaults such as tracker aliases, preferred review/publish behavior, or local tool assumptions. Do not hide shared workflow truth there.
-
-For small repos, a section in `AGENTS.md`, `CLAUDE.md`, or `CONTEXT.md` can be enough. For larger repos, split by concern:
-
-```text
-docs/agents/clarity-engineering.md
-docs/agents/issue-tracker.md
-docs/agents/domain.md
-docs/agents/validation.md
-docs/agents/tools-and-mcps.md
-docs/agents/review-workflow.md
-```
-
-Use whatever names match the repo. Findability matters more than exact paths.
-
-A committed example file such as `.clarity-engineering/config.local.example.yaml` helps new contributors discover the available local knobs without committing personal settings.
-
-## Minimal template
-
-```markdown
 # Clarity Engineering Setup
 
-## Work tracking and reference resolution
+Setup discovers only the repository facts current work needs. It should not duplicate active project instructions or inventory every possible tool.
 
-- System:
-- Project/team/repo:
-- Ticket ID patterns:
-- Ticket URL patterns:
-- PR URL/number patterns:
-- Fetch/view/search instructions:
-- Branch-to-ticket inference:
-- Ticket types:
-- Status vocabulary:
-- Follow-up ticket convention:
-- Ticket-equivalent artifact for small work:
+## Minimum facts
 
-## Shaping norms
+```markdown
+## Clarity Engineering
 
-Document how ambiguous work should be shaped in this codebase:
-
-- Preferred outputs: epic / spike / shaped ticket / RFC / local markdown / tracker-native project
-- Default destination per output: tracker-native / `docs/brainstorms/` / `docs/rfcs/` / other
-- Typical input source: PM / EM / SEM / founder / support / self-directed engineering / mixed
-- Appetite or effort hints: required / optional / not used
-- Options analysis: expected by default / only for larger work / rarely needed
-- Spike trigger: when uncertainty should become learning work instead of delivery scope
-- RFC trigger: when work is cross-team, hard to reverse, or high-blast-radius
-- Tracker mutation style during Shape: draft wording first / create or update tracker directly / ask first
-- Strategy or initiative linkage expectations:
-
-These norms let `cl-shape` adapt across company styles instead of assuming one shaping doctrine.
-
-## Plan ticket materialization
-
-- Should Plan create tracker tickets for independently buildable slices:
-- Materialization style: child issues / linked follow-ups / checklist items / local markdown / none
-- Parent/child convention:
-- Dependency convention:
-- Default project/team/status:
-- Labels/milestones/estimates/priority defaults:
-- Title/body format:
-- Link-back convention:
-- When not to create tickets:
-- Tracker comment policy (recommended default: never add comments on the operator's behalf; draft suggested wording instead):
-- Requires approval:
-
-## Build claim workflow
-
-- Move ticket to In Progress during `cl-build`:
-- Assignment convention:
-- Branch convention:
-- Branch naming pattern:
-- Commit/ticket reference convention:
-- Continue existing branch/PR behavior:
-- Requires escalation:
-
-## Session state and compounding
-
-- Session state location:
-- Session state format:
-- Per-ticket or per-branch:
-- Continuous compound location:
-- Standalone compound curation cadence:
-
-## Domain and decisions
-
-- Domain glossary:
-- ADRs / decision records:
-- Architecture/product/design docs:
-- Terms to use precisely:
-
-## Validation
-
-- Fast test loop:
-- Typecheck:
-- Lint:
-- Build:
-- E2E/manual QA:
-- App launch path:
-- Known flaky checks:
-- Review evidence expected:
-
-## Tools and MCPs
-
-| Tool / MCP | Purpose | Safe operations | Requires escalation | Fallback |
-|---|---|---|---|---|
-|  |  |  |  |  |
-
-## Review and publishing
-
-- Branch convention:
-- Commit convention / inference rule:
-- PR discovery:
-- PR creation/update:
-- PR template:
-- PR title/body convention:
-- Ticket linking/comment/status behavior (including whether tracker comments are ever allowed; recommended default is no):
-- CI requirements:
-- Manual QA:
-- Release/rollout:
-- Review evidence expected:
-
-## Automation and escalation policy
-
-Autonomous (no escalation):
-- Read tickets/PRs/comments/docs/code:
-- Inspect git status/branch/diff:
-- Classify depth at Build entry:
-- Create/switch local branches:
-- Run validation commands:
-- Create local commits:
-- Write/update session state:
-- Perform continuous compounding:
-- Create planned child/follow-up tickets during Plan:
-- Move ticket to In Progress:
-- Push feature branch:
-- Open/update PR:
-
-Escalation-required (ask first):
-- Modify existing ticket scope/title/description:
-- Add tracker comments on the operator's behalf (recommended default: no):
-- Assign other people:
-- Force push/protected branch writes:
-- Resolve/delete review comments:
-- Mark tickets Done:
-- Merge/deploy/release:
-- Destructive environment/data operations:
-
-## Memory and context policy
-
-- Local repo memory:
-- Global memory:
-- Load order:
-- Do not bulk-load:
-- Default context budget:
-- Build context budget:
-- Stale/conflicting memory policy:
-
-## Human decision rights
-
-- Lifecycle approvals:
-- Scope changes:
-- Product/taste:
-- Architecture:
-- Security/privacy:
-- Write-capable tools:
+- Intent resolution: how tickets, PRs, branches, diffs, and failing tests are read
+- Fast validation: smallest reliable check
+- Behavior harnesses: integration, UI, or end-to-end commands used by current work
+- Required validation: broader merge/release gate, if any
+- External mutation: actions pre-authorized by repository policy
+- Artifact root: only when durable plans/learnings use a nonstandard location
 ```
 
-When Setup does not define a stronger local rule, use `plugins/clarity-engineering/docs/shaping-output-paths.md` for default shape destinations and naming.
+Existing repository instructions, scripts, CI, tracker configuration, and PR templates remain authoritative. Add a Clarity-specific section only when a durable rule is otherwise undiscoverable.
 
-## Suggested default scaffold
+## Authorization
 
-When starting from scratch, the smallest useful Clarity filesystem scaffold is:
+Local reads, edits, branches, targeted checks, and commits are allowed unless project policy says otherwise.
 
-```text
-.clarity-engineering/config.local.example.yaml
-docs/agents/clarity-engineering.md
-docs/agents/session-state/
-docs/clarity/continuous-compound/
-docs/solutions/
-docs/adr/
-```
+External or destructive actions require either:
 
-## Principles
+- an explicit request for that scoped action; or
+- repository policy that pre-authorizes it.
 
-- Configure enough context for humans and AI agents to share reality.
-- Prefer existing repo conventions over framework defaults.
-- Keep setup lightweight; do not create configuration theatre.
-- Stages are context-aware under an autonomy-with-escalation model. Agents proceed through safe work without asking; escalate only when a trigger fires.
-- `cl-build <ticket>` should classify depth, check session state, build TDD-first, run drift check, compound continuously, update session state.
-- `cl-review` should commit, push, raise/update PR by default including drift notes.
-- `cl-compound` curates accumulated learnings; continuous compounding already happens during Build.
-- Treat write-capable MCPs/tools carefully and configure safe vs approval-required automation explicitly.
-- Update setup during Compound when repeated friction appears.
-- Treat memory as indexed retrieval, not a context dump.
+Examples include tracker mutation, push, PR creation/update, comment resolution, merge, release, deployment, and environment/data changes.
 
-## Command
+## Local config
 
-Use `/cl-setup` to discover or draft the Clarity Engineering framework setup for a repo. See `docs/memory-model.md` for the local/global memory and context budget policy.
+`.clarity-engineering/config.local.yaml` is optional. Use it only for machine-local values that cannot be shared. Keep it gitignored. Do not hide team workflow rules there.
+
+## No speculative scaffold
+
+Do not create session-state, continuous-compound, solution, ADR, or planning directories during Setup. Create a durable artifact location only when accepted work actually needs it.

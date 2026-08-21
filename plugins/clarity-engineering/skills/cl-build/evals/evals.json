@@ -2,29 +2,47 @@
   "skill_name": "cl-build",
   "evals": [
     {
-      "id": "build-small-bug-tdd",
-      "name": "Build a bug fix TDD-first with depth classification",
-      "prompt": "Build MID-123: 'Model hydration crashes when optional fields are null instead of missing. Expected: null fields treated same as missing — defaults applied. Validation errors for required fields must be preserved.' The existing test file is ModelHydration.test.ts with a clear test seam.",
-      "expected_output": "The agent classifies depth (small), writes a failing regression test first, implements the minimal fix, runs checks, and reports results. No scope creep.",
+      "id": "build-small-bug-integration-harness",
+      "name": "Validate a bug fix through the integration harness",
+      "prompt": "Build MID-123: 'Model hydration crashes when optional fields are null instead of missing. Expected: null fields treated same as missing — defaults applied. Validation errors for required fields must be preserved.' ModelHydration.integration.test.ts exercises the real parser-to-hydrator boundary.",
+      "expected_output": "The agent reproduces the failure through the integration harness, implements the minimal fix, reruns the harness and relevant checks, and reports the evidence. No scope creep.",
       "assertions": [
-        "Depth is classified at the start",
-        "A failing test is written before implementation code",
+        "Uses the integration harness as the primary behavior evidence",
+        "Reproduces the null-field failure through the real boundary",
         "Implementation is minimal",
-        "Checks are run",
+        "The integration harness passes after the fix",
         "Existing validation behavior is preserved"
+      ],
+      "execution": {
+        "fixture": "fixtures/build-small-bug-integration-harness",
+        "skill": "../SKILL.md",
+        "check_command": ["python3", "test_integration.py"],
+        "allowed_files": ["model_hydration.py"],
+        "required_files": ["model_hydration.py"]
+      }
+    },
+    {
+      "id": "build-ui-harness",
+      "name": "Validate interface behavior through the UI harness",
+      "prompt": "Build MID-124: 'Disable Save while the profile request is in flight and show the API error inline.' Component unit tests exist, and the repository has a UI test harness that renders the real form with its request adapter.",
+      "expected_output": "The agent implements the smallest change and validates loading and error behavior through the existing UI harness rather than relying only on mocked component logic.",
+      "assertions": [
+        "Selects the existing UI harness",
+        "Validates the disabled Save state",
+        "Validates the inline API error",
+        "Does not add an end-to-end test when the UI harness proves the boundary"
       ]
     },
     {
       "id": "drift-check-intentional",
-      "name": "Detect deliberate intent drift and flag it without escalating",
-      "prompt": "Build MID-789: 'Gracefully degrade when malformed payloads arrive — return partial model with warnings.' After TDD implementation, you realize the approach needs to shift: the team decided strict rejection is better because silent degradation has been hiding data bugs for months.",
-      "expected_output": "The agent runs an intent drift check, classifies the divergence (strict rejection vs graceful degradation) as a deliberate improvement, flags it for review, and does NOT escalate because it's intentional and justified.",
+      "name": "Treat intentional behavior drift as an unauthorized rescope",
+      "prompt": "Build MID-789: 'Gracefully degrade when malformed payloads arrive — return partial model with warnings.' During implementation, you conclude strict rejection would be better because silent degradation has been hiding data bugs for months, but the ticket has not been updated and the operator has not authorized the behavior change.",
+      "expected_output": "The agent runs an intent check, identifies strict rejection as a behavior divergence from the canonical acceptance criteria, and stops for a focused rescope decision rather than treating intention as authorization.",
       "assertions": [
-        "Runs an intent drift check that references the original acceptance criteria",
-        "Classifies the divergence as deliberate improvement",
-        "Explains the rationale for the deliberate change",
-        "Flags the drift for review attention",
-        "Does NOT escalate"
+        "References the original graceful-degradation acceptance criterion",
+        "Classifies strict rejection as a behavior or scope divergence",
+        "Does not silently implement the divergent behavior",
+        "Requests authorization to rescope with one focused question"
       ]
     },
     {
@@ -40,16 +58,28 @@
       ]
     },
     {
-      "id": "compound-continuously",
-      "name": "Compound learnings at end of Build",
-      "prompt": "Build MID-567: 'Fix the race condition in concurrent model saves.' After implementing with an optimistic lock, the agent learned: (1) the save pipeline had no concurrency control at all, (2) the existing integration tests didn't cover concurrent scenarios, (3) optimistic locking was simpler than pessimistic for this use case.",
-      "expected_output": "The agent writes a continuous compound section identifying all three learnings, deciding reusability (repo memory for concurrency gap discovery and missing test coverage, skip for locking choice since it's context-specific), and flagging the stale integration test coverage.",
+      "id": "trivial-no-artifacts",
+      "name": "Skip continuity and learning artifacts for completed trivial work",
+      "prompt": "Build this trivial task: fix a typo in one README heading. No behavior changes, no remaining work, and no reusable learning.",
+      "expected_output": "The agent makes the change, performs a targeted check, and finishes without creating session-state or compound artifacts and without narrating no-op ceremony.",
       "assertions": [
-        "Identifies all three learnings",
-        "Classifies each learning for reusability",
-        "Directs codebase-specific findings to repo memory",
-        "Flags stale test coverage as needing attention",
-        "Includes the compound in Build output"
+        "Treats the change as trivial",
+        "Runs a targeted check",
+        "Creates no session-state artifact",
+        "Creates no learning artifact",
+        "Does not emit a Done/Left/Blocked template"
+      ]
+    },
+    {
+      "id": "compound-reusable-learning",
+      "name": "Capture learning only when it passes the admission test",
+      "prompt": "Build MID-567: 'Fix the race condition in concurrent model saves.' After implementing with an optimistic lock, you discover a previously undocumented repository-wide rule: all save paths bypass concurrency control, the same bug exists in three modules, and rediscovering the affected paths required a long trace.",
+      "expected_output": "The agent identifies the learning as novel, reusable beyond the ticket, and expensive to rediscover, then proposes or writes one durable repository learning without a raw per-Build capture.",
+      "assertions": [
+        "Applies all three learning admission criteria",
+        "Uses one durable destination",
+        "Does not create a raw continuous-compound artifact",
+        "Keeps the Build result concise"
       ]
     }
   ]

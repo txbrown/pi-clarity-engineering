@@ -3,16 +3,15 @@
   "evals": [
     {
       "id": "discover-work-tracking",
-      "name": "Discover and document work tracking configuration",
-      "prompt": "Set up Clarity Engineering for a codebase that uses Linear for tracking, has a docs/ directory with ADRs and a CONTEXT.md, and uses pnpm for build/test. The repo has a .github/PULL_REQUEST_TEMPLATE.md and uses conventional commits.",
-      "expected_output": "The agent discovers and documents the ticket system, reference resolution patterns, domain docs, validation commands, review workflow, and escalation policy. It keeps the setup lightweight and grounded in existing conventions.",
+      "name": "Discover only the minimum repository facts",
+      "prompt": "Set up Clarity Engineering for current work in a codebase that uses Linear and pnpm. Existing project instructions already document ADRs, the PR template, and conventional commits.",
+      "expected_output": "The agent reuses active project instructions, discovers Linear reference resolution, pnpm validation, and external mutation authority, then returns a compact summary without duplicating existing repository documentation.",
       "assertions": [
-        "Documents the ticket system as Linear",
-        "Documents validation commands from the repo",
-        "Documents the PR template location",
-        "Documents the commit convention",
-        "Produces a setup artifact or summary",
-        "Keeps setup lightweight and avoids configuration theatre"
+        "Identifies Linear intent resolution",
+        "Identifies validation commands from the repo",
+        "Identifies external mutation authority",
+        "Does not duplicate the documented PR, ADR, or commit conventions",
+        "Creates no setup artifact when existing conventions are sufficient"
       ]
     },
     {

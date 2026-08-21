@@ -1,12 +1,15 @@
 ---
 title: Implement Clarity Engineering Commands and Multi-Tool Plugin Support
 type: feat
-status: active
+status: superseded
 date: 2026-04-27
+superseded_by: README.md
 target_repo: /Users/ricardo.abreu/Developer/personal/clarity-engineering-plugin
 ---
 
 # Implement Clarity Engineering Commands and Multi-Tool Plugin Support
+
+> Historical implementation plan. The package has since moved to a lean policy/router architecture; `README.md` and `plugins/clarity-engineering/skills/cl-engineering/references/framework-summary.md` are current.
 
 ## Overview
 

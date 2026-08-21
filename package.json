@@ -11,6 +11,8 @@
   ],
   "scripts": {
     "validate": "./scripts/validate.sh",
+    "eval": "python3 scripts/eval.py",
+    "eval:smoke": "python3 scripts/eval.py --self-test",
     "install:pi": "./scripts/install.sh --target pi",
     "install:codex": "./scripts/install.sh --target codex"
   },
@@ -20,9 +22,6 @@
     ],
     "skills": [
       "./plugins/clarity-engineering/skills"
-    ],
-    "prompts": [
-      "./plugins/clarity-engineering/prompts"
     ]
   },
   "peerDependencies": {

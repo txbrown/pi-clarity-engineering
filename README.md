@@ -1,203 +1,96 @@
 # Clarity Engineering Plugin
 
-A portable local plugin/skill pack for applying Ricardo's Clarity Engineering framework consistently across Claude Code, Codex, and Pi / pi-agent.
-
-Clarity Engineering is a lightweight constitution for agentic software delivery — not a project management checklist. The agent owns execution flow; the framework defines principles and escalation boundaries.
-
-Core lifecycle:
+A portable policy and routing layer for reliable agentic delivery across Claude Code, Codex, and Pi.
 
 ```text
 Shape → Plan → Build → Review → Compound
-```
-
-The lifecycle does not grow extra stages. Instead, each stage operates under an **autonomy with escalation** model: the agent proceeds through safe work without asking, and surfaces only when a genuine escalation trigger fires.
-
-Plan is one lifecycle stage with two substeps:
-
-```text
 Plan = Slice + Specify
 ```
 
-This first pass includes a **real Pi agent package/extension** with skills, commands, prompts, docs, and examples.
+Clarity Engineering is not a mandatory pipeline. Enter at the first useful point and skip stages that add no information.
 
-It also includes a lightweight **Setup** mode for adapting Clarity Engineering to any codebase without hardcoding one workflow: where tickets live, how stage commands resolve tickets/PRs/branches/diffs/tests, how Plan materializes defined slices/tickets, how Build claims work, where session state and continuous compound entries live, where domain docs/ADRs live, which validation/e2e tools and MCPs are available, how Review publishes PRs, what automation is safe vs requires escalation, and which decisions require human judgement.
+## Operating model
 
-The plugin now also ships a minimal durable artifact system so learning and execution survive across sessions:
+Agents proceed through safe, authorized work and escalate only for unresolved intent, scope changes, meaningful product/architecture/security decisions, approach-challenging validation, or unauthorized external/destructive mutation.
 
-```text
-docs/agents/session-state/
-docs/clarity/continuous-compound/
-docs/solutions/
-docs/adr/
-.clarity-engineering/config.local.example.yaml
-```
+There are no mechanical stage-transition approvals. Completion is a result, not an escalation. A direct request for a scoped external action authorizes that action unless repository policy says otherwise.
 
-## Escalation model
+## Proportional depth
 
-Agents own execution flow. They proceed through stages autonomously and escalate only at genuine triggers. Mechanical stage-transition approvals are replaced by the escalation model.
+| Depth | Treatment |
+|---|---|
+| Trivial | Change, targeted check, done |
+| Small | Direct Build plus targeted review |
+| Medium | Plan when useful, Build, proportional Review |
+| Architectural/high-risk | Shape/Plan, explicit decisions, independent Review, ADR only for a real durable trade-off |
 
-Escalation triggers — the only reasons to stop and ask:
+Depth may remain internal when it does not affect the operator's decision.
 
-- **Intent ambiguity** — acceptance criteria don't define behaviour clearly enough.
-- **Scope conflict** — implementation would touch systems the ticket didn't scope.
-- **Product/UX decision** — multiple valid approaches, choice matters.
-- **Architecture risk** — would break invariants or create problematic patterns.
-- **Validation challenge** — test fails in a way that challenges the approach.
-- **External mutation** — tracker/repo/PR/environment change not pre-authorized.
-- **Completion** — work is built, validated, and ready for operator inspection.
+## Ownership
 
-## Depth classification
+- **Shape** clarifies intent and boundaries.
+- **Plan** slices and specifies; tracker mutation is optional.
+- **Build** implements, validates locally, and may create local commits when project policy allows.
+- **Review** produces findings and a confidence decision.
+- **Publish** is a separate, explicitly authorized push/PR/merge/release action.
+- **Compound** captures proven reusable learning.
 
-Not all work needs the full lifecycle:
+Use one canonical intent source. Do not create a ticket, duplicate plan, routine session file, and learning note for the same small task.
 
-| Depth | Scope | Treatment |
-|---|---|---|
-| **Trivial** | Single file, no behaviour change | Fix, done. No ceremony. |
-| **Small** | Local change, known boundary | Light Build + drift check. |
-| **Medium** | Cross-module, new contracts | Full lifecycle. |
-| **Architectural** | New pattern, migration, multi-service | Full lifecycle + ADR consideration. |
+## Using Compound Engineering
 
-## Operator approval
+When Compound Engineering is installed, Clarity should route to one Compound execution owner instead of running both frameworks:
 
-For guided multi-stage lifecycle work, operators must explicitly approve before the agent advances from Shape → Plan, Plan Slice → Plan Specify, Plan → Build, Build → Review, and Review → Compound.
+| Intent | Compound owner |
+|---|---|
+| Shape | `ce-brainstorm` |
+| Decision | `ce-pov` |
+| Plan | `ce-plan` |
+| Build | `ce-work` |
+| Bug | `ce-debug` |
+| Review | `ce-code-review` |
+| Commit | `ce-commit` |
+| Publish | `ce-commit-push-pr` |
+| Compound | `ce-compound` |
 
-In Pi, the preferred approval mechanism is the TUI `ask_user` tool when available. In other agents, the agent must escalate with an explicit question and stop until the operator answers.
+The local `cl-*` stage skills remain a standalone fallback. Never load both owners for the same work.
 
-## Contents
+## Commands
 
-- `package.json` — Pi package manifest with `pi.extensions`, `pi.skills`, and `pi.prompts` entries.
-- `plugins/clarity-engineering/extensions/cl-engineering/index.ts` — Pi extension registering `/cl-*` commands.
-- `plugins/clarity-engineering/skills/` — portable Clarity Engineering behavior layer.
-- `plugins/clarity-engineering/commands/` — Claude Code slash command wrappers.
-- `plugins/clarity-engineering/prompts/` — Codex/Pi-compatible prompt templates.
-- `plugins/clarity-engineering/examples/` — generic ticket examples for all five ticket types.
-- `plugins/clarity-engineering/docs/setup-config.md` — portable guidance for per-codebase Clarity Engineering setup/configuration.
-- `plugins/clarity-engineering/docs/memory-model.md` — local/global memory hierarchy, retrieval policy, context budgets, and learning destinations.
-- `plugins/clarity-engineering/docs/learning-destinations.md` — default promotion rules for session state, continuous compound, solutions, and ADRs.
-- `plugins/clarity-engineering/docs/shaping-templates.md` — fallback scaffolds for epic, spike, shaped ticket, RFC, and existing-ticket improvement outputs.
-- `plugins/clarity-engineering/docs/shaping-output-paths.md` — default destination and naming guidance for shape outputs when Setup does not override them.
-- `.clarity-engineering/config.local.example.yaml` — optional machine-local defaults template for trackers, review behavior, and memory destinations.
-- `scripts/install.sh` — local install helper.
-- `scripts/validate.sh` — manifest/frontmatter/lifecycle/Pi-extension validation.
+| Command | Purpose |
+|---|---|
+| `cl-engineering` | Route to one owner |
+| `cl-setup` | Discover minimum repository facts needed now |
+| `cl-shape` | Clarify intent and boundaries |
+| `cl-plan` | Slice and specify shaped work |
+| `cl-build` | Implement with proportional evidence |
+| `cl-review` | Review against intent and evidence |
+| `cl-compound` | Capture proven reusable learning |
 
-## Context-aware stage examples
+Pi exposes these as `/cl-*` commands and shows the selected stage in the footer. Commands set their initial status deterministically; the model updates it only for Plan Specify, blockers, or clearing the mode.
 
-```text
-/cl-build MID-123
-```
+## Conditional artifacts
 
-Build should resolve the ticket, classify depth, check for session state, move to In Progress according to Setup, build TDD-first, run intent drift detection, compound learnings continuously, and update session state. It proceeds autonomously and escalates only at triggers.
-
-```text
-/cl-plan MID-123
-```
-
-Plan should resolve the ticket, slice only when useful, and materialize independently buildable slices in the configured issue tracker when useful and safe. Escalate before tracker mutations unless pre-authorized. If small enough, say no child tickets are needed.
-
-```text
-/cl-review
-```
-
-Review should inspect the current branch/diff, check session state and Build's drift notes, discover the existing review surface first, update a draft PR or pushed branch when one already exists, create a PR only when needed, include an evidence-aware description, then validate against shaped intent.
-
-## Commands, prompts, and skills
-
-| Mode | Purpose |
-| --- | --- |
-| `cl-engineering` | Route delivery work with autonomous escalation. |
-| `cl-setup` | Configure the framework for a codebase: tickets, reference resolution, Plan ticket materialization, Build claim workflow, session state and compounding storage, domain docs, ADRs, validation/e2e tools, MCPs, Review PR publishing, escalation policy, local/global memory, context budgets, and human decision rights. |
-| `cl-shape` | Adapt ambiguous work into the right artifact for the repo: epic, spike, shaped ticket, RFC, or an improved existing ticket. |
-| `cl-plan` | Plan shaped work from tickets, epics, approved RFCs, or resolved spikes. Plan = Slice + Specify. Materialize slices in the tracker when useful and safe. |
-| `cl-build` | Build already-shaped work TDD-first. Classify depth, check session state, run intent drift detection, compound learnings continuously, update session state. |
-| `cl-review` | Work from the existing review surface, validate against shaped intent, and update/create PR context as needed. Review Build's drift notes. Evidence-aware PR descriptions. |
-| `cl-compound` | Curate accumulated continuous compound learnings — promote, refresh, deduplicate, or archive. |
-
-In Pi these are registered as extension commands, so they are slash commands like:
-
-```text
-/cl-shape shape this idea: ...
-/cl-plan plan this ticket: ...
-/cl-review review this diff against the ticket: ...
-```
-
-The Pi extension also shows the current Clarity Engineering state in the footer/status bar, for example `🧭 CL: Shape` or `🧭 CL: Build · drift check`. The status is set automatically by `/cl-*` commands, can be updated by the agent through the `cl_engineering_state` tool when it routes work, classifies depth, detects drift, publishes a PR, compounds learnings, or becomes blocked, and can be inspected or adjusted manually with `/cl-state`. When `@juanibiapina/pi-powerbar` is installed, the extension also emits a `cl-engineering` powerbar segment.
-
-## Default artifact scaffold
-
-When a repo has no Clarity-specific structure yet, the smallest useful starting scaffold is:
-
-```text
-docs/agents/session-state/
-docs/clarity/continuous-compound/
-docs/solutions/
-docs/adr/
-.clarity-engineering/config.local.example.yaml
-```
-
-`cl-build` uses session state and continuous compound by default when setup does not override them. `cl-compound` curates those captures into `docs/solutions/`, `docs/adr/`, or setup docs.
-
-## Shaping model
-
-Clarity Shape is intentionally adaptive. Some repos may prefer epic -> ticket workflows, others spikes or RFCs, others direct ticket refinement from an EM or SEM request. `cl-setup` should capture those local shaping norms so `cl-shape` stays portable across companies and project styles.
+- Session state is written only when unfinished work must survive a context boundary.
+- Durable learning is written only when novel, reusable, and expensive to rediscover.
+- Existing repository instructions, tickets, plans, git history, task trackers, and PRs remain the normal state system.
+- `.clarity-engineering/config.local.yaml` is optional and only for machine-local values not already represented by repository conventions.
 
 ## Install
 
-### Pi / pi-agent
-
-Preferred local-package install, modelled after Pi package conventions:
+### Pi package
 
 ```bash
 pi install /path/to/clarity-engineering-plugin
 ```
 
-This works because `package.json` declares:
-
-```json
-{
-  "pi": {
-    "extensions": ["./plugins/clarity-engineering/extensions/cl-engineering/index.ts"],
-    "skills": ["./plugins/clarity-engineering/skills"],
-    "prompts": ["./plugins/clarity-engineering/prompts"]
-  }
-}
-```
-
-Manual/global development install:
+Manual development install:
 
 ```bash
 ./scripts/install.sh --target pi
 ```
 
-That copies assets into Pi's global agent paths:
-
-```text
-~/.pi/agent/extensions/cl-engineering/index.ts
-~/.pi/agent/skills/cl-*/SKILL.md
-~/.pi/agent/prompts/cl-*.md
-~/.pi/agent/cl-engineering/install-manifest.json
-```
-
-After installing manually, run `/reload` in Pi or restart Pi. The extension registers these commands:
-
-```text
-/cl-engineering
-/cl-setup
-/cl-shape
-/cl-plan
-/cl-build
-/cl-review
-/cl-compound
-```
-
-Shared agent skills fallback remains available:
-
-```bash
-./scripts/install.sh --target agents
-```
-
 ### Claude Code
-
-Claude Code can load the local plugin directory directly:
 
 ```bash
 claude --plugin-dir /path/to/clarity-engineering-plugin/plugins/clarity-engineering
@@ -205,10 +98,14 @@ claude --plugin-dir /path/to/clarity-engineering-plugin/plugins/clarity-engineer
 
 ### Codex
 
-Install skills and prompts into Codex's local directories:
-
 ```bash
 ./scripts/install.sh --target codex
+```
+
+### Shared agent skills
+
+```bash
+./scripts/install.sh --target agents
 ```
 
 ## Validate
@@ -217,26 +114,15 @@ Install skills and prompts into Codex's local directories:
 ./scripts/validate.sh
 ```
 
-## Local config
+Validation checks manifests, skill shape, thin-wrapper parity, contradictory policy wording, character-size safeguards, and the executable eval runner itself.
 
-For machine-local defaults, copy:
+Run the opt-in behavior eval against an isolated fixture with the configured Pi model:
 
 ```bash
-cp .clarity-engineering/config.local.example.yaml .clarity-engineering/config.local.yaml
+npm run eval
+# Optional: npm run eval -- --model openai-codex/gpt-5.6-sol:low --json
 ```
 
-Then keep the real `config.local.yaml` gitignored. Use it for convenience defaults such as tracker aliases, preferred PR behavior, or local multi-repo paths. Keep shared workflow truth in repo-tracked setup docs.
+The runner scores the final harness outcome, relevant checks, fail-to-pass self-correction, changed files, and scope preservation. `npm run validate` uses `eval:smoke` logic only and never calls a model.
 
-## Development notes
-
-- Keep lifecycle wording as `Shape → Plan → Build → Review → Compound`.
-- Agents own execution flow; escalate only when a trigger fires.
-- Classify depth at Build entry and adapt ceremony proportionally.
-- Run intent drift checks before committing.
-- Compound learnings continuously at the end of every Build.
-- Maintain session state per ticket for resume across sessions.
-- Treat Review as: Review = Reviewable Context + Validation + Understanding + Decision.
-- Make PR descriptions evidence-aware including drift notes, and keep `Testing notes` focused on concrete scenarios exercised for the PR rather than generic unit-test mentions.
-- Keep skills portable; Setup configures codebase-specific workflow.
-- Treat memory as indexed retrieval, not a context dump.
-- Run `./scripts/validate.sh` after edits.
+Behavior evals execute a trusted model with the invoking user's local tool permissions. Run them inside an OS/container sandbox when evaluating untrusted models or fixtures.

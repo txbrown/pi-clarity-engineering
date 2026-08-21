@@ -3,9 +3,9 @@
   "evals": [
     {
       "id": "review-publish-pr",
-      "name": "Publish a PR with evidence-aware description",
-      "prompt": "Review the current branch. Build completed MID-123 (model hydration fix). Branch is mid-123-model-hydration. Tests pass, typecheck passes, the Build drift check flagged one deliberate divergence (strict parsing instead of graceful degradation). No existing PR for this branch.",
-      "expected_output": "The agent commits, pushes, discovers no existing PR, raises a new PR with an evidence-aware description including the intentional drift note, validates against ticket intent, and produces a review decision.",
+      "name": "Review and publish when the request explicitly authorizes it",
+      "prompt": "Review and publish the current branch as a PR. Build completed MID-123 (model hydration fix). Branch is mid-123-model-hydration. Tests pass and typecheck passes. The ticket was updated to authorize strict parsing instead of graceful degradation. No existing PR exists.",
+      "expected_output": "The agent reviews against the updated ticket, produces a decision, then performs the explicitly authorized commit, push, and PR creation with evidence-aware context.",
       "assertions": [
         "Commits changes or confirms they are committed",
         "Discovers no existing PR for the branch",
@@ -17,8 +17,8 @@
     },
     {
       "id": "review-update-existing-pr",
-      "name": "Update an existing PR instead of creating a duplicate",
-      "prompt": "Review the current branch for MID-456. There's already PR #789 open for this branch with unresolved review comments. New commits address two of the three comments.",
+      "name": "Review and update an existing PR when explicitly requested",
+      "prompt": "Review the current branch for MID-456 and update its existing PR. PR #789 is open for this branch with unresolved review comments. New commits address two of the three comments.",
       "expected_output": "The agent discovers the existing PR, updates it with the new commits rather than creating a duplicate, resolves the addressed comments, and reviews the remaining open comment.",
       "assertions": [
         "Discovers the existing PR #789",
@@ -37,6 +37,29 @@
         "Routes the actionable fix to Build",
         "Escalates the product-sensitive comment",
         "Does not silently resolve the disputed comment"
+      ]
+    },
+    {
+      "id": "review-accept-isolated-unit-evidence",
+      "name": "Accept focused unit evidence for isolated logic",
+      "prompt": "Review a pure currency-formatting function with no I/O, UI, callbacks, or cross-layer behavior. Focused unit tests cover its inputs, rounding boundaries, and errors; no integration, UI, or end-to-end test was added.",
+      "expected_output": "The agent treats the focused unit tests as sufficient evidence for this isolated behavior and does not demand a broader harness without a boundary to exercise.",
+      "assertions": [
+        "Recognizes the behavior as isolated logic",
+        "Accepts focused unit tests as sufficient evidence",
+        "Does not require an integration, UI, or end-to-end test without a boundary"
+      ]
+    },
+    {
+      "id": "review-require-boundary-harness",
+      "name": "Require system-level evidence for cross-layer behavior",
+      "prompt": "Review a profile-save change that crosses form validation, the API, and persistence. Unit tests with mocked API and database dependencies pass, but the repository's existing Playwright end-to-end save scenario was not run.",
+      "expected_output": "The agent treats isolated unit tests as insufficient evidence for the cross-layer behavior and blocks approval until the existing end-to-end harness validates the real save journey.",
+      "assertions": [
+        "Recognizes that the change crosses multiple layers",
+        "Does not treat mocked unit tests as sufficient behavior evidence",
+        "Requires the existing end-to-end harness",
+        "Returns blocked or request-changes rather than approve"
       ]
     }
   ]
