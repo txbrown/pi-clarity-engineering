@@ -23,13 +23,21 @@ State depth only when it changes ceremony or operator choice.
 
 ## Evidence-first loop
 
+For UI-heavy work, choose the lightest path that reduces the real uncertainty:
+
+- **design-led UI** → implement the Figma or established design with fixtures, validate states and interactions, then connect the business logic;
+- **prototype-led UI** → build the smallest UI surface with fake or minimal behavior, test and iterate with feedback, then productionize the accepted direction;
+- **logic-led** → proceed directly when the UI is already understood or irrelevant.
+
+Do not force UI-first work for routine or settled changes. When confidence slicing is selected, make the UI surface and its states understandable before expanding production business logic behind it. A prototype may be disposable or incrementally hardened; its fidelity boundary should be explicit.
+
 - behavior change → use the narrowest existing harness that proves the solution at the real boundary: integration tests for cross-layer behavior, UI tests for interface behavior, and end-to-end tests for critical journeys;
 - isolated logic → focused unit tests are sufficient when behavior does not cross a boundary;
 - legacy behavior → characterize before changing it;
 - bug → reproduce, minimise, hypothesise, instrument, fix, regression-test through the appropriate harness, clean up;
 - mechanical change → use the smallest targeted validation; do not invent a test.
 
-Implement the minimum in-scope behavior, run the selected harness, and keep checks green. If boundary behavior has no suitable harness, add the smallest useful one or report the validation gap rather than claiming confidence from isolated checks. Create local commits only when project policy allows; never push or publish implicitly.
+Implement the minimum in-scope behavior, run the selected harness, and keep checks green. For a confidence slice, validate the UI direction before treating the business-logic implementation as settled; use a directional draft PR when peer feedback can change the shape of the work. If boundary behavior has no suitable harness, add the smallest useful one or report the validation gap rather than claiming confidence from isolated checks. Create local commits only when project policy allows; never push or publish implicitly.
 
 ## Intent check
 

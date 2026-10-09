@@ -18,7 +18,8 @@ Enter at the first useful point. Skip stages that add no information.
 5. Make important types, states, and failure modes explicit where the language and problem benefit.
 6. Preserve feature boundaries and avoid unrelated cleanup.
 7. Treat experience quality as in scope only when the shaped intent makes it relevant.
-8. Match ceremony to risk and reversibility.
+8. For UI-heavy work, use confidence slicing when user-facing direction or behavior is uncertain: establish confidence in the UI before expanding the business logic behind it.
+9. Match ceremony to risk and reversibility.
 9. Escalate only for decisions the agent cannot safely discover or assume.
 10. Record learning only when it is reusable and costly to rediscover.
 
@@ -56,8 +57,9 @@ Depth may stay internal for trivial and small work unless it changes the operato
 ## Ownership
 
 - Shape owns intent and boundaries.
-- Plan owns slicing and acceptance detail; tracker mutation is optional and separately authorized.
-- Build owns implementation, local validation, and local commits when project policy allows.
-- Review owns findings and confidence decisions.
+- Plan owns slicing and acceptance detail; tracker mutation is optional and separately authorized. For UI-heavy work, Plan may select a confidence slice with a UI learning goal, fidelity boundary, feedback path, and exit condition.
+- Build owns implementation, local validation, and local commits when project policy allows. It may use design-led UI, prototype-led UI, or logic-led paths; confidence slicing is optional and risk-based.
+- Review owns findings and confidence decisions. For confidence slices, review UI direction before production business logic accumulates, typically through a directional draft PR.
+
 - Publishing owns pushes, PR mutation, merge, and release actions.
 - Compound owns durable reusable learning.

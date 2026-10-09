@@ -16,7 +16,8 @@ Plan only enough to make the next Build safe. Keep one canonical intent artifact
 1. Resolve the shaped request, ticket, epic, approved RFC, or completed spike.
 2. If it is already one coherent buildable unit, do not invent child slices.
 3. Otherwise define ordered vertical slices with outcome, dependencies, validation evidence, and risk or learning reduced.
-4. Select the smallest coherent next slice.
+4. For UI-heavy work, decide whether confidence slicing is useful. If so, define the UI learning goal, fidelity boundary, feedback path, and exit condition before production business logic expands.
+5. Select the smallest coherent next slice.
 
 Tracker materialization is optional. Create or update external tickets only when the current request or repository policy authorizes it and the slice is independently assignable or likely to outlive the session. Otherwise return proposed ticket text.
 
@@ -30,7 +31,7 @@ For the selected slice capture:
 - validation evidence required, including the integration, UI, or end-to-end harness that will prove behavior when applicable;
 - remaining non-blocking assumptions.
 
-Build, not Plan, chooses the first test or implementation sequence.
+Build, not Plan, chooses the first test or implementation sequence. A confidence slice may begin with design-led UI from Figma or prototype-led UI exploration.
 
 ## Handoff
 
